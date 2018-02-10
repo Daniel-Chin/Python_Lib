@@ -5,6 +5,15 @@ import tkinter as tk
 import threading
 from PIL import Image, ImageTk
 
+def screenCenter(root):
+    root.update_idletasks()
+    w = root.winfo_screenwidth()
+    h = root.winfo_screenheight()
+    size = tuple(int(_) for _ in root.geometry().split('+')[0].split('x'))
+    x = w/2 - size[0]/2
+    y = h/2 - size[1]/2
+    root.geometry("%dx%d+%d+%d" % (size + (x, y)))
+
 class InputboxThread(threading.Thread):
     def __init__(self, msg, default):
         super(__class__,self).__init__()
@@ -42,7 +51,8 @@ class InputboxThread(threading.Thread):
             label.grid()
             entry.grid(sticky='we')
             root.grid_columnconfigure(0, weight=1)
-            entry.focus()
+            screenCenter(root)
+            entry.focus_force()
             root.mainloop()
             if confirmed:
                 self.input = input.get()
@@ -52,33 +62,61 @@ class InputboxThread(threading.Thread):
 def inputbox(msg = '', default = ''):
     return InputboxThread(msg, default).input
 
-class MsgboxThread(threading.Thread):
-    def __init__(self, msg):
+class Msgbox(threading.Thread):
+    def __init__(self, msg = '', title = '', blocking = True):
         super(__class__,self).__init__()
         self.msg=msg
-        self.prelock = threading.Lock()
-        self.lock=threading.Lock()
-        self.prelock.acquire()
+        self.title = title
+        self.condition = threading.Condition()
+        self.has_ended = False
+        self.do_end = False
+        self.doEndLock = threading.Lock()
+        self.blocking = blocking
+        self.root = None
         self.start()
-        self.prelock.acquire()
-        self.lock.acquire()
+        if blocking:
+            with self.condition:
+                while not self.has_ended:
+                    self.condition.wait()
+            # ended. 
+    
+    def checkDoEnd(self):
+        with self.doEndLock:
+            if self.do_end:
+                self.root.destroy()
+                self.root.quit()
+            else:
+                self.root.after(10, self.checkDoEnd)
+    
+    def terminate(self):
+        with self.doEndLock:
+            self.do_end = True
+        with self.condition:
+            while not self.has_ended:
+                self.condition.wait()
     
     def run(self):
-        with self.lock:
-            self.prelock.release()
-            root = tk.Tk()
+        with self.condition:
+            self.root = tk.Tk()
+            root = self.root
+            root.title(self.title)
+            if not self.blocking:
+                self.root.after(10, self.checkDoEnd)
             
-            label = tk.Label(root, text=self.msg, font='Times 20') 
-            button = tk.Button(root, text='OK', command=root.destroy)
-            button.bind('<Return>', lambda event : (root.destroy()))
-        
-            label.pack()
-            button.pack()
-            button.focus()
+            label = tk.Label(root, text=self.msg, font='Verdana 20') 
+            label.pack(padx = 20, pady = 10)
+            
+            if self.blocking:
+                button = tk.Button(root, text='OK', command=root.destroy)
+                button.bind('<Return>', lambda event : (root.destroy()))
+                button.pack(pady = (0, 10))
+                button.focus_force()
+            
+            screenCenter(root)
             root.mainloop()
-
-def msgbox(msg = ''):
-    MsgboxThread(msg)
+            del self.root
+            self.has_ended = True
+            self.condition.notify()
 
 class StretchMessage(tk.Message):
     def __init__(self, master, **kw):
@@ -186,4 +224,4 @@ def makeStretcherParent(widget):
     widget.bind('<Configure>', stretchChildren)
 
 if __name__=='__main__':
-    msgbox(inputbox('msg','default'))
+    Msgbox('asd')
