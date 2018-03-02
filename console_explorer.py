@@ -5,6 +5,9 @@ from os import path
 import os
 import platform
 
+class AbortionError:
+    pass
+
 class File:
     def __init__(self, name = None):
         self.name = name
@@ -90,7 +93,7 @@ def askForFile(cd = None):
             print('num to id')
             print('"abort", "abs", "cls"')
         elif op == 'abort':
-            return None
+            raise AbortionError
         else:
             try:
                 id = int(op)
@@ -102,7 +105,7 @@ def askForFile(cd = None):
 def askSaveWhere(cd = None, initialfile = None):
     if cd is None:
         if platform.system() == 'Linux':
-            cd = '/storage/emulated/0/' 
+            cd = '/storage/emulated/0/download/' 
         else:
             cd = os.getcwd()
     stop = False
@@ -157,7 +160,7 @@ def askSaveWhere(cd = None, initialfile = None):
             print('num to id')
             print('"abort", "abs", "cls"')
         elif op == 'abort':
-            return None
+            raise AbortionError
         else:
             try:
                 id = int(op)

@@ -1,3 +1,13 @@
+'''
+Fixed print for android. 
+Supports non-Windows. 
+'''
+
+if 'flush' not in dir(print):
+    print_3 = print
+    def print(*args, flush = False, **kw):
+        print_3(*args, **kw)
+
 try:
     import msvcrt
     from time import sleep
@@ -43,7 +53,7 @@ except ImportError:
     def listen(choice=None,wait=0):
         op = input()
         if '\\x' in op:
-            return chr(int(op.split('\\x')[1], 16))
+            return chr(int(op.split('\\x')[1], 16)).encode()
         else:
             return op.encode()
 

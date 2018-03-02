@@ -10,9 +10,9 @@ def recvFile(socket,file_len,to_filename):
             for i in range(128):
                 left-=to_file.write(socket.recv(min(left,4096)))
             recved=socket.recv(min(left,4096))
-            if recved==b'':
+            if recved == b'':
                 if left:
-                    raise Exception
+                    assert False
             else:
                 left-=to_file.write(recved)
                 j.update(file_len-left)
