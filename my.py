@@ -1,14 +1,13 @@
-'''
-Like dummy.pool, but queuing is automated. 
-'''
-from threading import Thread, Lock
-
 class LockableInt(int):
     def __init__(self, value = None):
         super(__class__,self).__init__()
         self.value = value
 
 def autopool(list_input, function, list_output = None, thread_num = 4):
+    '''
+    Like dummy.pool, but queuing is automated. 
+    '''
+    from threading import Thread, Lock
     enu_input = list(enumerate(list_input))
     list_thread = []
     wall = Lockable(-1)
