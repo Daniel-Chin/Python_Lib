@@ -1,6 +1,4 @@
 '''
-OneServers closure doesn't del Server.oneServers[i]. 
-Implement this yourself. 
 '''
 from threading import Thread
 from queue import Queue, Empty
@@ -9,7 +7,7 @@ import logging
 from mythread import Safe
 
 __all__ = ['BadRequest', 'ClientShutdown', 'Request', 
-           'OneServer', 'Server', 'Intent']
+           'OneServer', 'Server', 'Intent', 'log', 'logging']
 
 class BadRequest(BaseException):
     pass
@@ -23,7 +21,7 @@ logging.root.setLevel(logging.NOTSET)
 
 def log(*args, sep = ' ', end = '\n', flush = False, level = logging.INFO):
     text = sep.join([str(x) for x in args]) + end
-    print(text, flush = flush)
+    print(text, flush = flush, end = '')
     logging.log(level, text)
 
 class Intent:
@@ -48,7 +46,10 @@ class Request:
         return self.options[kw]
     
     def __str__(self):
-        return self.command + ' ' + self.target
+        if self.command == 'POST':
+            return self.command + ' ' + self.target + ' ' + self.body
+        else:
+            return self.command + ' ' + self.target
 
 def parseHead(text):
     whats_bad = ''
@@ -79,14 +80,18 @@ class OneServer(Thread):
     Subclass this class and override: 
         handle(request) where request is a Request object, 
         onClose(active) where active=True if server calls close() 
-            and =False if client shutdown.  
+            and =False if client shutdown.
     `close()`
     '''
     def __init__(self, addr, socket, parentQueue):
+        '''
+        You shouldn't override this. OneServer doesn't need any 
+        runtime state. Keep-alive should not be abused. 
+        '''
         Thread.__init__(self)
         self.addr = addr
         self.socket = socket  
-        socket.settimeout(1)
+        socket.settimeout(.4)
         self.parentQueue = parentQueue
         self.queue = Queue()
         self._go_on = Safe(True)
@@ -105,6 +110,9 @@ The programmer didn't override the request handler. </html>''')
     def onClose(self, active):
         # Override this
         pass
+    
+    def __str__(self):
+        return self.addr.__str__()
     
     def run(self):
         log('Serving', self.addr)
@@ -160,6 +168,7 @@ class Server(Thread):
         self._go_on = Safe(True)
         self.oneServers = []
         self.max_connection = Safe(4 * 32)
+        self.showing_max_waring = False
     
     def setMaxConnection(self, number):
         self.max_connection.set(number)
@@ -182,20 +191,28 @@ class Server(Thread):
     def close(self):
         with self._go_on:
             self._go_on.value = False
-            self._go_on.wait()
+        self.join()
     
     def run(self):
         self.socket.listen(self.listen)
         log('listening...')
         while self._go_on.get():
-            try:
-                socket, addr = self.socket.accept()
-                log('Connection from', addr)
-                oneServer = self.OneServer(addr, socket, self.queue)
-                self.oneServers.append(oneServer)
-                oneServer.start()
-            except timeout:
-                pass
+            if len(self.oneServers) >= self.getMaxConnection():
+                if not self.showing_max_waring:
+                    log('Max connection reached. ')
+                    self.showing_max_waring = True
+            else:
+                if self.showing_max_waring:
+                    log("Max connection isn't reached anymore. ")
+                    self.showing_max_waring = False
+                try:
+                    socket, addr = self.socket.accept()
+                    log('Connection from', addr)
+                    oneServer = self.OneServer(addr, socket, self.queue)
+                    self.oneServers.append(oneServer)
+                    oneServer.start()
+                except timeout:
+                    pass
             try:
                 while self._go_on.get():
                     self.__handleQueue(self.queue.get_nowait())
@@ -206,5 +223,3 @@ class Server(Thread):
         for oneServer in self.oneServers:
             oneServer.close()
         log('Server thread has stopped. ')
-        with self._go_on:
-            self._go_on.notify()
