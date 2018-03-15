@@ -3,7 +3,7 @@ from threading import Condition
 class Safe(Condition):
     def __init__(self, value = None):
         Condition.__init__(self)
-        self.value = value
+        self.set(value)
     
     def set(self, value):
         with self:
@@ -12,3 +12,7 @@ class Safe(Condition):
     def get(self):
         with self:
             return self.value
+    
+    def call(self, classMethod, *args, **kw):
+        with self:
+            return classMethod(self.value, *args, **kw)

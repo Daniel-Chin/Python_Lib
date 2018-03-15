@@ -78,11 +78,12 @@ Content-Type: text/html\r\n\r\n''' % len(data)
 class OneServer(Thread):
     '''
     Subclass this class and override: 
-        handle(request) where request is a Request object, 
-        onClose(active) where active=True if server calls close() 
-            and =False if client shutdown.
+        handle(request) where request is a Request object
+        request_filter is a list of request that you don't wanna log 
     `close()`
     '''
+    request_filter = []
+    
     def __init__(self, addr, socket, parentQueue):
         '''
         You shouldn't override this. OneServer doesn't need any 
@@ -99,23 +100,22 @@ class OneServer(Thread):
     def close(self):
         self._go_on.set(False)
     
-    def respond(self, data):
+    def respond(self, data, do_log = True):
         respond(self.socket, data)
+        if do_log:
+            if len(data) < 50:
+                log(self, data.decode())
     
     def handle(self, request):
         # Override this
         respond(self.socket, b'''<html>What a shame. 
 The programmer didn't override the request handler. </html>''')
     
-    def onClose(self, active):
-        # Override this
-        pass
-    
     def __str__(self):
         return self.addr.__str__()
     
     def run(self):
-        log('Serving', self.addr)
+        log(self, 'service begin. ')
         chunk = b''
         try:
             while self._go_on.get():
@@ -137,26 +137,33 @@ The programmer didn't override the request handler. </html>''')
                             else:
                                 chunk = b'\r\n\r\n'.join([bytes_head, chunk])
                                 break
-                        log('Request from', self.addr, request)
+                        do_log = True
+                        for filter in self.request_filter:
+                            if filter in request.target:
+                                do_log = False
+                                break
+                        if do_log:
+                            log(self, 'Request', request)
                         self.handle(request)
                 except timeout:
                     pass
             # self.close() called
-            self.onClose(True)
-        except (ClientShutdown, ConnectionResetError):
-            self.onClose(False)
+        except (ClientShutdown, ConnectionAbortedError):
+            log(self, 'client shutdown')
         finally:
             self.parentQueue.put(DeregisterOneServer(self))
             self.socket.close()
-            log('oneServer thread has stopped. Served', self.addr)
+            log(self, 'Thread has stopped. ')
 
 class Server(Thread):
     '''
     Subclass this class and override: 
         handleQueue()
+        interval()
     `close()`
     '''
-    def __init__(self, my_OneServer = OneServer, port = 80, listen = 1):
+    def __init__(self, my_OneServer = OneServer, port = 80, 
+                 listen = 1, accept_timeout = .5):
         # Pass in your subclassed OneServer
         Thread.__init__(self)
         self.queue = Queue()
@@ -164,7 +171,7 @@ class Server(Thread):
         self.listen = listen
         self.socket = Socket()
         self.socket.bind(('', port))
-        self.socket.settimeout(.5)
+        self.socket.settimeout(accept_timeout)
         self._go_on = Safe(True)
         self.oneServers = []
         self.max_connection = Safe(4 * 32)
@@ -175,6 +182,12 @@ class Server(Thread):
     
     def getMaxConnection(self):
         return self.max_connection.get()
+    
+    def interval(self):
+        '''
+        Override this.
+        '''
+        pass
     
     def handleQueue(self, intent):
         '''
@@ -189,9 +202,10 @@ class Server(Thread):
             self.handleQueue(intent)
     
     def close(self):
-        with self._go_on:
-            self._go_on.value = False
-        self.join()
+        if self.isAlive():
+            with self._go_on:
+                self._go_on.value = False
+            self.join()
     
     def run(self):
         self.socket.listen(self.listen)
@@ -207,7 +221,7 @@ class Server(Thread):
                     self.showing_max_waring = False
                 try:
                     socket, addr = self.socket.accept()
-                    log('Connection from', addr)
+                    log(addr, 'Accepted. ')
                     oneServer = self.OneServer(addr, socket, self.queue)
                     self.oneServers.append(oneServer)
                     oneServer.start()
@@ -218,6 +232,7 @@ class Server(Thread):
                     self.__handleQueue(self.queue.get_nowait())
             except Empty:
                 pass
+            self.interval()
         self.socket.close()
         log('Closing', len(self.oneServers), 'oneServers.')
         for oneServer in self.oneServers:
