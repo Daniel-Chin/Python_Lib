@@ -19,12 +19,12 @@ try:
         else:
             return first
     
-    def listen(choice=None,wait=0):
+    def listen(choice=None,timeout=0):
         '''
         choice can be a list of choices or a single choice. 
         Elements can be b'' or ''.
-        If wait=0, it's blocking. 
-        wait is in second. 
+        If timeout=0, it's blocking. 
+        timeout is in second. 
         '''
         if choice is not None:
             if type(choice) in (bytes, str):
@@ -36,9 +36,9 @@ try:
                 else:
                     bChoice.append(i.encode())
         print('',end='',flush=True)
-        if wait != 0:
+        if timeout != 0:
             fps=30
-            for i in range(int(wait*fps)):
+            for i in range(int(timeout*fps)):
                 if msvcrt.kbhit():
                     break
                 sleep(1/fps)
@@ -50,7 +50,7 @@ try:
         return op
 
 except ImportError:
-    def listen(choice=None,wait=0):
+    def listen(choice=None,timeout=0):
         op = input()
         if '\\x' in op:
             return chr(int(op.split('\\x')[1], 16)).encode()
