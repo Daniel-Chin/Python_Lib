@@ -1,7 +1,8 @@
 '''
-Home and End
+Windows only. 
 '''
 from listen import listen as __listen
+from os import system as cmd
 __CURSOR = '|'
 
 def console(globals, prompt = '>>> '):
@@ -73,15 +74,18 @@ def console(globals, prompt = '>>> '):
         if command == '':
             continue
         history.append(command)
-        try:
+        if command == 'cls':
+            cmd('cls')
+        else:
             try:
-                result = eval(command + '\r')
-                if result is not None:
-                    print(result)
-            except SyntaxError:
-                exec(command + '\r')
-        except Exception as e:
-            print(e)
+                try:
+                    result = eval(command + '\r')
+                    if result is not None:
+                        print(result)
+                except SyntaxError:
+                    exec(command + '\r')
+            except Exception as e:
+                print(e)
 
 if __name__ == '__main__':
     console({})
