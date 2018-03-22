@@ -5,6 +5,7 @@ import socket
 import pickle
 from io import BytesIO
 import sys
+__all__ = ['PickleSocket', 'RemoteClosedUnexpectedly']
 
 if 'sendfile' not in dir(socket.socket):
     # Android
