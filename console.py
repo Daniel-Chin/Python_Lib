@@ -3,6 +3,7 @@ Windows only.
 '''
 from listen import listen as __listen
 from os import system as cmd
+import traceback
 __CURSOR = '|'
 
 def console(globals = None, prompt = '>>> '):
@@ -112,8 +113,8 @@ def console(globals = None, prompt = '>>> '):
                         print(result)
                 except SyntaxError:
                     exec(command + '\r')
-            except Exception as e:
-                print(e)
+            except Exception:
+                traceback.print_exc()
 
 if __name__ == '__main__':
     console({})
