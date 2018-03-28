@@ -2,7 +2,7 @@
 '''
 from threading import Thread
 from queue import Queue, Empty
-from socket import socket as Socket, timeout
+from socket import socket as Socket, timeout, gethostname, gethostbyname
 import logging
 from mythread import Safe
 
@@ -209,7 +209,7 @@ class Server(Thread):
     
     def run(self):
         self.socket.listen(self.listen)
-        log('listening...')
+        log('listening at', gethostbyname(gethostname()), '...')
         while self._go_on.get():
             if len(self.oneServers) >= self.getMaxConnection():
                 if not self.showing_max_waring:
