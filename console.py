@@ -1,27 +1,30 @@
 '''
-Windows only. 
+Windows only. If not windows, start IPython. 
 '''
-from listen import listen as __listen
+import platform
+from listen import listen
 from os import system as cmd
 import traceback
-__CURSOR = '|'
+from pprint import pprint
 
-def console(globals = None, prompt = '>>> '):
-    if globals is None:
-        print('Warning: did not pass in globals(). ')
-    else:
-        for name in globals:
-            if name[0] != '_':
-                exec(name + '=globals[\''+name+'\']')
+CURSOR = '|'
+def console(namespace = {}, prompt = '>>> '):
+    for name in namespace:
+        if name[0] != '_':
+            exec(name + '=namespace[\''+name+'\']')
+    if platform.system() != 'Windows':
+        from IPython import embed
+        embed()
+        return
     history = []
     while True:
         cursor_bright = True
         command = ''
         cursor = 0
         history_selection = len(history)
-        print(prompt + __CURSOR, end='\r')
+        print(prompt + CURSOR, end='\r')
         while True:
-            op = __listen(timeout = .5)
+            op = listen(timeout = .5)
             last_len = len(command)
             if op == b'\r':
                 print(prompt + command.replace('\x1a', '^Z') + ' ')
@@ -93,7 +96,7 @@ def console(globals = None, prompt = '>>> '):
                     cursor += 1
             padding = max(0, last_len - len(command)) * 2
             if cursor_bright:
-                cursor_show = __CURSOR
+                cursor_show = CURSOR
             else:
                 cursor_show = '_'
             cursed_command = command[:cursor] + cursor_show + command[cursor:]
@@ -107,14 +110,18 @@ def console(globals = None, prompt = '>>> '):
             cmd('cls')
         else:
             try:
-                try:
-                    result = eval(command + '\r')
-                    if result is not None:
-                        print(result)
-                except SyntaxError:
-                    exec(command + '\r')
+                kernal(command)
             except Exception:
                 traceback.print_exc()
+
+def kernal(__command):
+    # For a clean local namespace. 
+    try:
+        result = eval(__command + '\r')
+        if result is not None:
+            print(result)
+    except SyntaxError:
+        exec(__command + '\r')
 
 if __name__ == '__main__':
     console({})

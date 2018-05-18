@@ -1,12 +1,12 @@
 '''
-Fixed print for android. 
 Supports non-Windows. 
 '''
-
-if 'flush' not in dir(print):
+''' I do not know why it is here. 
+if 'flush' not in getargspec(print).args:
     print_3 = print
     def print(*args, flush = False, **kw):
         print_3(*args, **kw)
+'''
 
 try:
     import msvcrt
@@ -28,7 +28,7 @@ try:
         '''
         if choice is not None:
             if type(choice) in (bytes, str):
-                choice=choice,
+                choice = (choice, )
             bChoice=[]
             for i in choice:
                 if type(i) is bytes:
@@ -51,6 +51,7 @@ try:
 
 except ImportError:
     def listen(choice=None,timeout=0):
+        print(choice)
         op = input()
         if '\\x' in op:
             return chr(int(op.split('\\x')[1], 16)).encode()
@@ -58,5 +59,5 @@ except ImportError:
             return op.encode()
 
 if __name__=='__main__':
-    from IPython import embed
-    embed()
+    from console import console
+    console({})
