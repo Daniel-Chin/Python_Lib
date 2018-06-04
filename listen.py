@@ -1,12 +1,14 @@
 '''
 Supports non-Windows. 
 '''
-''' I do not know why it is here. 
-if 'flush' not in getargspec(print).args:
-    print_3 = print
-    def print(*args, flush = False, **kw):
-        print_3(*args, **kw)
-'''
+#===============================================================================
+# I do not know why this is here. 
+# if 'flush' not in getargspec(print).args:
+#     print_3 = print
+#     def print(*args, flush = False, **kw):
+#         print_3(*args, **kw)
+#===============================================================================
+
 from time import sleep
 FPS = 30
 
@@ -37,9 +39,6 @@ def listen(choice=None, timeout=0):
     If timeout=0, it's blocking. 
     timeout is in second. 
     '''
-    if msvcrt is None:
-        print(choice)
-        return eval('"' + input() + '"').encode()
     if choice is not None:
         if type(choice) in (bytes, str):
             choice = (choice, )
@@ -49,7 +48,15 @@ def listen(choice=None, timeout=0):
                 bChoice.append(i)
             else:
                 bChoice.append(i.encode())
-    print('',end='',flush=True)     # Just to flush
+    print('', end = '', flush = True)     # Just to flush
+    if msvcrt is None:
+        print(bchoice)
+        op = None
+        while op not in bchoice:
+            op = eval('b"%s"' % input())
+            if op == b'' and b'\r' in bchoice:
+                return b'\r'    # So android doesn't need to type "\r"
+        return op
     if timeout != 0:
         for i in range(int(timeout*FPS)):
             if msvcrt.kbhit():

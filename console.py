@@ -1,22 +1,23 @@
 '''
 Windows only. If not windows, start IPython. 
+Advantage over IPython: 
+    1. Lighter
+    2. Other threads can still print things when user is inputting commands
 '''
 import platform
 from listen import listen
-from os import system as cmd
-import traceback
-from pprint import pprint
+from kernal import Kernal
 
 CURSOR = '|'
+
 def console(namespace = {}, prompt = '>>> '):
-    for name in namespace:
-        if name[0] != '_':
-            exec(name + '=namespace[\''+name+'\']')
     if platform.system() != 'Windows':
         from IPython import embed
         embed()
         return
     history = []
+    kernal = Kernal(namespace)
+    next(kernal)
     while True:
         cursor_bright = True
         command = ''
@@ -102,26 +103,15 @@ def console(namespace = {}, prompt = '>>> '):
             cursed_command = command[:cursor] + cursor_show + command[cursor:]
             print(prompt + cursed_command.replace('\x1a', '^Z') + ' '*padding, end='\r')
         if command in ('exit', 'exit()', '\x1a'):
-            return
+            try:
+                kernal.send('exit')
+            except StopIteration:
+                return
+            assert False
         if command == '':
             continue
         history.append(command)
-        if command == 'cls':
-            cmd('cls')
-        else:
-            try:
-                kernal(command)
-            except Exception:
-                traceback.print_exc()
-
-def kernal(__command):
-    # For a clean local namespace. 
-    try:
-        result = eval(__command + '\r')
-        if result is not None:
-            print(result)
-    except SyntaxError:
-        exec(__command + '\r')
+        kernal.send(command)
 
 if __name__ == '__main__':
     console({})
