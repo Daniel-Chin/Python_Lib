@@ -11,6 +11,7 @@ from os import system, listdir
 from time import time
 from listen import listen
 from friendly_time import friendlyTime 
+from getpass import getpass
 import sys
 if platform.system() == 'Linux':
     PATH = '/sdcard/Daniel/Beeph/'
@@ -22,7 +23,7 @@ print('Loading classes and functions...')
 def main():
     print('MAIN')
     filename = loadFilename()
-    key = input('? ')
+    key = getpass('?? ')
     cls()
     book = Book(filename, key)
     try:
