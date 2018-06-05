@@ -217,7 +217,7 @@ class Book:
     
     def save(self):
         file = open(self.filename, 'wb')
-        beepher = nb(file, self.key, 'w')
+        beepher = Beepher(file, self.key, 'w')
         pickle.dump(self.dict, beepher)
         file.close()
         self.unsaved_change = False
