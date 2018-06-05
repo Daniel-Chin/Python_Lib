@@ -50,13 +50,16 @@ def listen(choice=None, timeout=0):
                 bChoice.append(i.encode())
     print('', end = '', flush = True)     # Just to flush
     if msvcrt is None:
-        print(bchoice)
-        op = None
-        while op not in bchoice:
-            op = eval('b"%s"' % input())
-            if op == b'' and b'\r' in bchoice:
-                return b'\r'    # So android doesn't need to type "\r"
-        return op
+        if choice is None:
+            return eval('b"%s"' % input())
+        else:
+            print(bchoice)
+            op = None
+            while op not in bchoice:
+                op = eval('b"%s"' % input())
+                if op == b'' and b'\r' in bchoice:
+                    return b'\r'    # So android doesn't need to type "\r"
+            return op
     if timeout != 0:
         for i in range(int(timeout*FPS)):
             if msvcrt.kbhit():
