@@ -47,7 +47,7 @@ def main():
 
 def loadFilename():
     if len(sys.argv) >= 2:
-        filename = sys.argv[1]
+        PATH + sys.argv[1]
     else:
         print()
         if platform.system() == 'Linux':
