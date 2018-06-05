@@ -48,11 +48,12 @@ def loadFilename():
     else:
         print()
         if platform.system() == 'Linux':
-            [print(name) for name in listdir(PATH)]
-            filename = input('filename=')
-            if filename not in listdir(PATH):
+            list_dir = [x.lower() for x in listdir(PATH)]
+            [print(name) for name in list_dir]
+            filename = input('filename=').lower()
+            if filename not in list_dir:
                 filename += '.beeph'
-                assert filename in listdir(PATH), 'No such file. '
+                assert filename in list_dir, 'No such file. '
             return PATH + filename
         else:
             return input('path\\filename.beeph: ')
@@ -212,7 +213,7 @@ class Book:
     
     def save(self):
         file = open(self.filename, 'wb')
-        beepher = Beepher(file, self.key, 'w')
+        beepher = nb(file, self.key, 'w')
         pickle.dump(self.dict, beepher)
         file.close()
         self.unsaved_change = False
