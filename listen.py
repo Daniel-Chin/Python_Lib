@@ -51,7 +51,9 @@ def listen(choice=None, timeout=0):
     print('', end = '', flush = True)     # Just to flush
     if msvcrt is None:
         if choice is None:
-            return eval('b"%s"' % input())
+            op = eval('b"%s"' % input())
+            if op == b'':
+                return b'\r'    # So android doesn't need to type "\r"
         else:
             print(bchoice)
             op = None

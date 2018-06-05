@@ -21,7 +21,10 @@ print('Loading classes and functions...')
 
 def main():
     print('MAIN')
-    book = Book(loadFilename(), Beepher.askForKey())
+    filename = loadFilename()
+    key = input('? ')
+    cls()
+    book = Book(filename, key)
     try:
         book._mainloop()
     except EOFError:
