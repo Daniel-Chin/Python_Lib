@@ -55,7 +55,7 @@ def listen(choice=None, timeout=0):
             if op == b'':
                 return b'\r'    # So android doesn't need to type "\r"
         else:
-            print(bchoice)
+            print(bChoice)
             op = None
             while op not in bchoice:
                 op = eval('b"%s"' % input())
