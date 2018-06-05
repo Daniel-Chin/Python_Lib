@@ -57,9 +57,9 @@ def listen(choice=None, timeout=0):
         else:
             print(bChoice)
             op = None
-            while op not in bchoice:
+            while op not in bChoice:
                 op = eval('b"%s"' % input())
-                if op == b'' and b'\r' in bchoice:
+                if op == b'' and b'\r' in bChoice:
                     return b'\r'    # So android doesn't need to type "\r"
             return op
     if timeout != 0:
