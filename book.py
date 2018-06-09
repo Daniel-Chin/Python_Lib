@@ -12,6 +12,8 @@ from time import time
 from listen import listen
 from friendly_time import friendlyTime 
 from getpass import getpass
+import random
+import string
 import sys
 if platform.system() == 'Linux':
     PATH = '/sdcard/Daniel/Beeph/'
@@ -138,6 +140,13 @@ class Book:
         return methods
     
     def cls(self):
+        cls()
+    
+    def gen(self, length = 8):
+        length = int(length)    # Command line arg is str. 
+        population = string.ascii_letters + string.digits
+        print(''.join([random.choices(population)[0] for _ in range(length)]))
+        input('Enter... ')
         cls()
     
     def _smartEntryCheck(self):
