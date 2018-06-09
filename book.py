@@ -304,7 +304,7 @@ class Book:
             cls()
             edited = '\n'.join(edited)
             print('Old version: ')
-            print(self.dict[self.now])
+            print(self.dict[self.now].content)
             print()
             print('New version: ')
             print(edited)
