@@ -144,8 +144,7 @@ class Book:
     
     def gen(self, length = 8):
         length = int(length)    # Command line arg is str. 
-        population = string.ascii_letters + string.digits
-        print(''.join([random.choices(population)[0] for _ in range(length)]))
+        print(gen(length))
         input('Enter... ')
         cls()
     
@@ -290,7 +289,7 @@ class Book:
                 op = listen((b'\xe0K',b'i',b'\x08',b'\r'))
                 if op == b'\xe0K':
                     print('\r', ' '*len(line), '\r', end='', flush = True)
-                    edited.append(input())
+                    edited.append(inputWithGen())
                 elif op == b'i':
                     print('\r', ' '*len(line), '\r', end='')
                     edited.append(multilineInput())
@@ -352,11 +351,23 @@ def chooseFromEntries(matches):
 
 def multilineInput():
     buffer = []
-    content = input()
+    content = inputWithGen()
     while content != '':
         buffer.append(content)
-        content = input()
+        content = inputWithGen()
     return '\n'.join(buffer)
+
+def gen(length = 8):
+    length = int(length)
+    population = string.ascii_letters + string.digits
+    return ''.join([random.choices(population)[0] for _ in range(length)])
+
+def inputWithGen(prompt = ''):
+    op = input(prompt)
+    if op.split(' ')[0] == 'gen':
+        return gen(*op.split(' ')[1:])
+    else:
+        return op
 
 if __name__ == '__main__':
     main()
