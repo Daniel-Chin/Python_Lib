@@ -72,6 +72,39 @@ class CommJdt:
         print('\r'+self.msg,'['+'#'*self.width+'] Complete! Total:', \
               smartUnit(self.goal),' '*22)
 
+class Jdt:
+    '''
+    msg [****____] 50% Total: 44 Done: 22
+    '''
+    occupied=False
+    
+    def __init__(self,goal,msg='',width=20):
+        if self.__class__.occupied:
+            raise _CannotDisplayMultiJdts
+        self.__class__.occupied=True
+        self.active=True
+        self.width=width
+        self.goal=goal
+        self.msg=msg
+
+    def update(self,done):
+        if not self.active:
+            raise _JdtAlreadyClosedError
+        progress=done/self.goal
+        bar=int(self.width*progress)
+        print('\r'+self.msg, \
+              '['+'*'*bar+'_'*(self.width-bar)+']'+ \
+              format(progress,'4.0%'), \
+              'Total:',self.goal, \
+              'Done:',done, \
+              end='',flush=True)
+
+    def complete(self):
+        self.active=False
+        self.__class__.occupied=False
+        print('\r'+self.msg,'['+'#'*self.width+'] Complete! Total:', \
+              self.goal,' '*22)
+
 if __name__=='__main__':
     from time import sleep
     j=CommJdt(10240000)
@@ -80,4 +113,3 @@ if __name__=='__main__':
         sleep(0.01)
     j.complete()
     input('Enter..')
-    
