@@ -1,14 +1,8 @@
 '''
 Progress bar. 
-Fixed print for android.  
 '''
 from time import time
 from math import log
-
-if 'flush' not in dir(print):
-    print_3 = print
-    def print(*args, flush = False, **kw):
-        print_3(*args, **kw)
 
 class _JdtAlreadyClosedError(BaseException):
     '''Cannot update Jdt after complete. '''
