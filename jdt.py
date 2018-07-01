@@ -78,7 +78,7 @@ class Jdt:
     '''
     occupied=False
     
-    def __init__(self,goal,msg='',width=20):
+    def __init__(self,goal,msg='',width=32, UPP = 1):
         if self.__class__.occupied:
             raise _CannotDisplayMultiJdts
         self.__class__.occupied=True
@@ -87,11 +87,19 @@ class Jdt:
         self.goal=goal
         self.msg=msg
         self.done = 0
+        self.UPP = UPP
+        self.UPP_count = 0
+        # updates per print
 
     def update(self,done):
         if not self.active:
             raise _JdtAlreadyClosedError
         self.done = done
+        self.UPP_count += 1
+        if self.UPP_count == self.UPP:
+            self.UPP_count = 0
+        else:
+            return
         progress=done/self.goal
         bar=int(self.width*progress)
         print('\r'+self.msg, \
