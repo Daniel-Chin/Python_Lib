@@ -86,10 +86,12 @@ class Jdt:
         self.width=width
         self.goal=goal
         self.msg=msg
+        self.done = 0
 
     def update(self,done):
         if not self.active:
             raise _JdtAlreadyClosedError
+        self.done = done
         progress=done/self.goal
         bar=int(self.width*progress)
         print('\r'+self.msg, \
@@ -98,7 +100,10 @@ class Jdt:
               'Total:',self.goal, \
               'Done:',done, \
               end='',flush=True)
-
+    
+    def acc(self):
+        self.update(self.done + 1)
+    
     def complete(self):
         self.active=False
         self.__class__.occupied=False
