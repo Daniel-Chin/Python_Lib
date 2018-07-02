@@ -2,7 +2,10 @@ print('importing...')
 from recvfile import recvFile
 from listen import listen
 from pickle_socket import PickleSocket
-from tkinter import Tk,filedialog
+try:
+    from tkinter import Tk,filedialog
+except ImportError:
+    Tk = None
 from socket import gethostname,gethostbyname
 import sys
 from os.path import getsize,basename,isfile,splitext
@@ -11,7 +14,6 @@ print('loading...')
 port=2337
 
 def main():
-    global port
     s=PickleSocket()
     print('My IP =',gethostbyname(gethostname()))
     print('Server or Client? s/c')
@@ -19,6 +21,7 @@ def main():
         s.bind(('',port))
         s.listen(1)
         print('Listening...')
+        server = s
         s,addr=s.accept()
         print('Connection from',addr)
         print('Accept? y/n')
@@ -43,11 +46,19 @@ def main():
         print('Send, receive, or exit? s/r/esc')
         op=listen((b's',b'r',esc))
     s.close()
+    try:
+        server.close()
+    except:
+        pass
 
 def send(s):
-    root=Tk()
-    root.withdraw()
-    filename=filedialog.askopenfilename(title='Choose file to send',initialdir='D:/')
+    if Tk:
+        root=Tk()
+        root.withdraw()
+        root.update()
+        filename=filedialog.askopenfilename(title='Choose file to send',initialdir='D:/')
+    else:
+        filename = input('path/file.ext = ')
     if filename=='':
         s.sendObj(0)
         return None
@@ -66,9 +77,13 @@ def recv(s):
     print('Default receive path:',path)
     print('Use it, or change? Enter/c')
     if listen((b'c',b'\r'))==b'c':
-        root=Tk()
-        root.withdraw()
-        filename=filedialog.asksaveasfilename(title='Where to receive',initialdir='D:/',initialfile=basename)
+        if Tk:
+            root=Tk()
+            root.withdraw()
+            root.update()
+            filename=filedialog.asksaveasfilename(title='Where to receive',initialdir='D:/',initialfile=basename)
+        else:
+            filename = input('path/file.ext = ')
         if filename=='':
             s.close()
             input('Error: filename="". Enter to exit...')
