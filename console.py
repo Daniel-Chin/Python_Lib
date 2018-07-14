@@ -3,6 +3,8 @@ Windows only. If not windows, start IPython.
 Advantage over IPython: 
     1. Lighter
     2. Other threads can still print things when user is inputting commands
+Issue: 
+    If you wanna scroll up, you need to input(). 
 '''
 import platform
 from listen import listen
@@ -90,7 +92,7 @@ def console(namespace = {}, prompt = '>>> '):
                                 word_ended = True
                     else:
                         cursor = len(command)
-                elif op[0] in (0, 224):
+                elif op[0] in range(1, 26) or op[0] in (0, 224):
                     pass
                 else:
                     command = command[:cursor] + op.decode() + command[cursor:]

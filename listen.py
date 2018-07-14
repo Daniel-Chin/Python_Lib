@@ -77,4 +77,4 @@ def listen(choice=None, timeout=0):
 
 if __name__=='__main__':
     from console import console
-    console({})
+    console({'listen': listen})
