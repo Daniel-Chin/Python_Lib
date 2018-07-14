@@ -17,7 +17,6 @@ def main():
     s=PickleSocket()
     print('My IP =',gethostbyname(gethostname()))
     server = None
-    s = None
     try:
         print('Server or Client? s/c')
         if listen((b's',b'c')) == b's':
