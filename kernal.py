@@ -19,12 +19,18 @@ def Kernal(namespace = {}):
             if __command == 'exit':
                 return
             try:
-                result = eval(__command + '\r')
-                if result is not None:
-                    print(result)
-                del result
+                __result = eval(__command + '\r')
+                if __result is not None:
+                    print(__result)
+                del __result
+                __eval_good = True
             except SyntaxError:
+                __eval_good = False
+            if not __eval_good:
+                del __eval_good
                 exec(__command + '\r')
+            else:
+                del __eval_good
         except:
             import traceback
             traceback.print_exc()
