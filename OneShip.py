@@ -14,6 +14,10 @@ print('loading...')
 port=2337
 
 def main():
+    if len(sys.argv) == 2 and sys.argv[1] == '!':
+        print('Professional mode. ')
+        global Tk
+        Tk = None
     s=PickleSocket()
     print('My IP =',gethostbyname(gethostname()))
     server = None
