@@ -17,3 +17,11 @@ def autopool(list_input, function, list_output = None, thread_num = 4):
     while enu_input:
         with wall:
             print(1)
+
+def debug(func, *args, **kw):
+    try:
+        func(*args, **kw)
+    except Exception:
+        import traceback
+        traceback.print_exc()
+        input('Enter...')
