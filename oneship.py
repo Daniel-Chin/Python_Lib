@@ -1,3 +1,6 @@
+'''
+一嗖传
+'''
 print('importing...')
 from recvfile import recvFile
 from listen import listen
@@ -40,7 +43,7 @@ def main():
             ip=input('Connect to IP: ')
             print('Connecting...')
             s.connect((ip,port))
-        print('Connected! ')
+        print('Connected! Waiting for response... ')
         s.shakeHands('One ship python by Daniel Chin. ')
         
         esc=b'\x1b'
