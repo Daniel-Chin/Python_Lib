@@ -12,6 +12,7 @@ except ImportError:
 from socket import gethostname,gethostbyname
 import sys
 from os.path import getsize,basename,isfile,splitext
+import platform
 
 print('loading...')
 port=2337
@@ -83,7 +84,11 @@ def recv(s):
     print('Waiting for sender...')
     basename=s.recvObj()
     size=s.recvObj()
-    path='D:/downloads/'
+    path = {
+                'Windows': 'D:/downloads/', 
+                'Linux': '/sdcard/download/',
+                'Darwin': '/'
+           }[platform.system()]
     print('Default receive path:',path)
     print('Use it, or change? Enter/c')
     if listen((b'c',b'\r'))==b'c':
