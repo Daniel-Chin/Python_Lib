@@ -277,17 +277,17 @@ class Book:
     
     def edit(self):
         if self._smartEntryCheck():
-            print('Left arrow (\\xe0K) to modify current line. ')
+            print('"m" to modify current line. ')
             print('"i" to insert line before current line. ')
-            print('Backspace (\\x08) to delete current line. ')
+            print('"d" to delete current line. ')
             print('Enter (\\r) to navigate to the next line. ')
             print()
             print('|:', self.now)
             edited = []
             for line in self.dict[self.now].content.split('\n'):
                 print(line + "> ", end='', flush=True)
-                op = listen((b'\xe0K',b'i',b'\x08',b'\r'))
-                if op == b'\xe0K':
+                op = listen((b'm',b'i',b'd',b'\r'))
+                if op == b'm':
                     print('\r', ' '*len(line), '\r', end='', flush = True)
                     edited.append(inputWithGen())
                 elif op == b'i':
@@ -295,7 +295,7 @@ class Book:
                     edited.append(multilineInput())
                     edited.append(line)
                     print(line)
-                elif op==b'\x08':
+                elif op==b'd':
                     print("\r---Line deleted---", ' '*len(line))
                 elif op==b'\r':
                     edited.append(line)
