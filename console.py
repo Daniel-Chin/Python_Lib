@@ -4,7 +4,8 @@ Advantage over IPython:
     1. Lighter
     2. Other threads can still print things when user is inputting commands
 Issue: 
-    If you wanna scroll up, you need to input(). 
+    If you wanna scroll up, you need to input().
+    Global mutables don't work. Sorry. 
 '''
 import platform
 from listen import listen
