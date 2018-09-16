@@ -5,7 +5,7 @@ Advantage over IPython:
     2. Other threads can still print things when user is inputting commands
 Issue: 
     If you wanna scroll up, you need to input().
-    Global mutables don't work. Sorry. 
+    Changing global bindings doesn't work. Sorry. 
 '''
 import platform
 from listen import listen
@@ -18,6 +18,7 @@ def console(namespace = {}, prompt = '>>> ', use_input = False, fixer = None):
         from IPython import embed
         embed()
         return
+    print('console.console Warning: no support for change in global bindings. ')
     history = []
     kernal = Kernal(namespace)
     next(kernal)

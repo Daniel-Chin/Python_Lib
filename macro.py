@@ -8,7 +8,7 @@ from console import console
 from time import time, sleep
 from ctypes import windll, Structure, c_long, byref
 import win32api, win32con
-import keyboard
+import keyboard, mouse
 from threading import Thread
 from os import path, listdir
 import pickle
@@ -77,7 +77,7 @@ def passKeyUp(keyDown):
 
 class Macro(list):
     def __init__(self):
-        self.default_interval = .2
+        self.default_interval = .1
         self.deploy_delay = 2
     
     def play(self, n_times = 1):
@@ -89,7 +89,10 @@ class Macro(list):
                 for action in self:
                     assert failsafe.green
                     if action.delta_time == 0:
-                        sleep(self.default_interval)
+                        if action.key in ('LEFT', 'RIGHT'):
+                            sleep(self.default_interval * 2)
+                        else:
+                            sleep(self.default_interval)
                     else:
                         sleep(action.delta_time)
                     assert failsafe.green
@@ -101,7 +104,7 @@ class Macro(list):
         while failsafe.green:
             if n_wins > 5:
                 print("Oh no! The failsafe won't join. ")
-                print('Please help him by pressing Enter. ')
+                print('Please help him by pressing Windows. ')
                 failsafe.join()
             keyboard.press_and_release('win')
             sleep(self.default_interval)
@@ -110,9 +113,18 @@ class Macro(list):
             failsafe.join(self.default_interval)
         print('Macro successfully executed. ')
     
-    def __repr__(self):
+    def __str__(self):
         return '\n'.join([str(x) for x in self] + 
             ['Tip: use record.last to access the last recording. '])
+    
+    def __repr__(self):
+        return 'Macro object'
+    
+    def appendMouse(self, event):
+        if isinstance(event, mouse.ButtonEvent) and event.event_type == 'down':
+            action = Action(getPos(), key = event.button.upper())
+            print(action)
+            self.append(action)
 
 class Failsafe(Thread):
     def __init__(self):
@@ -127,26 +139,23 @@ class Failsafe(Thread):
         finally:
             self.green = False
 
-def record():
+def record(start = 'Ctrl + F4'):
     macro = Macro()
     try:
+        print('Waiting for %s to start...' % start)
+        keyboard.wait(start)
+        print('Start recording. ')
+        mouse.hook(macro.appendMouse)
         while True:
             op = keyboard.read_event()
             if op.name == '\\':
-                help = 'l : left click, r : right click, ' + \
-                       '\\, t : sleep, esc'
+                help = '\\ : \\, t : sleep, esc : stop'
                 print(help, end = '\r', flush = True)
                 opUp = passKeyUp(op)
                 superKey = keyboard.read_event()
                 print(' ' * len(help), end = '\r')
                 passKeyUp(superKey)
-                if superKey.name == 'l':
-                    print('Left click')
-                    macro.append(Action(getPos(), key = 'LEFT'))
-                elif superKey.name == 'r':
-                    print('Right click')
-                    macro.append(Action(getPos(), key = 'RIGHT'))
-                elif superKey.name == '\\':
+                if superKey.name == '\\':
                     print('\\')
                     macro.append(Action(getPos(), key = op))
                     macro.append(Action(getPos(), key = opUp))
@@ -154,10 +163,11 @@ def record():
                     print('Sleep')
                     macro.append(Sleep(macro.default_interval))
                 elif superKey.name == 'esc':
+                    mouse.unhook(macro.appendMouse)
                     print('End')
                     try:
                         first = macro[0].key
-                        if first.name == 'enter' and first.event_type == 'up':
+                        if first.name in start.lower() and first.event_type == 'up':
                             macro.pop(0)
                     except IndexError:
                         pass
