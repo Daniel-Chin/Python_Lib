@@ -5,7 +5,11 @@ from console import console
 from math import sqrt
 
 def fixer(raw):
-    s1 = raw.replace('×', '*').replace('^', '**').replace('√(', 'sqrt(')
+    s1 = raw.replace('×', '*') \
+        .replace('^', '**') \
+        .replace('〖', '(') \
+        .replace('〗', ')') \
+        .replace('√(', 'sqrt(')
     l1 = s1.split('√')
     for i_seg in range(1, len(l1)):
         for i, chara in enumerate(l1[i_seg]):
