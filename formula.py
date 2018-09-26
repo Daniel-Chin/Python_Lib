@@ -1,5 +1,5 @@
 '''
-Evaluate beautiful formulas like    √(2×3)
+Evaluate beautiful formulas like    √(2×3÷4)
 '''
 from console import console
 from math import sqrt
@@ -9,6 +9,7 @@ def fixer(raw):
         .replace('^', '**') \
         .replace('〖', '(') \
         .replace('〗', ')') \
+        .replace('÷', '/') \
         .replace('√(', 'sqrt(')
     l1 = s1.split('√')
     for i_seg in range(1, len(l1)):
