@@ -139,7 +139,7 @@ class Failsafe(Thread):
         finally:
             self.green = False
 
-def record(start = 'Ctrl + F4'):
+def record(start = 'Ctrl + F3'):
     macro = Macro()
     try:
         print('Waiting for %s to start...' % start)
@@ -166,8 +166,7 @@ def record(start = 'Ctrl + F4'):
                     mouse.unhook(macro.appendMouse)
                     print('End')
                     try:
-                        first = macro[0].key
-                        if first.name in start.lower() and first.event_type == 'up':
+                        while macro[0].key.name in start.lower() and macro[0].key.event_type == 'up':
                             macro.pop(0)
                     except IndexError:
                         pass
