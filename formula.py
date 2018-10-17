@@ -10,6 +10,7 @@ def fixer(raw):
         .replace('〖', '(') \
         .replace('〗', ')') \
         .replace('÷', '/') \
+        .replace('%', '/100') \
         .replace('√(', 'sqrt(')
     l1 = s1.split('√')
     for i_seg in range(1, len(l1)):
@@ -20,7 +21,9 @@ def fixer(raw):
             break
         i += 1
         l1[i_seg] = 'sqrt(' + l1[i_seg][:i] + ')' + l1[i_seg][i:]
-    return ''.join(l1)
+    result = ''.join(l1)
+    print(result)
+    return result
 
 def main():
     console({'sqrt':sqrt}, use_input = True, fixer = fixer)
