@@ -3,6 +3,9 @@ from os import path
 from listen import listen
 
 def copy():
+    '''
+    Copies only binary content, leaving meta data. 
+    '''
     src_name = input('from: ')
     dest_name = input('to: ')
     if path.isfile(dest_name):
@@ -16,6 +19,9 @@ def copy():
     print('Done! ')
 
 def delete():
+    '''
+    Fill file with zeros and delete. 
+    '''
     filename = input('file: ')
     if not path.isfile(filename):
         print("Doesn't exist. ")
