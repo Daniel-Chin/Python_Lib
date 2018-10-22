@@ -27,7 +27,7 @@ print('Loading classes and functions...')
 def main():
     print('MAIN')
     filename = loadFilename()
-    key = getpass('?? ')
+    key = getpass('?' * 66 + ' ')
     cls()
     book = Book(filename, key)
     try:
