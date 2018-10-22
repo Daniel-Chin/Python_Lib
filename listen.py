@@ -21,7 +21,7 @@ try:
             return first + msvcrt.getch()
         else:
             return first
-    if sys.getwindowsversion() >= (10, 0, 17134):
+    if sys.getwindowsversion() >= (10, 0, 17134) and False: # Strange windows update on 2018/10/22
         __getFullCh = getFullCh
         def getFullCh():
             ch = __getFullCh()
