@@ -27,7 +27,7 @@ class CommJdt:
     '''
     occupied=False
     
-    def __init__(self,goal,msg='',width=20):
+    def __init__(self,goal,msg='',width=15):
         if self.__class__.occupied:
             raise _CannotDisplayMultiJdts
         self.__class__.occupied=True

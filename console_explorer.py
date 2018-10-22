@@ -49,7 +49,7 @@ def cls():
 def askForFile(cd = None):
     if cd is None:
         if platform.system() == 'Linux':
-            cd = '/storage/emulated/0/' 
+            cd = '/sdcard/' 
         else:
             cd = os.getcwd()
     stop = False
@@ -105,7 +105,7 @@ def askForFile(cd = None):
 def askSaveWhere(cd = None, initialfile = None):
     if cd is None:
         if platform.system() == 'Linux':
-            cd = '/storage/emulated/0/download/' 
+            cd = '/sdcard/download/' 
         else:
             cd = os.getcwd()
     stop = False
@@ -206,5 +206,5 @@ def printTrack(track):
             assert False
 
 if __name__ == '__main__':
-    print(askSaveWhere('d:/', 'a.jpg'))
+    print(askSaveWhere('a.jpg'))
     input('enter...')

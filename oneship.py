@@ -9,6 +9,7 @@ try:
     from tkinter import Tk,filedialog
 except ImportError:
     Tk = None
+    from console_explorer import askForFile, askSaveWhere
 from socket import gethostname,gethostbyname
 import sys
 from os.path import getsize,basename,isfile,splitext
@@ -16,12 +17,12 @@ import platform
 
 print('loading...')
 port=2337
+professional = False
 
 def main():
     if len(sys.argv) == 2 and sys.argv[1] == '!':
         print('Professional mode. ')
-        global Tk
-        Tk = None
+        professional = True
     s=PickleSocket()
     print('My IP =',gethostbyname(gethostname()))
     server = None
@@ -63,13 +64,16 @@ def main():
             server.close()
 
 def send(s):
-    if Tk:
-        root=Tk()
-        root.withdraw()
-        root.update()
-        filename=filedialog.askopenfilename(title='Choose file to send',initialdir='D:/')
+    if professional:
+        filename = input('path/file.ext = ').strip('"')
     else:
-        filename = input('path/file.ext = ')
+        if Tk:
+            root=Tk()
+            root.withdraw()
+            root.update()
+            filename=filedialog.askopenfilename(title='Choose file to send',initialdir='D:/')
+        else:
+            filename = askForFile()
     if filename=='':
         s.sendObj(0)
         return None
@@ -92,13 +96,16 @@ def recv(s):
     print('Default receive path:',path)
     print('Use it, or change? Enter/c')
     if listen((b'c',b'\r'))==b'c':
-        if Tk:
-            root=Tk()
-            root.withdraw()
-            root.update()
-            filename=filedialog.asksaveasfilename(title='Where to receive',initialdir='D:/',initialfile=basename)
-        else:
+        if professional:
             filename = input('path/file.ext = ')
+        else:
+            if Tk:
+                root=Tk()
+                root.withdraw()
+                root.update()
+                filename=filedialog.asksaveasfilename(title='Where to receive',initialdir='D:/',initialfile=basename)
+            else:
+                filename = askSaveWhere()
         if filename=='':
             s.close()
             input('Error: filename="". Enter to exit...')
