@@ -20,6 +20,7 @@ port=2337
 professional = False
 
 def main():
+    global professional
     if len(sys.argv) == 2 and sys.argv[1] == '!':
         print('Professional mode. ')
         professional = True
