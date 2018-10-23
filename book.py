@@ -361,8 +361,23 @@ def multilineInput():
 
 def gen(length = 8):
     length = int(length)
-    population = string.ascii_letters + string.digits
-    return ''.join([random.choices(population)[0] for _ in range(length)])
+    population = string.ascii_letters + string.digits + '-'
+    [population.remove(x) for x in 'oO1Il']
+    def isValid(word):
+        has_lower = False
+        has_upper = False
+        has_num = False
+        has_sym = False
+        for char in word:
+            has_lower |= char.islower()
+            has_upper |= char.isupp()
+            has_num |= char.isnumeric()
+            has_sym |= char == '-'
+        return has_lower and has_upper and has_num and has_sym
+    candidate = ''
+    while not isValid(candidate):
+        candidate = ''.join([random.choices(population)[0] for _ in range(length)])
+    return candidate
 
 def inputWithGen(prompt = ''):
     op = input(prompt)
