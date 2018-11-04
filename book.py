@@ -361,7 +361,7 @@ def multilineInput():
 
 def gen(length = 8):
     length = int(length)
-    population = string.ascii_letters + string.digits + '-'
+    population = list(string.ascii_letters + string.digits + '-')
     [population.remove(x) for x in 'oO1Il']
     def isValid(word):
         has_lower = False
