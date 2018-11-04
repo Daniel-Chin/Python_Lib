@@ -370,7 +370,7 @@ def gen(length = 8):
         has_sym = False
         for char in word:
             has_lower |= char.islower()
-            has_upper |= char.isupp()
+            has_upper |= char.isupper()
             has_num |= char.isnumeric()
             has_sym |= char == '-'
         return has_lower and has_upper and has_num and has_sym
