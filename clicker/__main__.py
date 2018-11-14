@@ -15,6 +15,8 @@ PORT = 2338
 trusted_ip = None
 
 def main():
+    server = MyServer(MyOneServer, PORT)
+    server.start()
     abspath = os.path.abspath(__file__)
     dname = os.path.dirname(abspath)
     os.chdir(dname)
@@ -23,12 +25,10 @@ def main():
         if 'IPv4' in line:
             print(line)
     print(f'Listening on port {PORT}...')
-    server = MyServer(MyOneServer, PORT)
-    server.start()
     print('Ctrl+C to stop.')
     try:
         while True:
-            sleep(10)
+            sleep(1)
     except KeyboardInterrupt:
         pass
     finally:
@@ -40,8 +40,11 @@ class MyOneServer(OneServer):
         if request.target == '/':
             with open('page.html', 'rb') as f:
                 respond(self.socket, f.read())
-        elif request.target == '/click':
-            keyboard.press('space')
+        elif request.target == '/down':
+            keyboard.press('down')
+            respond(self.socket, b'Yup')
+        elif request.target == '/up':
+            keyboard.press('up')
             respond(self.socket, b'Yup')
         elif request.target in ['/favicon.ico']:
             pass

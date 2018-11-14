@@ -7,8 +7,6 @@
   font-family: "comic sans", "verdana", "sans serif", "arial", "times new roman";
   position:absolute;
   right: 0;
-  top: 0;
-  height: 100%;
   width: 100%;
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
@@ -20,11 +18,21 @@
   background-color: #077    ;
   transition: 0s;
 }
+
+.up {
+  top: 0;
+  height: 30%;
+}
+
+.down {
+  top: 30%;
+  height: 70%;
+}
 </style>
 <script>
-const onClick = function () {
+const sendCmd = function (command) {
   var xhttp = new XMLHttpRequest();
-  xhttp.open("GET", "click", true);
+  xhttp.open("GET", command, true);
   xhttp.send();
 }
 </script>
@@ -34,8 +42,11 @@ const onClick = function () {
     <title>Clicker by Daniel</title>
   </head>
   <body>
-    <button class="btn" onclick="onClick();">
-      Click
+    <button class="btn up" onclick="sendCmd('up');">
+      Up
+    </button>
+    <button class="btn down" onmousedown="sendCmd('down');">
+      Down
     </button>
   </body>
 </html>
