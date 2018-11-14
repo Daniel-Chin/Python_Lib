@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<style>
+.btn {
+  font-size: 15vw;
+  background-color: black;
+  color: white;
+  font-family: "comic sans", "verdana", "sans serif", "arial", "times new roman";
+  position:absolute;
+  right: 0;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  transition: 0.3s;
+}
+
+.btn:active {
+  background-color: #077    ;
+  transition: 0s;
+}
+</style>
+<script>
+const onClick = function () {
+  var xhttp = new XMLHttpRequest();
+  xhttp.open("GET", "click", true);
+  xhttp.send();
+}
+</script>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Clicker by Daniel</title>
+  </head>
+  <body>
+    <button class="btn" onclick="onClick();">
+      Click
+    </button>
+  </body>
+</html>

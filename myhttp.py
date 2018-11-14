@@ -7,7 +7,7 @@ import logging
 from mythread import Safe
 
 __all__ = ['BadRequest', 'ClientShutdown', 'Request', 
-           'OneServer', 'Server', 'Intent', 'log', 'logging']
+           'OneServer', 'Server', 'Intent', 'log', 'logging', 'respond']
 
 class BadRequest(BaseException):
     pass
@@ -205,7 +205,10 @@ class Server(Thread):
         if self.isAlive():
             with self._go_on:
                 self._go_on.value = False
-            self.join()
+            #self.join()    public method
+    
+    def onConnect(self, addr):
+        pass    # to override.
     
     def run(self):
         self.socket.listen(self.listen)
@@ -222,6 +225,7 @@ class Server(Thread):
                 try:
                     socket, addr = self.socket.accept()
                     log(addr, 'Accepted. ')
+                    self.onConnect(addr)
                     oneServer = self.OneServer(addr, socket, self.queue)
                     self.oneServers.append(oneServer)
                     oneServer.start()
