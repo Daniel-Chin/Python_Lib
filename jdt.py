@@ -3,114 +3,108 @@ Progress bar.
 '''
 from time import time
 from math import log
+from terminalsize import get_terminal_size
 
-class _JdtAlreadyClosedError(BaseException):
+class JdtAlreadyClosedError(BaseException):
     '''Cannot update Jdt after complete. '''
 
-class _CannotDisplayMultiJdts(BaseException):
-    pass
-
-def smartUnit(size,is_speed=False):
-    if size==0:
+def smartUnit(size, is_speed=False):
+    '''
+    n_byte => 6-char string with smart unit (KB, MG, GB)
+    '''
+    if size == 0:
         return '   0  '
     if is_speed:
-        magnitude=int(log(size,1024))
+        magnitude = int(log(size, 1024))
     else:
-        magnitude=int(log(size/9,1024))
-    magnitude=min(magnitude,3)
-    return format(size/1024**magnitude,'4.0f')+ \
-         {0:'B ',1:'KB',2:'MB',3:'GB'}[magnitude]
-
-class CommJdt:
-    '''
-    msg [****____] 50% Total: 44MB Done: 22MB Speed: 1MB/s 
-    '''
-    occupied=False
-    
-    def __init__(self,goal,msg='',width=15):
-        if self.__class__.occupied:
-            raise _CannotDisplayMultiJdts
-        self.__class__.occupied=True
-        self.active=True
-        self.width=width
-        self.goal=goal
-        self.msg=msg
-        self.last_time=time()
-        self.last_done=0
-
-    def update(self,done):
-        if not self.active:
-            raise _JdtAlreadyClosedError
-        dt=time()-self.last_time
-        self.last_time=time()
-        dd=done-self.last_done
-        self.last_done=done
-        if dt==0:
-            speed=999999999
-        else:
-            speed=dd/dt
-        
-        progress=done/self.goal
-        bar=int(self.width*progress)
-        print('\r'+self.msg, \
-              '['+'*'*bar+'_'*(self.width-bar)+']'+ \
-              format(progress,'4.0%'), \
-              'Total:',smartUnit(self.goal), \
-              'Done:',smartUnit(done), \
-              'Speed:',smartUnit(speed,is_speed=True)+'/s', \
-              end='',flush=True)
-
-    def complete(self):
-        self.active=False
-        self.__class__.occupied=False
-        print('\r'+self.msg,'['+'#'*self.width+'] Complete! Total:', \
-              smartUnit(self.goal),' '*22)
+        magnitude = int(log(size / 9, 1024))
+    magnitude = min(magnitude, 3)
+    return format(size / 1024**magnitude, '4.0f') + \
+         {0: 'B ', 1: 'KB', 2: 'MB', 3: 'GB'}[magnitude]
 
 class Jdt:
-    '''
-    msg [****____] 50% Total: 44 Done: 22
-    '''
-    occupied=False
-    
-    def __init__(self,goal,msg='',width=32, UPP = 1):
-        if self.__class__.occupied:
-            raise _CannotDisplayMultiJdts
-        self.__class__.occupied=True
-        self.active=True
-        self.width=width
-        self.goal=goal
-        self.msg=msg
+    MIN_BAR_WIDTH = 6
+
+    def __init__(self, goal, msg='', width=None, UPP = 1):
+        self.active = True
+        self.goal = goal
+        self.msg = msg
+        if width is not None:
+            print('jdt Warning: argument `width` is deprecated. ')
         self.done = 0
         self.UPP = UPP
         self.UPP_count = 0
         # updates per print
 
-    def update(self,done):
+    def getSuffix(self, done, progress):
+        return '%s Total: %d Done: %d' % (
+            format(progress, '4.0%'), 
+            self.goal, 
+            done
+        )
+
+    def update(self, new_done, symbol = '*', getSuffix = None):
         if not self.active:
-            raise _JdtAlreadyClosedError
-        self.done = done
-        self.UPP_count += 1
-        if self.UPP_count == self.UPP:
-            self.UPP_count = 0
-        else:
+            raise JdtAlreadyClosedError
+        self.done = new_done
+        if self.UPP_count != self.UPP:
+            self.UPP_count += 1
             return
-        progress=done/self.goal
-        bar=int(self.width*progress)
-        print('\r'+self.msg, \
-              '['+'*'*bar+'_'*(self.width-bar)+']'+ \
-              format(progress,'4.0%'), \
-              'Total:',self.goal, \
-              'Done:',done, \
-              end='',flush=True)
-    
+        self.UPP_count = 0
+        progress = new_done / self.goal
+        terminal_width = get_terminal_size()[0] - 4
+        if getSuffix is None:
+            getSuffix = self.getSuffix
+        suffix = getSuffix(new_done, progress)
+        msg_and_bar_width = terminal_width - len(suffix)
+        msg_width = min(len(self.msg), int(msg_and_bar_width / 2))
+        msg_to_print = self.msg[:msg_width]
+        bar_width = msg_and_bar_width - msg_width
+        if bar_width < self.MIN_BAR_WIDTH:
+            bar_width = terminal_width - 2
+            msg_to_print = ''
+            suffix = ''
+        bar_inner_width = bar_width - 2
+        bar_fill_width = int(bar_inner_width * progress)
+        bar_empty_width = bar_inner_width - bar_fill_width
+        print('\r', msg_to_print, ' ', 
+              '[', symbol * bar_fill_width, '_'*bar_empty_width, ']', 
+              ' ', suffix, 
+              sep = '', end='',flush=True)
+
     def acc(self):
         self.update(self.done + 1)
     
     def complete(self):
-        self.active=False
-        self.__class__.occupied=False
-        print('\r'+self.msg,'['+'#'*self.width+'] Complete! Total:', \
-              self.goal,' '*22)
+        def getSuffix(done, progress):
+            return 'Complete! Total: %d' % self.goal
+        self.update(self.goal), symbol = '#', getSuffix = getSuffix)
+        self.active = False
+
+class CommJdt(Jdt):
+    def __init__(self, *argv, **kw):
+        super(__class__, self).__init__(*argv, **kw)
+        self.last_time = time()
+    
+    def update(self, new_done, *argv, **kw):
+        delta_time = time() - self.last_time
+        self.last_time += delta_time
+        delta_done = new_done - self.done
+        self.done = new_done
+        if delta_time == 0:
+            speed = 999999999
+        else:
+            speed = delta_done / delta_time
+        def getSuffix(done, progress):
+            nonlocal speed
+            return '%s Total: %s Done: %s Speed: %s' % (
+                format(progress, '4.0%'), 
+                smartUnit(self.goal), 
+                smartUnit(done), 
+                smartUnit(speed, is_speed = True)
+            )
+        kw['getSuffix'] = getSuffix
+        super(__class__, self).update(new_done, *argv, **kw)
 
 if __name__=='__main__':
     from time import sleep
