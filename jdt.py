@@ -58,7 +58,7 @@ class Jdt:
         suffix = getSuffix(new_done, progress)
         msg_and_bar_width = terminal_width - len(suffix)
         msg_width = min(len(self.msg), int(msg_and_bar_width / 2))
-        msg_to_print = self.msg[:msg_width]
+        msg_to_print = self.msg[-msg_width:]
         bar_width = msg_and_bar_width - msg_width
         if bar_width < self.MIN_BAR_WIDTH:
             bar_width = terminal_width - 2
@@ -78,8 +78,9 @@ class Jdt:
     def complete(self):
         def getSuffix(done, progress):
             return 'Complete! Total: %d' % self.goal
-        self.update(self.goal), symbol = '#', getSuffix = getSuffix)
+        self.update(self.goal, symbol = '#', getSuffix = getSuffix)
         self.active = False
+        print()
 
 class CommJdt(Jdt):
     def __init__(self, *argv, **kw):
@@ -97,7 +98,7 @@ class CommJdt(Jdt):
             speed = delta_done / delta_time
         def getSuffix(done, progress):
             nonlocal speed
-            return '%s Total: %s Done: %s Speed: %s' % (
+            return '%s Total: %s Done: %s Speed: %s/s' % (
                 format(progress, '4.0%'), 
                 smartUnit(self.goal), 
                 smartUnit(done), 
@@ -108,9 +109,14 @@ class CommJdt(Jdt):
 
 if __name__=='__main__':
     from time import sleep
-    j=CommJdt(10240000)
+    j=CommJdt(10240000, '/sdcard/download/browser/file.jpg')
     for i in range(0,10240000,32345):
         j.update(i)
+        sleep(0.01)
+    j.complete()
+    j=Jdt(500, 'launching game')
+    for i in range(500):
+        j.acc()
         sleep(0.01)
     j.complete()
     input('Enter..')

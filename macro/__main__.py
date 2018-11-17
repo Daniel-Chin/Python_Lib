@@ -14,8 +14,7 @@ from os import path, listdir
 import pickle
 import sys
 
-DATA = path.join(path.dirname(__file__), 
-                 'data_' + path.basename(__file__).rstrip('.py'))
+SAVED = path.join(path.dirname(__file__), 'saved')
 
 def main():
     print(__all__)
@@ -188,7 +187,7 @@ def play(macro):
 
 def save(macro):
     name = input('Give your macro a name: ')
-    path_name = path.join(DATA, name)
+    path_name = path.join(SAVED, name)
     if path.isfile(path_name):
         print(name, 'already exists.')
         return
@@ -200,18 +199,18 @@ def load():
     '''
     * to load all. 
     '''
-    list_dir = listdir(DATA)
+    list_dir = listdir(SAVED)
     print('Your macros: {')
     [print('   ', x) for x in list_dir]
     name = input('} which to load? ')
     if name == '*':
         result = {}
         for name in list_dir:
-            with open(path.join(DATA, name), 'rb') as f:
+            with open(path.join(SAVED, name), 'rb') as f:
                 macro = pickle.load(f)
             result[name] = macro
     else:
-        with open(path.join(DATA, name), 'rb') as f:
+        with open(path.join(SAVED, name), 'rb') as f:
             result = pickle.load(f)
     load.last = result
     return result
