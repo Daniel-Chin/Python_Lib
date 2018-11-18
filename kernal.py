@@ -19,22 +19,20 @@ def Kernal(namespace = {}):
             if __command == 'exit':
                 return
             try:
-                __result = eval(__command + '\r')
-                if __result is not None:
-                    print(__result)
-                del __result
-                __eval_good = True
+                yield eval([__command + '\r', exec('del __command')][0])
+                # Tries to hide `__command` in dir(). 
+                # doesn't work tho. 
+                # But you have to admit, it's a clever try. 
+                continue
             except SyntaxError:
-                __eval_good = False
-            if not __eval_good:
-                del __eval_good
-                exec(__command + '\r')
-            else:
-                del __eval_good
+                pass
+            exec(__command + '\r')
+            yield None
         except:
             import traceback
             traceback.print_exc()
             del traceback
+            yield None
 
 if __name__ == '__main__':
     kernal = Kernal({})

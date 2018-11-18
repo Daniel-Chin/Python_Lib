@@ -1,15 +1,18 @@
 '''
-Windows only. If not windows, start IPython. 
-Advantage over IPython: 
+Windows only. If not windows, console() calls IPython.embed(). 
+Advantages over IPython: 
     1. Lighter
     2. Other threads can still print things when user is inputting commands
-Issue: 
-    If you wanna scroll up, you need to input().
-    Changing global bindings doesn't work. Sorry. 
+    3. Tab auto-completes your phrase, even under Windows! (I'm proud.) 
+Issues: 
+    1. If you wanna scroll up, you need to input().
+    2. Reassigning module global variables will not be visible to module native codes. Sorry. 
 '''
 import platform
-from listen import listen
+from interactive import listen, strCommonStart
 from kernal import Kernal
+from graphic_terminal import clearLine
+import string
 
 CURSOR = '|'
 
@@ -18,7 +21,7 @@ def console(namespace = {}, prompt = '>>> ', use_input = False, fixer = None):
         from IPython import embed
         embed()
         return
-    print('console.console Warning: no support for change in global bindings. ')
+    print('console.console Warning: no support for reassigning module global variables. ')
     history = []
     kernal = Kernal(namespace)
     next(kernal)
@@ -38,7 +41,8 @@ def console(namespace = {}, prompt = '>>> ', use_input = False, fixer = None):
                 op = listen(timeout = .5)
                 last_len = len(command)
                 if op == b'\r':
-                    print(prompt + command.replace('\x1a', '^Z') + ' ')
+                    clearLine()
+                    print(prompt + command.replace('\x1a', '^Z'))
                     break
                 elif op is None:
                     cursor_bright = not cursor_bright
@@ -100,18 +104,53 @@ def console(namespace = {}, prompt = '>>> ', use_input = False, fixer = None):
                                     word_ended = True
                         else:
                             cursor = len(command)
+                    elif op == b'\t':
+                        # auto complete
+                        legal_prefix = string.ascii_letters + string.digits + '_'
+                        reversed_names = []
+                        name_end = cursor
+                        name_start = cursor - 1
+                        while True:
+                            if name_start >= 0 and command[name_start] in legal_prefix:
+                                name_start -= 1
+                            else:
+                                reversed_names.append(command[name_start + 1:name_end])
+                                name_end = name_start
+                                name_start -= 1
+                                if name_start < 0 or command[name_end] != '.':
+                                    break
+                        keyword = reversed_names.pop(0)
+                        names = reversed(reversed_names)
+                        to_search = kernal.send('dir(%s)' % '.'.join(names))
+                        if len(reversed_names) == 0:
+                            # include builtins
+                            to_search += dir(__builtins__)
+                        next(kernal)
+                        candidates = [x for x in to_search if x.startswith(keyword)]
+                        if len(candidates) >= 1:
+                            if len(candidates) == 1:
+                                to_become = candidates[0]
+                            if len(candidates) > 1:
+                                clearLine()
+                                print('auto-complete: ', end = '')
+                                [print(x, end = '\t') for x in candidates]
+                                print()
+                                to_become = strCommonStart(candidates, len(keyword))
+                            to_insert = to_become[len(keyword):]
+                            command = command[:cursor] + to_insert + command[cursor:]
+                            cursor += len(to_insert)
                     elif op[0] in range(1, 26) or op[0] in (0, 224):
                         pass
                     else:
                         command = command[:cursor] + op.decode() + command[cursor:]
                         cursor += 1
-                padding = max(0, last_len - len(command)) * 2
                 if cursor_bright:
                     cursor_show = CURSOR
                 else:
                     cursor_show = '_'
                 cursed_command = command[:cursor] + cursor_show + command[cursor:]
-                print(prompt + cursed_command.replace('\x1a', '^Z') + ' '*padding, end='\r')
+                clearLine()
+                print(prompt + cursed_command.replace('\x1a', '^Z'), end='\r')
         if fixer is not None:
             command = fixer(command)
         if command in ('exit', 'exit()', '\x1a'):
@@ -123,7 +162,10 @@ def console(namespace = {}, prompt = '>>> ', use_input = False, fixer = None):
         if command == '':
             continue
         history.append(command)
-        kernal.send(command)
+        result = kernal.send(command)
+        next(kernal)
+        if result is not None:
+            print(result)
 
 if __name__ == '__main__':
     console({})
