@@ -4,6 +4,7 @@ An android-friendly console file explorer.
 from os import path
 import os
 import platform
+from .cls import cls
 
 class AbortionError:
     pass
@@ -39,12 +40,6 @@ class Track:
 
     def down(self):
         self.selected = (self.selected + 1) % len(self.list)
-
-def cls():
-    if platform.system() == 'Windows':
-        os.system('cls')
-    else:
-        os.system('clear')
 
 def askForFile(cd = None):
     if cd is None:
@@ -168,25 +163,6 @@ def askSaveWhere(cd = None, initialfile = None):
                     track.selected = id
             except:
                 print('No such command. ')
-
-def chooseFromEntries(matches):
-    if len(matches)==1:
-        return matches[0]
-    elif matches==[]:
-        print("No match. ")
-        return None
-    else:
-        print("Multiple matches: ")
-        no=0
-        for i in matches:
-            print(no,": ",i.name)
-            no+=1
-        print("Type entry ID to select. Enter to abort search. ")
-        try:
-            return matches[int(input("Entry ID: "))]
-        except:
-            print("Search aborted. ")
-            return None
 
 def printTrack(track):
     form = str(len(str(len(track.list))))

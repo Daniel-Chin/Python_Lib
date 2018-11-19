@@ -8,8 +8,11 @@ Terminal interactivity utils.
 #     def print(*args, flush = False, **kw):
 #         print_3(*args, **kw)
 #===============================================================================
-__all__ = ['listen', 'strCommonStart']
+__all__ = ['listen', 'strCommonStart', 'AbortionError', 'cls', 'askForFile', 'askSaveWhere']
 from time import sleep
+from .console_explorer import *
+from .cls import cls
+
 FPS = 30
 
 try:
@@ -92,6 +95,21 @@ def strCommonStart(list_strs, known_len = 0):
                 break
     return list_strs[0][:i + 1]
 
-if __name__=='__main__':
-    from console import console
-    console(globals())
+def chooseFromEntries(matches):
+    if len(matches)==1:
+        return matches[0]
+    elif matches==[]:
+        print("No match. ")
+        return None
+    else:
+        print("Multiple matches: ")
+        no=0
+        for i in matches:
+            print(no,": ",i.name)
+            no+=1
+        print("Type entry ID to select. Enter to abort search. ")
+        try:
+            return matches[int(input("Entry ID: "))]
+        except:
+            print("Search aborted. ")
+            return None
