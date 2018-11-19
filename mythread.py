@@ -1,3 +1,6 @@
+'''
+My threading utils
+'''
 from threading import Condition
 
 class Safe(Condition):

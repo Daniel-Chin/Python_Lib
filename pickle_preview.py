@@ -1,3 +1,6 @@
+'''
+Preview a pickle file
+'''
 import sys, pickle
 from pprint import pprint
 

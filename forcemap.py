@@ -1,5 +1,5 @@
 '''
-Like dummy.Pool.map, but no limit of thread number. 
+Like dummy.Pool.map, but no limit of number of threads. 
 '''
 from threading import Thread, Lock, Condition
 from queue import Queue

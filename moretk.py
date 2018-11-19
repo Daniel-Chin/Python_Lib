@@ -1,5 +1,5 @@
 '''
-by Daniel
+More tkinter gadgets
 '''
 import tkinter as tk
 import threading
@@ -207,6 +207,9 @@ class ToughText(tk.Text):
             super(__class__,self).insert(index, chunk, *args)
 
 def bilingualStringLen(string, fontsize = 18):
+    '''
+    counts a chinese character as length of 2. 
+    '''
     length = 0
     for char in string:
         if len(char.encode()) > 1:

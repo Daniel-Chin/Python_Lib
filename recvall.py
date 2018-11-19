@@ -1,5 +1,7 @@
 '''
-If no problem, del assert. 
+Receive `size` bytes from `socket`. Blocks until gets all. 
+Somehow doesn't handle socket closing. 
+I will fix that when I have time. 
 '''
 
 def recvall(socket, size, use_list = True):
@@ -14,6 +16,4 @@ def recvall(socket, size, use_list = True):
         recved = b''
         while len(recved) < size:
             recved += socket.recv(left)
-        return recved
-    assert len(recved) == size
-    return result
+    return recved

@@ -1,5 +1,5 @@
 '''
-sys.argv[1] in ('sun', 'pad') 
+A file system. 
 '''
 print('Importing...')
 import platform

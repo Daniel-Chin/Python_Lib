@@ -1,5 +1,5 @@
 '''
-Evaluate beautiful formulas like    √(2×3÷4)
+Evaluate beautiful formulas like √(2×3÷4)
 '''
 from console import console
 from math import sqrt

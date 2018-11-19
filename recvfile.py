@@ -1,3 +1,6 @@
+'''
+receive a file from a socket with known length. 
+'''
 import jdt
 from socket import socket as Socket
 

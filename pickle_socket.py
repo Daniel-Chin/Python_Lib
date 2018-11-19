@@ -1,24 +1,11 @@
 '''
-WARNING: under Linux, socket.sendfile is overridden!!!  
+A socket that supports object transmission. 
 '''
 import socket
 import pickle
 from io import BytesIO
 import sys
 __all__ = ['PickleSocket', 'RemoteClosedUnexpectedly']
-
-if 'sendfile' not in dir(socket.socket):
-    # Android
-    def fakeSendfile(self, file, offset=0, count=None):
-        start = file.tell()
-        if offset != 0:
-            file.seek(start + offset)
-        read = file.read(4096)
-        while read != b'':
-            self.sendall(read)
-            read = file.read(4096)
-        return file.tell() - start - offset
-    socket.socket.sendfile = fakeSendfile
 
 class PickleSocket():
     def __init__(self,upon_this_socket=None):
@@ -40,13 +27,11 @@ class PickleSocket():
             input('Enter to exit...')
             sys.exit(1)
     
-    def bind(self,address,AB=False,dorm=False,local=False):
-        '''if AB or dorm is True, address is no longer a tuple, but a port int.'''
-        if AB:
-            self.socket.bind(('10.209.1.45',address))
-        elif dorm:
-            self.socket.bind(('10.209.23.186',address))
-        elif local:
+    def bind(self,address,local=False):
+        '''
+        if `local` is True, address is no longer a tuple, but a port int.
+        '''
+        if local:
             self.socket.bind(('127.0.0.1',address))
         else:
             self.socket.bind(address)

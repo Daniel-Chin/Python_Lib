@@ -1,3 +1,6 @@
+'''
+Formatting time data in a friendly manner. 
+'''
 import time
 
 def friendlyTime(raw_time=None):

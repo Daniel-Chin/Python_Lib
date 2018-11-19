@@ -166,6 +166,3 @@ def console(namespace = {}, prompt = '>>> ', use_input = False, fixer = None):
         next(kernal)
         if result is not None:
             print(result)
-
-if __name__ == '__main__':
-    console({})

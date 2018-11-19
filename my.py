@@ -1,3 +1,6 @@
+'''
+My misc little tools. 
+'''
 class LockableInt(int):
     def __init__(self, value = None):
         super(__class__,self).__init__()

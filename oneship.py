@@ -1,5 +1,7 @@
 '''
 一嗖传
+Transmit files over the internet / LAN
+No encryption! Consider everything you transmit broadcast to the entire network. 
 '''
 print('importing...')
 from recvfile import recvFile

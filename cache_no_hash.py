@@ -1,3 +1,6 @@
+'''
+Inefficiently cache and lookup function returns. 
+'''
 class cache:
     def __init__(self, func):
         self.func = func

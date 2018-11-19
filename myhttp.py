@@ -1,4 +1,7 @@
 '''
+Serves through a (super) simplified version of http protocol. 
+Warning: Running this may expose your computer to attacks. 
+Don't run this. 
 '''
 from threading import Thread
 from queue import Queue, Empty

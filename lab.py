@@ -1,3 +1,8 @@
+'''
+This is for me only. 
+You won't get why this code is here. 
+Give up. 
+'''
 from pickle_socket import PickleSocket
 from io import BytesIO as IO
 import socket
