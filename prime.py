@@ -1,5 +1,5 @@
 '''
-This is to be imported.
+Get prime numbers
 '''
 import numpy
 

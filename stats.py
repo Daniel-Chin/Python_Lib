@@ -1,3 +1,6 @@
+'''
+What I learned from Statistics for Business and Finance. 
+'''
 dict_Z = {.05  : 1.645, 
           .025 : 1.96, 
           .01  : 2.326, 

@@ -1,5 +1,12 @@
 '''
-Windows only
+Windows only. 
+Use your phone to send UP and DOWN to your computer! 
+Useful for reading in Kindle. 
+
+WARNING: Running this may open vulnerabilities for your computer. 
+Don't run this if you don't know what you are doing. 
+Only run this if you are in a safe network, or inside a firewall. 
+I am not responsible if someone attacks your computer through this server. 
 '''
 print('Loading...')
 import keyboard

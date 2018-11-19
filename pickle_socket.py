@@ -5,7 +5,7 @@ import socket
 import pickle
 from io import BytesIO
 import sys
-__all__ = ['PickleSocket', 'RemoteClosedUnexpectedly']
+__all__ = ['PickleSocket', 'RemoteClosedDuringPickle']
 
 class PickleSocket():
     def __init__(self,upon_this_socket=None):
@@ -13,6 +13,9 @@ class PickleSocket():
             self.socket=socket.socket()
         else:
             self.socket=upon_this_socket
+        for name in dir(self.socket):
+            if name[:2] != '__':
+                self.__setattr__(name, self.socket.__getattribute__(name))
     
     def shakeHands(self,banner='This is a pickleSocket by Daniel Chin. ',echo=True):
         self.sendObj(banner)
@@ -27,29 +30,6 @@ class PickleSocket():
             input('Enter to exit...')
             sys.exit(1)
     
-    def bind(self,address,local=False):
-        '''
-        if `local` is True, address is no longer a tuple, but a port int.
-        '''
-        if local:
-            self.socket.bind(('127.0.0.1',address))
-        else:
-            self.socket.bind(address)
-    
-    def listen(self,capacity):
-        self.socket.listen(capacity)
-    
-    def connect(self,address,AB=False,dorm=False,local=False):
-        '''if AB or dorm is True, address is no longer a tuple, but a port int.'''
-        if AB:
-            self.socket.connect(('10.209.1.45',address))
-        elif dorm:
-            self.socket.connect(('10.209.23.186',address))
-        elif local:
-            self.socket.connect(('127.0.0.1',address))
-        else:
-            self.socket.connect(address)
-    
     def sendObj(self,obj):
         io_obj=BytesIO()
         pickle.dump(obj,io_obj)
@@ -61,20 +41,6 @@ class PickleSocket():
     
     def recvObj(self):
         return pickle.load(IoSocket(self.socket))
-    
-    def send(self,*args):
-        return self.socket.send(*args)
-    
-    def recv(self,*args):
-        return self.socket.recv(*args)
-    
-    def accept(self):
-        s,addr=self.socket.accept()
-        s=self.__class__(s)
-        return s,addr 
-    
-    def close(self):
-        return self.socket.close()
 
 class IoSocket:
     def __init__(self,socket):
@@ -83,8 +49,8 @@ class IoSocket:
     def read(self,count=1):
         read=self.socket.recv(count)
         if read==b'':
-            raise RemoteClosedUnexpectedly 
-        return  read
+            raise RemoteClosedDuringPickle 
+        return read
     
     def readline(self):
         read=b''
@@ -94,5 +60,9 @@ class IoSocket:
             buffer+=read
         return buffer
 
-class RemoteClosedUnexpectedly(BaseException):
+class RemoteClosedDuringPickle(BaseException):
     pass
+
+if __name__ == '__main__':
+    from console import console
+    console(globals())

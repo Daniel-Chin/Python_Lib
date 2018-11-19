@@ -1,5 +1,5 @@
 '''
-Data type that stores directory structure.  
+Data type that stores file directory structure. 
 '''
 import os
 

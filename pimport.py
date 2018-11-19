@@ -1,3 +1,6 @@
+'''
+pip install, and imports
+'''
 import pip
 
 def pimport(name):

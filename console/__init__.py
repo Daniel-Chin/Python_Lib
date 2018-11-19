@@ -10,7 +10,7 @@ Issues:
 '''
 import platform
 from interactive import listen, strCommonStart
-from kernal import Kernal
+from .kernal import Kernal
 from graphic_terminal import clearLine
 import string
 
@@ -82,28 +82,18 @@ def console(namespace = {}, prompt = '>>> ', use_input = False, fixer = None):
                     elif op == b'\xe0O':
                         cursor = len(command)
                     elif op == b'\xe0s': # Ctrl Left
-                        word_started = False
-                        for cursor in range(cursor - 1, -1, -1):
-                            if command[cursor].isalpha():
-                                word_started = True
-                            else:
-                                if word_started:
-                                    cursor += 1
-                                    break
+                        cursor = wordStart(command, cursor)
                     elif op == b'\xe0t': # Ctrl Right
-                        word_started = False
-                        word_ended = False
-                        for cursor in range(cursor, len(command)):
-                            if command[cursor].isalpha():
-                                if word_ended:
-                                    break
-                                else:
-                                    word_started = True
-                            else:
-                                if word_started:
-                                    word_ended = True
-                        else:
-                            cursor = len(command)
+                        cursor = wordEnd(command, cursor)
+                    elif op == b'\x7f':  # Ctrl Backspace
+                        old_cursor = cursor
+                        cursor = wordStart(command, cursor)
+                        command = command[:cursor] + command[old_cursor:]
+                    elif op == b'\xe0\x93': # Ctrl Del
+                        old_cursor = cursor
+                        cursor = wordEnd(command, cursor)
+                        command = command[:old_cursor] + command[cursor:]
+                        cursor = old_cursor
                     elif op == b'\t':
                         # auto complete
                         legal_prefix = string.ascii_letters + string.digits + '_'
@@ -166,3 +156,32 @@ def console(namespace = {}, prompt = '>>> ', use_input = False, fixer = None):
         next(kernal)
         if result is not None:
             print(result)
+
+def wordStart(command, cursor):
+    word_started = False
+    i = cursor
+    for i in range(cursor - 1, -1, -1):
+        if command[i].isalpha():
+            word_started = True
+        else:
+            if word_started:
+                i += 1
+                break
+    return i
+
+def wordEnd(command, cursor):
+    word_started = False
+    word_ended = False
+    i = cursor
+    for i in range(cursor, len(command)):
+        if command[i].isalpha():
+            if word_ended:
+                break
+            else:
+                word_started = True
+        else:
+            if word_started:
+                word_ended = True
+    else:
+        i = len(command)
+    return i

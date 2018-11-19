@@ -1,3 +1,6 @@
+'''
+Light-weight wav player. 
+'''
 import sys
 import simpleaudio as sa
 from os import path
