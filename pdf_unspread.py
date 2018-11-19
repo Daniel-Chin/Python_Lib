@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 
 '''
-Downloaded from: https://github.com/pmaupin/pdfrw
+Original author: pmaupin
+https://github.com/pmaupin/pdfrw
 with minor modification by Daniel Chin for friendlier command-line calling
 
 usage: py -m pdf_unspread my.pdf
@@ -15,9 +16,10 @@ pages.
 
 import sys
 import os
-
 from pdfrw import PdfReader, PdfWriter, PageMerge
 from jdt import Jdt
+from interactive import listen
+from os import system as cmd
 
 def splitpage(src, ratio = .5):
     ''' Split a page into two (left and right)
@@ -47,3 +49,6 @@ if __name__ == '__main__':
         jdt.acc()
     writer.write()
     jdt.complete()
+    print('start briss? ')
+    if listen(['y', 'n']) == b'y':
+        cmd('briss ' + outfn)
