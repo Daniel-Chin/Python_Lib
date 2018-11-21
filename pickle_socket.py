@@ -7,6 +7,8 @@ from io import BytesIO
 import sys
 __all__ = ['PickleSocket', 'RemoteClosedDuringPickle']
 
+PAGE = 4096
+
 class PickleSocket():
     def __init__(self,upon_this_socket=None):
         if upon_this_socket is None:
@@ -35,9 +37,16 @@ class PickleSocket():
         pickle.dump(obj,io_obj)
         size=io_obj.tell()
         io_obj.seek(0)
-        sent=self.socket.sendfile(io_obj)
-        while sent<size:
-            sent+=self.socket.sendfile(io_obj)
+        try:
+            sent=self.socket.sendfile(io_obj)
+            while sent<size:
+                sent+=self.socket.sendfile(io_obj)
+        except AttributeError:
+            to_read = size
+            while to_read > 0:
+                read = io_obj.read(PAGE)
+                to_read -= len(read)
+                self.socket.sendall(read)
     
     def recvObj(self):
         return pickle.load(IoSocket(self.socket))

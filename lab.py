@@ -14,3 +14,7 @@ S.listen(1)
 c=PickleSocket()
 c.connect(('127.0.0.1',2333))
 s,addr=S.accept()
+
+if __name__ == '__main__':
+    import console
+    console.console(globals())
