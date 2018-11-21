@@ -104,7 +104,7 @@ class Panic(Thread):
     def run(self):
         print('Panic starts. ')
         sleep(0.3)
-        print('Panic!!! SYS EXIT')
+        print('Panic!!! SIG KILL')
         os.kill(os.getpid(), signal.SIGKILL)
 
 if __name__ == '__main__':
