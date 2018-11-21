@@ -31,7 +31,7 @@ def main():
     for line in ip_config.split('\r\n'):
         if 'IPv4' in line:
             print(line)
-    print(f'Listening on port {PORT}...')
+    print('Listening on port %d...' % PORT)
     print('Ctrl+C to stop.')
     try:
         while True:
