@@ -9,11 +9,14 @@ import socket
 from threading import Thread
 from interactive import listen
 from time import sleep
-import sys
+import os
+import signal
 
 CHUNK = 4096
 
 class Forwarder(Thread):
+    SPF = 0.1
+    
     def __init__(self, fro, to):
         Thread.__init__(self)
         self.to = to
@@ -102,7 +105,7 @@ class Panic(Thread):
         print('Panic starts. ')
         sleep(0.3)
         print('Panic!!! SYS EXIT')
-        sys.exit(1)
+        os.kill(os.getpid(), signal.SIGKILL)
 
 if __name__ == '__main__':
     print(__all__)
