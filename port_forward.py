@@ -28,7 +28,10 @@ class Forwarder(Thread):
                 self.fro.close()
                 return
             else:
-                self.to.sendall(data)
+                try:
+                    self.to.sendall(data)
+                except:
+                    return
 
 def bothForward(socket_1, socket_2):
     forwarder_1 = Forwarder(socket_1, socket_2)
