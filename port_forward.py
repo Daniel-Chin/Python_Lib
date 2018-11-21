@@ -9,6 +9,7 @@ import socket
 from threading import Thread
 from interactive import listen
 from time import sleep
+import sys
 
 CHUNK = 4096
 
