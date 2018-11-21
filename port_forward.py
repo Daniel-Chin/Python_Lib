@@ -79,7 +79,7 @@ def portForward(inside_port, inbound_port, afraid = False):
             inSocket = socket.socket()
             print('Connecting inside port', inside_port)
             inSocket.connect(('localhost', inside_port))
-            bothForward(outSocket, inSocket)
+            allForwarders += bothForward(outSocket, inSocket)
             print('-= ESTABLISHED =-')
             print()
     finally:
