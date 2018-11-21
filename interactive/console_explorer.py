@@ -3,8 +3,10 @@ An android-friendly console file explorer.
 '''
 from os import path
 import os
-import platform
 from .cls import cls
+
+def isAndroid():
+    return 'ANDROID_DATA' in os.environ
 
 class AbortionError:
     pass
@@ -43,7 +45,7 @@ class Track:
 
 def askForFile(cd = None):
     if cd is None:
-        if platform.system() == 'Linux':
+        if isAndroid():
             cd = '/sdcard/' 
         else:
             cd = os.getcwd()
@@ -99,7 +101,7 @@ def askForFile(cd = None):
 
 def askSaveWhere(cd = None, initialfile = None):
     if cd is None:
-        if platform.system() == 'Linux':
+        if isAndroid:
             cd = '/sdcard/download/' 
         else:
             cd = os.getcwd()
