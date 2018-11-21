@@ -101,7 +101,7 @@ def askForFile(cd = None):
 
 def askSaveWhere(cd = None, initialfile = None):
     if cd is None:
-        if isAndroid:
+        if isAndroid():
             cd = '/sdcard/download/' 
         else:
             cd = os.getcwd()
