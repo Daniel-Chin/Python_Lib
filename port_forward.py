@@ -21,16 +21,22 @@ class Forwarder(Thread):
         while True:
             try:
                 data = self.fro.recv(CHUNK)
+                print('recv') ###
             except:
                 data = b''
+                print('recv except') ###
             if data == b'':
+                print('close') ###
                 self.to.close()
                 self.fro.close()
                 return
             else:
                 try:
+                    print('try send') ###
                     self.to.sendall(data)
+                    print('sent') ###
                 except:
+                    print('send except') ###
                     return
 
 def bothForward(socket_1, socket_2):
@@ -92,6 +98,7 @@ def portForward(inside_port, inbound_port, afraid = False):
         print('Joining...')
         for forwarder in allForwarders:
             forwarder.join()
+            print('1 joined') ###
         print('All have joined. ')
 
 if __name__ == '__main__':
