@@ -11,7 +11,7 @@ try:
     from tkinter import Tk,filedialog
 except ImportError:
     Tk = None
-    from console_explorer import askForFile, askSaveWhere
+    from interactive.console_explorer import askForFile, askSaveWhere
 from socket import gethostname,gethostbyname
 import sys
 from os.path import getsize,basename,isfile,splitext
