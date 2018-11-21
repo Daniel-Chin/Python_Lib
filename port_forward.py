@@ -7,6 +7,7 @@ Expect unexpected behaviors.
 __all__ = ['Forwarder', 'fakeP2P', 'portFoward', 'bothFoward']
 import socket
 from threading import Thread
+from interactive import listen
 
 CHUNK = 4096
 
@@ -51,7 +52,10 @@ def fakeP2P(port = 2333):
     [x.join() for x in fowarders]
     input('Ended. Enter... ')
 
-def portFoward(inside_port, inbound_port):
+def portFoward(inside_port, inbound_port, afraid = False):
+    '''
+    Set `afraid` to True to manually accept connections. 
+    '''
     outServerSocket = socket.socket()
     outServerSocket.bind(('', inbound_port))
     outServerSocket.listen(10)
@@ -59,6 +63,10 @@ def portFoward(inside_port, inbound_port):
         print('listening at port %d...' % inbound_port)
         outSocket, addr = outServerSocket.accept()
         print('Inbound connection from', addr)
+        if afraid == True:
+            print('Accept? y/n')
+            if listen(['y', 'n']) != b'y':
+                return
         inSocket = socket.socket()
         print('Connecting inside port', inside_port)
         inSocket.connect(('localhost', inside_port))
