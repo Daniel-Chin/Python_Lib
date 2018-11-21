@@ -36,7 +36,7 @@ try:
 except ImportError:
     msvcrt = None
 
-def listen(choice=[], timeout=0):
+def listen(choice = [], timeout = 0):
     '''
     Vulnerability Warning: 
         This function calls `evel`. User can eval any element repr in bChoice. 
@@ -47,12 +47,11 @@ def listen(choice=[], timeout=0):
     If timeout=0, it's blocking. 
     timeout is in second. 
     Supports non-windows. 
-    do listen() to wait for an enter. 
     '''
     try:
-        bChoice = (x.encode() for x in choice)
+        bChoice = list(x.encode() for x in choice)
     except AttributeError:
-        bChoice = tuple(choice)
+        bChoice = list(choice)
     print('', end = '', flush = True)     # Just to flush
     if msvcrt is None:
         if bChoice == []:
@@ -70,16 +69,16 @@ def listen(choice=[], timeout=0):
                     return b'\r'    # So android doesn't need to type "\r"
             return eval(op)
     if timeout != 0:
-        for i in range(int(timeout*FPS)):
+        for i in range(int(timeout * FPS)):
             if msvcrt.kbhit():
                 op = getFullCh()
-                if choice is None or op in bChoice:
+                if bChoice == [] or op in bChoice:
                     return op
             sleep(1/FPS)
         return None
-    op=getFullCh()
-    while not (choice is None or op in bChoice):
-        op=getFullCh()
+    op = getFullCh()
+    while not (bChoice == [] or op in bChoice):
+        op = getFullCh()
     return op
 
 def strCommonStart(list_strs, known_len = 0):

@@ -15,7 +15,10 @@ def Kernal(namespace = {}):
     del namespace
     while True:
         try:
-            __command = yield
+            try:
+                __command = yield
+            except GeneratorExit:
+                return
             if __command == 'exit':
                 return
             try:

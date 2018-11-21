@@ -93,7 +93,7 @@ if __name__ == "__main__":
     sizex, sizey = get_terminal_size()
     print('width =', sizex, 'height =', sizey)
 else:
-    if random.randint(0, 1) == 0:
-        print('Thanks to Justin Riley! ')
-    else:
+    if random.randint(0, 5) == 0:
         print('import terminalsize: Special thank to Justin Riley for writing a wonderful script that detects terminal size across OSes. ')
+    else:
+        print('Thanks to Justin Riley! ')

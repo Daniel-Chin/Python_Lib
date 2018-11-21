@@ -4,7 +4,7 @@ Provides fake p2p, port forwarding.
 Ignored the thread-danger of sockets. 
 Expect unexpected behaviors. 
 '''
-__all__ = ['Forwarder', 'fakeP2P', 'portFoward', 'bothFoward']
+__all__ = ['Forwarder', 'fakeP2P', 'portForward', 'bothForward']
 import socket
 from threading import Thread
 from interactive import listen
@@ -16,11 +16,15 @@ class Forwarder(Thread):
         Thread.__init__(self)
         self.to = to
         self.fro = fro
+        self._abort = False
     
     def run(self):
         while True:
             try:
                 data = self.fro.recv(CHUNK)
+                if self._abort:
+                    print('Forwarder: abort. ')
+                    return
             except:
                 data = b''
             if data == b'':
@@ -29,13 +33,16 @@ class Forwarder(Thread):
                 return
             else:
                 self.to.sendall(data)
+    
+    def abort(self):
+        self.abort = True
 
-def bothFoward(socket_1, socket_2):
-    fowarder_1 = Forwarder(socket_1, socket_2)
-    fowarder_2 = Forwarder(socket_2, socket_1)
-    fowarder_1.start()
-    fowarder_2.start()
-    return (fowarder_1, fowarder_2)
+def bothForward(socket_1, socket_2):
+    forwarder_1 = Forwarder(socket_1, socket_2)
+    forwarder_2 = Forwarder(socket_2, socket_1)
+    forwarder_1.start()
+    forwarder_2.start()
+    return (forwarder_1, forwarder_2)
 
 def fakeP2P(port = 2333):
     s = socket.socket()
@@ -46,33 +53,41 @@ def fakeP2P(port = 2333):
     print(addr)
     p_2, addr = s.accept()
     print(addr)
-    fowarders = bothFoward(p_1, p_2)
+    forwarders = bothForward(p_1, p_2)
     print('Go! ')
     print('Enter to end...')
-    [x.join() for x in fowarders]
+    [x.join() for x in forwarders]
     input('Ended. Enter... ')
 
-def portFoward(inside_port, inbound_port, afraid = False):
+def portForward(inside_port, inbound_port, afraid = False):
     '''
     Set `afraid` to True to manually accept connections. 
     '''
     outServerSocket = socket.socket()
     outServerSocket.bind(('', inbound_port))
     outServerSocket.listen(10)
-    while True:
-        print('listening at port %d...' % inbound_port)
-        outSocket, addr = outServerSocket.accept()
-        print('Inbound connection from', addr)
-        if afraid == True:
-            print('Accept? y/n')
-            if listen(['y', 'n']) != b'y':
-                return
-        inSocket = socket.socket()
-        print('Connecting inside port', inside_port)
-        inSocket.connect(('localhost', inside_port))
-        bothFoward(outSocket, inSocket)
-        print('-= ESTABLISHED =-')
-        print()
+    allForwarders = []
+    try:
+        while True:
+            print('listening at port %d...' % inbound_port)
+            outSocket, addr = outServerSocket.accept()
+            print('Inbound connection from', addr)
+            if afraid == True:
+                print('Accept? y/n')
+                if listen(['y', 'n']) != b'y':
+                    return
+            inSocket = socket.socket()
+            print('Connecting inside port', inside_port)
+            inSocket.connect(('localhost', inside_port))
+            bothForward(outSocket, inSocket)
+            print('-= ESTABLISHED =-')
+            print()
+    finally:
+        for forwarder in allForwarders:
+            forwarder.abort()
+        for forwarder in allForwarders:
+            forwarder.join()
+        print('All have joined. ')
 
 if __name__ == '__main__':
     print(__all__)

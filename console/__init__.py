@@ -14,6 +14,7 @@ from interactive import listen, strCommonStart
 from .kernal import Kernal
 from graphic_terminal import clearLine
 import string
+import random
 
 CURSOR = '|'
 
@@ -22,7 +23,10 @@ def console(namespace = {}, prompt = '>>> ', use_input = False, fixer = None):
         from IPython import embed
         embed()
         return
-    print('console.console Warning: no support for reassigning module global variables. ')
+    if random.randint(0, 5) == 0:
+        print('console.console Warning: no support for reassigning module global variables. ')
+    else:
+        print('No global. ')
     history = []
     kernal = Kernal(namespace)
     next(kernal)
