@@ -1,7 +1,7 @@
 '''
 A socket that supports object transmission. 
 '''
-import socket
+from socket import socket
 import pickle
 from io import BytesIO
 import sys
@@ -10,11 +10,11 @@ __all__ = ['PickleSocket', 'RemoteClosedDuringPickle']
 class PickleSocket():
     def __init__(self,upon_this_socket=None):
         if upon_this_socket is None:
-            self.socket=socket.socket()
+            self.socket=socket()
         else:
             self.socket=upon_this_socket
         for name in dir(self.socket):
-            if name[:2] != '__':
+            if name[:2] != '__' and name not in dir(__class__):
                 self.__setattr__(name, self.socket.__getattribute__(name))
     
     def shakeHands(self,banner='This is a pickleSocket by Daniel Chin. ',echo=True):
@@ -41,6 +41,10 @@ class PickleSocket():
     
     def recvObj(self):
         return pickle.load(IoSocket(self.socket))
+    
+    def accept(self):
+        s, addr = self.socket.accept()
+        return __class__(s), addr
 
 class IoSocket:
     def __init__(self,socket):

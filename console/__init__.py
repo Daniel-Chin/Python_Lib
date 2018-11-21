@@ -7,6 +7,7 @@ Advantages over IPython:
 Issues: 
     1. If you wanna scroll up, you need to input().
     2. Reassigning module global variables will not be visible to module native codes. Sorry. 
+    3. No multi-line code continuation yet
 '''
 import platform
 from interactive import listen, strCommonStart
