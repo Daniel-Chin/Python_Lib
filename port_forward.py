@@ -65,7 +65,7 @@ def portForward(inside_port, inbound_port, afraid = False):
     '''
     outServerSocket = socket.socket()
     outServerSocket.bind(('', inbound_port))
-    outServerSocket.listen(10)
+    outServerSocket.listen(afraid and 1 or 10)
     allForwarders = []
     try:
         while True:
