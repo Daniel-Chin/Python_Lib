@@ -82,9 +82,13 @@ def portForward(inside_port, inbound_port, afraid = False):
             allForwarders += bothForward(outSocket, inSocket)
             print('-= ESTABLISHED =-')
             print()
+    except KeyboardInterrupt:
+        print('Ctrl+C received. ')
     finally:
+        print('Sending abort to everyone...')
         for forwarder in allForwarders:
             forwarder.abort()
+        print('Joining...')
         for forwarder in allForwarders:
             forwarder.join()
         print('All have joined. ')
