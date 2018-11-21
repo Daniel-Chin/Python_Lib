@@ -8,6 +8,7 @@ __all__ = ['Forwarder', 'fakeP2P', 'portForward', 'bothForward']
 import socket
 from threading import Thread
 from interactive import listen
+from time import sleep
 
 CHUNK = 4096
 
@@ -21,22 +22,16 @@ class Forwarder(Thread):
         while True:
             try:
                 data = self.fro.recv(CHUNK)
-                print('recv') ###
             except:
                 data = b''
-                print('recv except') ###
             if data == b'':
-                print('close') ###
                 self.to.close()
                 self.fro.close()
                 return
             else:
-                try:
-                    print('try send') ###
+                    try:
                     self.to.sendall(data)
-                    print('sent') ###
                 except:
-                    print('send except') ###
                     return
 
 def bothForward(socket_1, socket_2):
@@ -92,15 +87,21 @@ def portForward(inside_port, inbound_port, afraid = False):
     except KeyboardInterrupt:
         print('Ctrl+C received. ')
     finally:
-        print(allForwarders, allSockets)
         print('Closing all sockets...')
         [x.close() for x in allSockets]
         outServerSocket.close()
         print('Joining...')
+        Panic().start()
         for forwarder in allForwarders:
             forwarder.join()
-            print('1 joined') ###
         print('All have joined. ')
+
+class Panic(Thread):
+    def run(self):
+        print('Panic starts. ')
+        sleep(0.3)
+        print('Panic!!! SYS EXIT')
+        sys.exit(1)
 
 if __name__ == '__main__':
     print(__all__)
