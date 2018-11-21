@@ -92,6 +92,7 @@ def portForward(inside_port, inbound_port, afraid = False):
     except KeyboardInterrupt:
         print('Ctrl+C received. ')
     finally:
+        print(allForwarders, allSockets)
         print('Closing all sockets...')
         [x.close() for x in allSockets]
         outServerSocket.close()
