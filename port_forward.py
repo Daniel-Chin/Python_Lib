@@ -16,15 +16,11 @@ class Forwarder(Thread):
         Thread.__init__(self)
         self.to = to
         self.fro = fro
-        self._abort = False
     
     def run(self):
         while True:
             try:
                 data = self.fro.recv(CHUNK)
-                if self._abort:
-                    print('Forwarder: abort. ')
-                    return
             except:
                 data = b''
             if data == b'':
@@ -33,9 +29,6 @@ class Forwarder(Thread):
                 return
             else:
                 self.to.sendall(data)
-    
-    def abort(self):
-        self._abort = True
 
 def bothForward(socket_1, socket_2):
     forwarder_1 = Forwarder(socket_1, socket_2)
@@ -67,6 +60,7 @@ def portForward(inside_port, inbound_port, afraid = False):
     outServerSocket.bind(('', inbound_port))
     outServerSocket.listen(afraid and 1 or 10)
     allForwarders = []
+    allSockets = []
     try:
         while True:
             print('listening at port %d...' % inbound_port)
@@ -79,6 +73,8 @@ def portForward(inside_port, inbound_port, afraid = False):
                     print('Refused. ')
                     continue
             inSocket = socket.socket()
+            allSockets.append(outSocket)
+            allSockets.append(inSocket)
             print('Connecting inside port', inside_port)
             inSocket.connect(('localhost', inside_port))
             allForwarders += bothForward(outSocket, inSocket)
@@ -87,9 +83,9 @@ def portForward(inside_port, inbound_port, afraid = False):
     except KeyboardInterrupt:
         print('Ctrl+C received. ')
     finally:
-        print('Sending abort to everyone...')
-        for forwarder in allForwarders:
-            forwarder.abort()
+        print('Closing all sockets...')
+        [x.close() for x in allSockets]
+        outServerSocket.close()
         print('Joining...')
         for forwarder in allForwarders:
             forwarder.join()
