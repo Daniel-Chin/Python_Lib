@@ -5,7 +5,7 @@ No encryption! Consider everything you transmit broadcast to the entire network.
 '''
 print('importing...')
 from recvfile import recvFile
-from listen import listen
+from interactive import listen
 from pickle_socket import PickleSocket
 try:
     from tkinter import Tk,filedialog
@@ -108,7 +108,7 @@ def recv(s):
                 root.update()
                 filename=filedialog.asksaveasfilename(title='Where to receive',initialdir='D:/',initialfile=basename)
             else:
-                filename = askSaveWhere()
+                filename = askSaveWhere(initialfile = basename)
         if filename=='':
             s.close()
             input('Error: filename="". Enter to exit...')

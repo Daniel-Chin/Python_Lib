@@ -1,5 +1,7 @@
 '''
 Terminal interactivity utils. 
+
+One vulnerability in `listen`. Do help(listen) for details. 
 '''
 #===============================================================================
 # I do not know why this was here. 
@@ -34,37 +36,39 @@ try:
 except ImportError:
     msvcrt = None
 
-def listen(choice=None, timeout=0):
+def listen(choice=[], timeout=0):
     '''
-    choice can be a list of choices or a single choice. 
+    Vulnerability Warning: 
+        This function calls `evel`. User can eval any element repr in bChoice. 
+        If you supply this function with normal arguments, you should be safe. 
+        Don't let the `choice` argument depend on previous user input! 
+    choice can be an iterable of choices or a single choice. 
     Elements can be b'' or ''.
     If timeout=0, it's blocking. 
     timeout is in second. 
     Supports non-windows. 
+    do listen() to wait for an enter. 
     '''
-    if choice is not None:
-        if type(choice) in (bytes, str):
-            choice = (choice, )
-        bChoice=[]
-        for i in choice:
-            if type(i) is bytes:
-                bChoice.append(i)
-            else:
-                bChoice.append(i.encode())
+    try:
+        bChoice = (x.encode() for x in choice)
+    except AttributeError:
+        bChoice = tuple(choice)
     print('', end = '', flush = True)     # Just to flush
     if msvcrt is None:
-        if choice is None:
-            op = eval('b"%s"' % input())
-            if op == b'':
+        if bChoice == []:
+            op = input()
+            if op == '':
                 return b'\r'    # So android doesn't need to type "\r"
         else:
             print(bChoice)
+            repr_bChoice = [str(x) for x in bChoice]
             op = None
-            while op not in bChoice:
-                op = eval('b"%s"' % input())
-                if op == b'' and b'\r' in bChoice:
+            while op not in repr_bChoice:
+                print("b'    '\rb'", end = '', flush = True)
+                op = "b'%s'" % input()
+                if op == "b''" and b'\r' in bChoice:
                     return b'\r'    # So android doesn't need to type "\r"
-            return op
+            return eval(op)
     if timeout != 0:
         for i in range(int(timeout*FPS)):
             if msvcrt.kbhit():

@@ -9,7 +9,7 @@ import shlex
 import struct
 import platform
 import subprocess
- 
+import random
  
 def get_terminal_size():
     """ getTerminalSize()
@@ -93,4 +93,7 @@ if __name__ == "__main__":
     sizex, sizey = get_terminal_size()
     print('width =', sizex, 'height =', sizey)
 else:
-    print('import terminalsize: Special thank to Justin Riley for writing a wonderful script that detects terminal size across OSes. ')
+    if random.randint(0, 1) == 0:
+        print('Thanks to Justin Riley! ')
+    else:
+        print('import terminalsize: Special thank to Justin Riley for writing a wonderful script that detects terminal size across OSes. ')

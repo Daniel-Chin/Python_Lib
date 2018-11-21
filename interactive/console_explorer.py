@@ -33,6 +33,7 @@ class Track:
                 self.list.append(File(i))
             else:
                 assert False, 'An item is neither file nor dir! '
+        self._hide_next_print = False
     
     def select(self, i):
         self.selected = i
@@ -42,6 +43,29 @@ class Track:
 
     def down(self):
         self.selected = (self.selected + 1) % len(self.list)
+    
+    def print(self):
+        if self._hide_next_print:
+            self._hide_next_print = False
+            return
+        form = str(len(str(len(self.list))))
+        for i, item in enumerate(self.list):
+            if i == self.selected:
+                print('@ ', end = '')
+            else:
+                print('  ', end = '')
+            print(format(i, form), end = '')
+            if type(item) is Parent:
+                print('..')
+            elif type(item) is Dir:
+                print('+', item.name)
+            elif type(item) is File:
+                print('-', item.name)
+            else:
+                assert False
+    
+    def hideNextPrint():
+        self._hide_next_print = True
 
 def askForFile(cd = None):
     if cd is None:
@@ -53,7 +77,7 @@ def askForFile(cd = None):
     track = Track(cd)
     while not stop:
         print('='*10)
-        printTrack(track)
+        track.print()
         print()
         print('Now selected:', track.list[track.selected].name)
         op = input(cd + '>').lower()
@@ -109,7 +133,7 @@ def askSaveWhere(cd = None, initialfile = None):
     track = Track(cd)
     while not stop:
         print('='*10)
-        printTrack(track)
+        track.print()
         print()
         print('Now selected:', track.list[track.selected].name)
         op = input(cd + '>').lower()
@@ -165,23 +189,6 @@ def askSaveWhere(cd = None, initialfile = None):
                     track.selected = id
             except:
                 print('No such command. ')
-
-def printTrack(track):
-    form = str(len(str(len(track.list))))
-    for i, item in enumerate(track.list):
-        if i == track.selected:
-            print('@ ', end = '')
-        else:
-            print('  ', end = '')
-        print(format(i, form), end = '')
-        if type(item) is Parent:
-            print('..')
-        elif type(item) is Dir:
-            print('+', item.name)
-        elif type(item) is File:
-            print('-', item.name)
-        else:
-            assert False
 
 if __name__ == '__main__':
     print(askSaveWhere('a.jpg'))
