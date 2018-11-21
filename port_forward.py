@@ -35,7 +35,7 @@ class Forwarder(Thread):
                 self.to.sendall(data)
     
     def abort(self):
-        self.abort = True
+        self._abort = True
 
 def bothForward(socket_1, socket_2):
     forwarder_1 = Forwarder(socket_1, socket_2)
@@ -75,7 +75,9 @@ def portForward(inside_port, inbound_port, afraid = False):
             if afraid == True:
                 print('Accept? y/n')
                 if listen(['y', 'n']) != b'y':
-                    return
+                    outSocket.close()
+                    print('Refused. ')
+                    continue
             inSocket = socket.socket()
             print('Connecting inside port', inside_port)
             inSocket.connect(('localhost', inside_port))
