@@ -16,12 +16,17 @@ CHUNK = 4096
 
 class Forwarder(Thread):
     SPF = 0.1
+    id = 0
     
     def __init__(self, fro, to, description = ''):
         Thread.__init__(self)
         self.to = to
         self.fro = fro
-        self.description = description
+        if description == '':
+            self.description = str(__class__.id)
+            __class__.id += 1
+        else:
+            self.description = description
     
     def run(self):
         while True:
@@ -41,7 +46,7 @@ class Forwarder(Thread):
         print('Forwarder', str(self), 'has stopped. ')
     
     def __str__(self):
-        return '%s => %s %s' % (str(self.fro_addr), str(self.to_addr), self.description)
+        return '<Forwarder %s>' % self.description
 
 def bothForward(socket_1, socket_2):
     forwarder_1 = Forwarder(socket_1, socket_2)
@@ -109,7 +114,7 @@ def portForward(inside_port, inbound_port, afraid = False):
 
 class Panic(Thread):
     def __init__(self):
-        super(__class__).__init__(self)
+        super(__class__, self).__init__()
         self.all_is_fine = False
     
     def run(self):
