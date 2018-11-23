@@ -100,17 +100,26 @@ def portForward(inside_port, inbound_port, afraid = False):
         [x.close() for x in allSockets]
         outServerSocket.close()
         print('Joining...')
-        Panic().start()
+        panic = Panic()
+        panic.start()
         for forwarder in allForwarders:
             forwarder.join()
         print('All have joined. ')
+        panic.all_is_fine = True
 
 class Panic(Thread):
+    def __init__(self):
+        super(__class__).__init__(self)
+        self.all_is_fine = False
+    
     def run(self):
         print('Panic starts. ')
         sleep(0.3)
-        print('Panic!!! SIG KILL')
-        os.kill(os.getpid(), signal.SIGKILL)
+        if self.all_is_fine:
+            print('Panic sooths. ')
+        else:
+            print('Panic!!! SIG KILL')
+            os.kill(os.getpid(), signal.SIGKILL)
 
 if __name__ == '__main__':
     print(__all__)
