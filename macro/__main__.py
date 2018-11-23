@@ -230,7 +230,7 @@ def load():
         with open(path.join(SAVED, name), 'rb') as f:
             result = pickle.load(f)
     load.last = result
-    print('Tip: 'Use load.last to access the last loaded macro. )
+    print('Tip: Use load.last to access the last loaded macro. ')
     return result
 
 if __name__ == '__main__':

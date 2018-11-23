@@ -151,7 +151,7 @@ The programmer didn't override the request handler. </html>''')
                 except timeout:
                     pass
             # self.close() called
-        except (ClientShutdown, ConnectionAbortedError):
+        except (ClientShutdown, ConnectionAbortedError, ConnectionResetError):
             log(self, 'client shutdown')
         finally:
             self.parentQueue.put(DeregisterOneServer(self))
