@@ -16,6 +16,8 @@ from myhttp import *
 import subprocess
 import os
 from time import sleep
+import qrcode
+from threading import Thread
 
 PORT = 2338
 
@@ -28,10 +30,24 @@ def main():
     dname = os.path.dirname(abspath)
     os.chdir(dname)
     ip_config = subprocess.check_output('ipconfig').decode('gbk')
+    potential_ip = []
     for line in ip_config.split('\r\n'):
         if 'IPv4' in line:
-            print(line)
-    print('Listening on port %d...' % PORT)
+            potential_ip.append(line.split(': ')[1])
+    imgs = []
+    class ShowImgThread(Thread):
+        def __init__(self, img):
+            Thread.__init__(self)
+            self.img = img
+        
+        def run(self):
+            self.img.show()
+    
+    for ip in potential_ip:
+        addr = 'http://%s:%d' % (ip, PORT)
+        imgs.append(qrcode.make(addr))
+        ShowImgThread(imgs[-1]).start()
+        print(addr)
     print('Ctrl+C to stop.')
     try:
         while True:
