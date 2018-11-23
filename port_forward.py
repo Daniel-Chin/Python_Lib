@@ -17,10 +17,11 @@ CHUNK = 4096
 class Forwarder(Thread):
     SPF = 0.1
     
-    def __init__(self, fro, to):
+    def __init__(self, fro, to, description = ''):
         Thread.__init__(self)
         self.to = to
         self.fro = fro
+        self.description = description
     
     def run(self):
         while True:
@@ -31,12 +32,16 @@ class Forwarder(Thread):
             if data == b'':
                 self.to.close()
                 self.fro.close()
-                return
+                break
             else:
                 try:
                     self.to.sendall(data)
                 except:
-                    return
+                    break
+        print('Forwarder', str(self), 'has stopped. ')
+    
+    def __str__(self):
+        return '%s => %s %s' % (str(self.fro_addr), str(self.to_addr), self.description)
 
 def bothForward(socket_1, socket_2):
     forwarder_1 = Forwarder(socket_1, socket_2)
