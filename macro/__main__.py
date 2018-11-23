@@ -75,9 +75,10 @@ def passKeyUp(keyDown):
         raise MismatchError
 
 class Macro(list):
-    def __init__(self):
+    def __init__(self, list_macro = []):
         self.default_interval = .1
         self.deploy_delay = 2
+        self.extend(list_macro)
     
     def play(self, n_times = 1):
         sleep(self.deploy_delay)
@@ -113,8 +114,8 @@ class Macro(list):
         print('Macro successfully executed. ')
     
     def __str__(self):
-        return '\n'.join([str(x) for x in self] + 
-            ['Tip: use record.last to access the last recording. '])
+        return '\n  '.join(['<Macro'] + [str(x) for x in self]) + \
+            '\n> Tip: use record.last to access the last recording. '
     
     def __repr__(self):
         return 'Macro object'
@@ -124,6 +125,21 @@ class Macro(list):
             action = Action(getPos(), key = event.button.upper())
             print(action)
             self.append(action)
+        
+    def __mul__(self, other):
+        return __class__(super(__class__, self).__mul__(other))
+    def __rmul__(self, other):
+        return __class__(super(__class__, self).__rmul__(other))
+    def __add__(self, other):
+        return __class__(super(__class__, self).__add__(other))
+    def __radd__(self, other):
+        return __class__(super(__class__, self).__radd__(other))
+    def __getitem__(self, index):
+        list_result = super(__class__, self).__getitem__(index)
+        if isinstance(index, slice):
+            return __class__(list_result)
+        else:
+            return list_result
 
 class Failsafe(Thread):
     def __init__(self):
@@ -144,6 +160,7 @@ def record(start = 'Ctrl + F3'):
         print('Waiting for %s to start...' % start)
         keyboard.wait(start)
         print('Start recording. ')
+        print('Tip: press \\ for special operations or end recording. ')
         mouse.hook(macro.appendMouse)
         while True:
             op = keyboard.read_event()
@@ -213,6 +230,7 @@ def load():
         with open(path.join(SAVED, name), 'rb') as f:
             result = pickle.load(f)
     load.last = result
+    print('Tip: 'Use load.last to access the last loaded macro. )
     return result
 
 if __name__ == '__main__':
