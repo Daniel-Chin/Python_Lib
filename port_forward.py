@@ -46,10 +46,10 @@ class Forwarder(Thread):
         print('Forwarder', str(self), 'has stopped. ')
     
     def __str__(self):
-        return '<Forwarder %s>' % self.description
+        return '<Forwarder %s>' % str(self.description)
 
-def bothForward(socket_1, socket_2):
-    forwarder_1 = Forwarder(socket_1, socket_2)
+def bothForward(socket_1, socket_2, addr):
+    forwarder_1 = Forwarder(socket_1, socket_2, addr)
     forwarder_2 = Forwarder(socket_2, socket_1)
     forwarder_1.start()
     forwarder_2.start()
@@ -95,7 +95,7 @@ def portForward(inside_port, inbound_port, afraid = False):
             allSockets.append(inSocket)
             print('Connecting inside port', inside_port)
             inSocket.connect(('localhost', inside_port))
-            allForwarders += bothForward(outSocket, inSocket)
+            allForwarders += bothForward(outSocket, inSocket, addr)
             print('-= ESTABLISHED =-')
             print()
     except KeyboardInterrupt:
