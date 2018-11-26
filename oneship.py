@@ -59,8 +59,9 @@ def main():
         while op != esc:
             if op==b's':
                 send(s)
-            elif op==b'r':  #Cannot use ELSE, cuz op maybe esc.
+            elif op==b'r':  #Cannot use ELSE, cuz op maybe b''.
                 recv(s)
+            print()
             print('Send, receive, or exit? s/r/esc')
             op=listen((b's',b'r',esc))
     finally:
@@ -103,7 +104,7 @@ def recv(s):
                 'Darwin': '/'
            }[platform.system()]
     print('Default receive path:',path)
-    print('Use it, or change? Enter/c')
+    print('Use it, or change? Enter/c', end = '')
     if listen((b'c',b'\r'))==b'c':
         if professional:
             filename = input('path/file.ext = ')
