@@ -13,11 +13,11 @@ import keyboard
 from interactive import listen
 import sys
 from myhttp import *
-import subprocess
 import os
 from time import sleep
 import qrcode
 from threading import Thread
+from local_ip import getLocalIP
 
 PORT = 2338
 
@@ -29,11 +29,7 @@ def main():
     abspath = os.path.abspath(__file__)
     dname = os.path.dirname(abspath)
     os.chdir(dname)
-    ip_config = subprocess.check_output('ipconfig').decode('gbk')
-    potential_ip = []
-    for line in ip_config.split('\r\n'):
-        if 'IPv4' in line:
-            potential_ip.append(line.split(': ')[1])
+    potential_ip = getLocalIP()
     imgs = []
     class ShowImgThread(Thread):
         def __init__(self, img):

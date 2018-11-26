@@ -190,6 +190,20 @@ def askSaveWhere(cd = None, initialfile = None):
             except:
                 print('No such command. ')
 
+def chooseFromEntries(entries):
+    digit_len = len(str(len(entries)))
+    [print(format(i, str(digit_len)), x) for i, x in enumerate(entries)]
+    op = input('choose >').lower()
+    if op.isnumeric():
+        return entries[int(op)]
+    filtered = [x for x in entries if op in x.lower()]
+    if len(filtered) == 0:
+        print('No match. Try again. ')
+        return chooseFromEntries(entries)
+    if len(filtered) == 1:
+        return filtered[0]
+    return chooseFromEntries(filtered)
+
 if __name__ == '__main__':
     print(askSaveWhere('a.jpg'))
     input('enter...')

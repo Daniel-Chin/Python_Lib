@@ -14,12 +14,14 @@ except ImportError:
     from interactive.console_explorer import askForFile, askSaveWhere
 from socket import gethostname,gethostbyname
 import sys
-from os.path import getsize,basename,isfile,splitext
+from os.path import getsize, basename, isfile, splitext, dirname
 import platform
+from local_ip import getLocalIP
 
 print('loading...')
 port=2337
 professional = False
+last_dir = None
 
 def main():
     global professional
@@ -28,6 +30,7 @@ def main():
         professional = True
     s=PickleSocket()
     print('My IP =',gethostbyname(gethostname()))
+    print('or...', getLocalIP())
     server = None
     try:
         print('Server or Client? s/c')
@@ -67,6 +70,7 @@ def main():
             server.close()
 
 def send(s):
+    global last_dir
     if professional:
         filename = input('path/file.ext = ').strip('"')
     else:
@@ -76,7 +80,8 @@ def send(s):
             root.update()
             filename=filedialog.askopenfilename(title='Choose file to send',initialdir='D:/')
         else:
-            filename = askForFile()
+            filename = askForFile(last_dir)
+            last_dir = dirname(filename)
     if filename=='':
         s.sendObj(0)
         return None
@@ -88,6 +93,7 @@ def send(s):
     print('File sent:',filename)
 
 def recv(s):
+    global last_dir
     print('Waiting for sender...')
     basename=s.recvObj()
     size=s.recvObj()
@@ -108,7 +114,8 @@ def recv(s):
                 root.update()
                 filename=filedialog.asksaveasfilename(title='Where to receive',initialdir='D:/',initialfile=basename)
             else:
-                filename = askSaveWhere(initialfile = basename)
+                filename = askSaveWhere(last_dir, initialfile = basename)
+                last_dir = dirname(filename)
         if filename=='':
             s.close()
             input('Error: filename="". Enter to exit...')
