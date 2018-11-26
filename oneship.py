@@ -84,8 +84,8 @@ def send(s):
                 op = input()
             data = '\n'.join(buffer).encode()
             print('Sending...')
-            s.sendObj(len(data))
             s.sendObj('raw.txt')
+            s.sendObj(len(data))
             s.socket.sendall(data)
             print('Succeed. ')
             return
@@ -137,7 +137,7 @@ def recv(s):
             input('Error: filename="". Enter to exit...')
             sys.exit(1)
     else:    
-        filename=path+basename
+        filename = path + basename
     while isfile(filename):
         base,ext=splitext(filename)
         base+='2'
