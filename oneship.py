@@ -73,7 +73,22 @@ def main():
 def send(s):
     global last_dir
     if professional:
+        print('input "raw" to send raw text data. ')
         filename = input('path/file.ext = ').strip('"')
+        if filename == 'raw':
+            print('Raw text: ')
+            buffer = []
+            op = input()
+            while op != '':
+                buffer.append(op)
+                op = input()
+            data = '\n'.join(buffer).encode()
+            print('Sending...')
+            s.sendObj(len(data))
+            s.sendObj('raw.txt')
+            s.socket.sendall(data)
+            print('Succeed. ')
+            return
     else:
         if Tk:
             root=Tk()
