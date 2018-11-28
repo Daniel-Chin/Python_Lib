@@ -1,0 +1,16 @@
+Popsicle Sword            heals 22
+Eyes of V                 melt the enemy:instant kill
+Electric Clarinet         heals both
+Doctor\'s Spoon           scoop: vamparic
+Frisk\'s Stick            turn the enemy into a dog
+P.Y.T.H.O.N.              open a python window
+Legendary Artifact        makes your wp into an annoying cat
+Blue Glowing Spear        halve enemy hp
+Offensive Mac Pro         deals rand(1,90%) dmg
+Very Sharp Ball           kill the enemy, leave you with 1hp
+Glove of Iron Man         run away and propel forward/backward
+Space Cadillac            very hihg speed: enemy Hit-5
+Domestic Sandwich         Heals 70% of your wound
+Annoying Cat              sit on enemy weapon:get Holy Sickle
+Exotic Sandwich           Heals fully
+Holy Sickle               Vamparic, upgradable

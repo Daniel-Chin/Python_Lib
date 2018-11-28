@@ -1,0 +1,58 @@
+算了。决定，这个游戏不写了。没亮点。
+
+Weapon:
+
+Defense:
+
+Utility:
+    erath direction probe
+    earth distance probe
+    momentum deposit
+Scavange:
+    scan
+    mine
+    recycle(scavange enemy ship wreckage)
+Travel:
+
+Pass turn:
+    pass
+    wait for some time
+
+Index the planets and systems you encountered.
+Planet 312, planet 313... 
+
+Start the game with 0 techs, not even mine/recycle. 
+
+Game interface:{
+Info...
+Info...
+Info...
+
+===================================
+> Weapon ...
+}The last line use \r to keep printing.
+e.g. Weapon > Laser ...
+
+ai can attack, escape, hunt, trap. 
+Player 根据AI行为自己判断
+#Player 也可以 隐藏自己等待AI进入trap然后strike
+#No. you should encourage progressive gameplay
+#太复杂！放弃tracking hiding trapping. 
+generally, hunting is more difficult than escaping. 
+hiding is easier than tracking. 
+AI of the same lv ship is weaker than player.
+
+Three bars:
+Distance btwn player and AI: 
+Energy
+Mineral until next upgrade
+
+Linear upgrade path of the ship
+
+Mineral and energy. 
+Mineral: very rare, used to upgrade/mend ship. 
+energy: easy to come by. 
+
+there should be no one-off usable item. 
+Only techs. 
+

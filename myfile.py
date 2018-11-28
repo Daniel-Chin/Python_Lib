@@ -2,16 +2,18 @@
 Unreliable file utils
 '''
 import os
-from os import path
+from os import path, listdir, rmdir, chdir, getcwd
+from os.path import isfile, isdir
 from listen import listen
+import sys
 
-def copy():
+def copy(src_name = None, dest_name = None):
     '''
     Copies only binary content, leaving meta data. 
     '''
-    src_name = input('from: ')
-    dest_name = input('to: ')
-    if path.isfile(dest_name):
+    src_name = src_name or input('from: ')
+    dest_name = dest_name or input('to: ')
+    if isfile(dest_name):
         print('Destination file alreay exists. Overwrite? Y/N')
         if listen([b'y', b'n']) != b'y':
             print('Aborted. ')
@@ -19,22 +21,59 @@ def copy():
     with open(src_name, 'rb') as src:
         with open(dest_name, 'wb+') as dest:
             dest.write(src.read())
-    print('Done! ')
+    print('Copied. ')
 
-def delete():
+def eraseFile(filename, verbose = True):
     '''
-    Fill file with zeros and delete. 
+    Fill file with zeros and erase. 
     '''
-    filename = input('file: ')
-    if not path.isfile(filename):
-        print("Doesn't exist. ")
-        return
+    filename = filename or input('file: ')
+    assert isfile(filename), "Doesn't exist. "
     size = os.stat(filename).st_size
     with open(filename, 'wb') as f:
         f.write(bytearray(size))
     os.remove(filename)
-    print('Done! ')
+    if verbose:
+        print('Erased file. ')
+
+def eraseDir(path, recursion_root = True):
+    assert ' ' not in path, 'Dont use space in path!'
+    if recursion_root:
+        saved_cd = getcwd()
+    chdir(path)
+    ls = listdir()
+    for i in ls:
+        if isfile(i):
+            eraseFile(i, verbose = False)
+        elif isdir(i):
+            eraseDir(i, recursion_root = False)
+        else:
+            input('ERROR: A thing is neither file nor dir!!! Enter to exit...')
+            sys.exit(1)
+    chdir('..')
+    rmdir(path)
+    if recursion_root:
+        chdir(saved_cd)
+        print('Erased dir. ')
+
+def erase(thing):
+    if isfile(thing):
+        eraseFile(thing)
+    elif isdir(thing):
+        eraseDir(thing)
+    else:
+        assert False, thing + ' not file nor dir. '
 
 if __name__ == '__main__':
+    if len(sys.argv) >= 2:
+        if sys.argv[1] == 'erase':
+            target = sys.argv[2]
+        else:
+            target = sys.argv[1]
+        print('Erase %s? y/n ' % target)
+        if listen(['y', 'n']) == b'y':
+            erase(target)
+            sys.exit(0)
+        print('Opening console. You can access sys.argv')
     from console import console
     console(globals())

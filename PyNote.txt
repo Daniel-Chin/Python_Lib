@@ -1,0 +1,60 @@
+\\ \' \" \t \n
+
+format(value,'4,.2f')
+
+and, or = 
+    short-circuit evaluation!!!
+
+def a(x,y):
+   ...
+a(3,y=6)
+
+.py can be imported as modules! 
+
+Exception handling:
+	try:
+	    A
+	except:
+	    B
+	else:
+	    C
+	finally:
+	    D
+	=
+	try:
+	    A
+	    C
+	except:
+	    B
+	D
+	Never use else. 
+
+[a,b,c]*3
+
+list[-3:-2:1]
+
+{}.get('Vera','Not found')
+
+private __var
+
+To: windows file locator dialog
+    from tkinter import Tk,filedialog
+    Tk().withdraw()
+    filedialog.askopenfilename()
+    filedialog.asksaveasfilename()
+    For more info, visit:
+        C:\program files\python36\lib\tkinter\filedialog.py
+
+To: input without Enter
+    import msvcrt as KeyBuff
+    if KeyBuff.kbhit():
+        KeyBuff.getch().decode()
+
+Module: time
+    .sleep(seconds)
+
+To: resize CMD
+    os.system('mode con: cols='+str(width)+' lines='+str(height))
+
+To: compile exe or Mac exe
+    PyInstaller

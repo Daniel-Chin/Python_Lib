@@ -1,0 +1,22 @@
+exclusive print():
+print() only used in display(). 
+In mac, we should see rigid frames. 
+
+Only the player has critical hit
+
+Lv rises accuracy and evasion
+
+no treasure. only enemy-droped items
+
+no defense, only weapon. 
+
+Meditate, Seek, Move{Towards the Earth, Away from the Earth}
+
+Legendary item:
+enhance critical hit(dmg,chance)
+
+Don't use log interface!
+
+during fight: auto attacks, key to break the fight
+and asks whether to run away. 
+run away chance=50%
