@@ -39,17 +39,25 @@ def main():
         def run(self):
             self.img.show()
     
+    potential_ip = [x for x in potential_ip if x != '192.168.56.1']
+    # Cisco Anyconnect shit
     for ip in potential_ip:
         addr = 'http://%s:%d' % (ip, PORT)
         imgs.append(qrcode.make(addr))
-        ShowImgThread(imgs[-1]).start()
         print(addr)
     print('Ctrl+C to stop.')
+    print('Q to display QR code for phone scan.')
     try:
         while True:
-            sleep(1)
+            op = listen(timeout = 1)
+            if op == b'\x03':
+                raise KeyboardInterrupt
+            elif op == b'q':
+                ShowImgThread(imgs[-1]).start()
+            elif op == b'\r':
+                print()
     except KeyboardInterrupt:
-        pass
+        print('Received ^C. ')
     finally:
         server.close()
         server.join()

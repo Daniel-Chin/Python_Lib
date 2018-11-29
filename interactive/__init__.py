@@ -69,13 +69,16 @@ def listen(choice = [], timeout = 0):
                     return b'\r'    # So android doesn't need to type "\r"
             return eval(op)
     if timeout != 0:
-        for i in range(int(timeout * FPS)):
-            if msvcrt.kbhit():
-                op = getFullCh()
-                if bChoice == [] or op in bChoice:
-                    return op
-            sleep(1/FPS)
-        return None
+        try:
+            for i in range(int(timeout * FPS)):
+                if msvcrt.kbhit():
+                    op = getFullCh()
+                    if bChoice == [] or op in bChoice:
+                        return op
+                sleep(1/FPS)
+            return None
+        except KeyboardInterrupt:
+            return b'\x03'  # ^C. For consistency when calling listen(timeout=0) and ^C. 
     op = getFullCh()
     while not (bChoice == [] or op in bChoice):
         op = getFullCh()
