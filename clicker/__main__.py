@@ -53,7 +53,7 @@ def main():
             if op == b'\x03':
                 raise KeyboardInterrupt
             elif op == b'q':
-                ShowImgThread(imgs[-1]).start()
+                [ShowImgThread(x).start() for x in imgs]
             elif op == b'\r':
                 print()
     except KeyboardInterrupt:
