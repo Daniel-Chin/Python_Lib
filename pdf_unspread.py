@@ -51,4 +51,4 @@ if __name__ == '__main__':
     jdt.complete()
     print('start briss? ')
     if listen(['y', 'n']) == b'y':
-        cmd('briss.lnk ' + outfn)
+        cmd('briss.lnk "%s"' % outfn)
