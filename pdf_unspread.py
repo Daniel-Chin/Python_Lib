@@ -31,7 +31,7 @@ def splitpage(src, ratio = .5):
 if __name__ == '__main__':
     inp = sys.argv[1:]
     if inp == []:
-        inpfn = input('path/file.ext = ')
+        inpfn = input('path/file.ext = ').strip('"')
     else:
         inpfn, = inp
     outfn = os.path.join(os.path.dirname(inpfn), 'unspread.' + os.path.basename(inpfn))
