@@ -43,7 +43,10 @@ def main():
     # Cisco Anyconnect shit
     for ip in potential_ip:
         addr = 'http://%s:%d' % (ip, PORT)
-        imgs.append(qrcode.make(addr))
+        try:
+            imgs.append(qrcode.make(addr))
+        except:
+            print('Error 198456')
         print(addr)
     print('Ctrl+C to stop.')
     print('Q to display QR code for phone scan.')
