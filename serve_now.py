@@ -1,3 +1,7 @@
+'''
+Immediately open a port, accept connection
+and does nothing. 
+'''
 from socket import socket
 import sys
 from threading import Thread

@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 '''
-Author of this code: Justin Riley 
+Contributors of this code: Alexander Belchenko, Harco Kuppens, Justin Riley. 
+http://code.activestate.com/recipes/440694-determine-size-of-console-window-on-windows/
+https://stackoverflow.com/questions/566746/how-to-get-linux-console-window-width-in-python
 https://gist.github.com/jtriley/1108174 
 I changed python2 to python3, and added crediting printing. 
 '''
@@ -94,6 +96,6 @@ if __name__ == "__main__":
     print('width =', sizex, 'height =', sizey)
 else:
     if random.randint(0, 5) == 0:
-        print('import terminalsize: Special thank to Justin Riley for writing a wonderful script that detects terminal size across OSes. ')
+        print('import terminalsize: Special thank to Alexander Belchenko, Harco Kuppens, and Justin Riley for writing a wonderful script that detects terminal size across OSes. ')
     else:
-        print('Thanks to Justin Riley! ')
+        print('Thanks to Belchenko, Kuppens, and Riley! ')

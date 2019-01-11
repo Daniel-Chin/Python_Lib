@@ -4,8 +4,9 @@ Unreliable file utils
 import os
 from os import path, listdir, rmdir, chdir, getcwd
 from os.path import isfile, isdir
-from listen import listen
+from interactive import listen
 import sys
+from io import BytesIO
 
 def copy(src_name = None, dest_name = None):
     '''
@@ -63,6 +64,25 @@ def erase(thing):
         eraseDir(thing)
     else:
         assert False, thing + ' not file nor dir. '
+
+def openAsciize(filename, verbose = False):
+    '''Only supports 'rb'. '''
+    if verbose:
+        print('Asciizing file...')
+    outIO = BytesIO()
+    with open(filename, 'rb') as f:
+        while True:
+            byte = f.read(1)
+            if byte == b'':
+                break
+            if byte[0] >= 128:
+                outIO.write(b'?')
+            else:
+                outIO.write(byte)
+    outIO.seek(0)
+    if verbose:
+        print('done')
+    return outIO
 
 if __name__ == '__main__':
     if len(sys.argv) >= 2:
