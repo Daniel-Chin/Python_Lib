@@ -1,3 +1,5 @@
+__all__ = ['shapeOfDict', 'dictShapeCompare', 'pprintDict']
+
 '''
 Compare the shape of two dicts. 
 i.e. is the structure the same? are the keys the same? 
