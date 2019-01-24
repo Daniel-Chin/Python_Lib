@@ -1,6 +1,7 @@
-# This repo is
+# This repo is...
 All the wheels I re-invented. 
 
+# Wait, what?
 This repo has various useful python tools and utils. 
 
 I kinda documented them. 
