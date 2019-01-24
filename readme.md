@@ -1,3 +1,4 @@
+# This repo is
 All the wheels I re-invented. 
 
 This repo has various useful python tools and utils. 
@@ -9,10 +10,10 @@ If you have questions or suggestions, please send an email to daniel_chin@yahoo.
 The following folders are not python utils, but some demos dependant on the other utils. 
 Mostly games. 
 
-Color_Tiles/
-To the Earth/
-Find Vera/
-Beer on the Wall/
+Color_Tiles/;
+To the Earth/;
+Find Vera/;
+Beer on the Wall/;
 
 # Documentation
 ## Archive/
