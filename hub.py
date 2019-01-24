@@ -1,5 +1,5 @@
 '''
-Hub: forward all messages. 
+Hub: forward all socket messages. 
 Connect, sendall(b'OK'), forward...
 '''
 # fake: CHUNK = 1024

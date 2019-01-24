@@ -1,6 +1,3 @@
-'''
-Deprecating. 
-'''
 from interactive import listen
 __all__ = ['listen']
 

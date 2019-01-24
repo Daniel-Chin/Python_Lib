@@ -1,3 +1,6 @@
+'''
+Tools to do graphics in the terminal.
+'''
 from terminalsize import get_terminal_size
 
 def clearLine():

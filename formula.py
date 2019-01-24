@@ -1,5 +1,6 @@
 '''
 Evaluate beautiful formulas like √(2×3÷4)
+(Those non-ascii math symbols)
 '''
 from console import console
 from math import sqrt
