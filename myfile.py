@@ -84,6 +84,13 @@ def openAsciize(filename, verbose = False):
         print('done')
     return outIO
 
+def sysArgvOrInput():
+    if len(sys.argv) >= 2:
+        return sys.argv[1]
+    else:
+        print('(Drag file here)')
+        return input('path/file.ext=')
+
 if __name__ == '__main__':
     if len(sys.argv) >= 2:
         if sys.argv[1] == 'erase':
