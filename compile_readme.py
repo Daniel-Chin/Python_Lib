@@ -48,7 +48,7 @@ def documentate(cd, out, depth):
                             if line == "'''":
                                 break
                             buffer.append(line)
-                        print(*buffer, file = out, end = '\n\n', sep = '\n')
+                        print(*buffer, file = out, end = '\n\n', sep = '  \n')
                     else:
                         print('No doc for file', cd, node)
         else:   # isdir
