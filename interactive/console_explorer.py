@@ -197,11 +197,18 @@ def askSaveWhere(cd = None, initialfile = None):
                 print('No such command. ')
 
 def chooseFromEntries(entries):
+    if not entries:
+        print('No match! ')
+        return None
     digit_len = len(str(len(entries)))
     [print(format(i, str(digit_len)), x) for i, x in enumerate(entries)]
-    op = input('choose >').lower()
+    op = input('type ID or search with keyword >').lower()
     if op.isnumeric():
-        return entries[int(op)]
+        try:
+            return entries[int(op)]
+        except IndexError:
+            print('Invalid ID')
+            return None
     filtered = [x for x in entries if op in str(x).lower()]
     if len(filtered) == 0:
         print('No match. Try again. ')
