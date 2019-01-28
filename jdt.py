@@ -43,11 +43,11 @@ class Jdt:
             done
         )
 
-    def update(self, new_done, symbol = '*', getSuffix = None):
+    def update(self, new_done, symbol = '*', getSuffix = None, flush = False):
         if not self.active:
             raise JdtAlreadyClosedError
         self.done = new_done
-        if self.UPP_count != self.UPP:
+        if not flush and self.UPP_count != self.UPP:
             self.UPP_count += 1
             return
         self.UPP_count = 0
@@ -78,7 +78,7 @@ class Jdt:
     def complete(self):
         def getSuffix(done, progress):
             return 'Complete! Total: %d' % self.goal
-        self.update(self.goal, symbol = '#', getSuffix = getSuffix)
+        self.update(self.goal, symbol = '#', getSuffix = getSuffix, flush = True)
         self.active = False
         print()
 

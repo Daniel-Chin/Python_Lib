@@ -119,7 +119,7 @@ def recv(s):
                 'Darwin': '/'
            }[platform.system()]
     print('Default receive path:',path)
-    print('Use it, or change? Enter/c', end = '')
+    print('Use it, or change? Enter/c')
     if listen((b'c',b'\r'))==b'c':
         if professional:
             filename = input('path/file.ext = ')
