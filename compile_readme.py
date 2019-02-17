@@ -45,7 +45,7 @@ def main():
             out.write(f.read())
         documentate('', out, depth = 1)
 
-def documentate(cd, out, depth):
+def documentate(cd, out, depth, folder_documented = False):
     if depth >= 2:
         try:
             with open('readme.md', 'r') as f:
@@ -55,6 +55,7 @@ def documentate(cd, out, depth):
                     print('EMPTY README', cd)
                 out.write(doc)
                 out.write('\n\n')
+            folder_documented = True
         except:
             pass
     for node in os.listdir():
@@ -82,13 +83,13 @@ def documentate(cd, out, depth):
                         print(*buffer, file = out, end = '\n\n', sep = '  \n')
                     else:
                         identifier = cd + node
-                        if identifier not in SUPPRESS:
+                        if identifier not in SUPPRESS and not folder_documented:
                             print('No doc for file', identifier)
         else:   # isdir
             if node in ('.git', '__pycache__'):
                 continue
             os.chdir(node)
-            documentate(cd + node + '/', out, depth + 1)
+            documentate(cd + node + '/', out, depth + 1, folder_documented)
             os.chdir('..')
 
 main()
