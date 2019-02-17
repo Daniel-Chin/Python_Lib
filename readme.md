@@ -130,10 +130,8 @@ Record, play, save, and load macros.
 Windows only.  
 PROTECTION: global hooked button to stop macro = Windows Key 
 
-## md2html/
-Author = Aumit Leon  
-Converts markdown to html.  
-I changed __init__.py and renamed commandline.py to __main__.py
+## md2html.py
+Translate markdown .md file to html file. 
 
 ## moretk.py
 More tkinter gadgets
@@ -265,4 +263,8 @@ Updates description:
 
 ## tree.py
 Data type that stores file directory structure. 
+
+## wget.py
+Downloads a web resource.   
+Provide no argument to enter interactive mode. 
 
