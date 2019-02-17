@@ -74,9 +74,6 @@ Issues:
 ## count.py
 For counting votes and ranking the counts. 
 
-## CTF/
-IGNORE THIS FOLDER
-
 ## dict_shape.py
 Compare the shape of two dicts.   
 i.e. is the structure the same? are the keys the same? 
@@ -146,6 +143,9 @@ Unreliable file utils
 Serves through a (super) simplified version of http protocol.   
 Warning: Running this may expose your computer to attacks.   
 Don't run this. 
+
+## mymath.py
+More math utils than just `import math`
 
 ## mythread.py
 My threading utils

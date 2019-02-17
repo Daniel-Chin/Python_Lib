@@ -2,6 +2,37 @@
 Iterate through all files in this repo
 build a readme.md for Github. 
 '''
+SUPPRESS = [
+    'Archive/catch_eof/1.py',
+    'Archive/hash_math/1.py', 
+    'Archive/Magic.py', 
+    'Beer on the Wall/Data/bamboozle.py', 
+    'Beer on the Wall/Data/English.py', 
+    'Beer on the Wall/Data/main.py', 
+    'Beer on the Wall/Data/Song.py', 
+    'Beer on the Wall/Data/Sound.py', 
+    'Beer on the Wall/Data/troll.py', 
+    'Color_Tiles/Mac_Install.py', 
+    'Color_Tiles/Mac_Launcher.py', 
+    'Color_Tiles/Read_Me.txt',
+    'Color_Tiles/Windows_Install.py', 
+    'console/__main__.py', 
+    'console_explorer.py', 
+    'DanielSecureChat/daniel_secure_chat.py', 
+    'Find Vera/CharFinder.py', 
+    'Find Vera/Chars.txt', 
+    'Find Vera/flush_test.py', 
+    'interactive/cls.py', 
+    'interactive/__main__.py', 
+    'listen.py', 
+    'resize_image.py', 
+    'To the Earth/Bin/Design.txt', 
+    'To the Earth/Bin/Draft-Ab.txt', 
+    'To the Earth/Bin/Draft.txt', 
+    'To the Earth/Bin/EditSave.py', 
+    'To the Earth/Bin/Weapons.txt', 
+]
+
 import sys
 import os
 from os import path
@@ -50,7 +81,9 @@ def documentate(cd, out, depth):
                             buffer.append(line)
                         print(*buffer, file = out, end = '\n\n', sep = '  \n')
                     else:
-                        print('No doc for file', cd, node)
+                        identifier = cd + node
+                        if identifier not in SUPPRESS:
+                            print('No doc for file', identifier)
         else:   # isdir
             if node in ('.git', '__pycache__'):
                 continue
