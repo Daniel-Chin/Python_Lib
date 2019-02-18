@@ -4,7 +4,7 @@ Transmit files over the internet / LAN
 No encryption! Consider everything you transmit broadcast to the entire network. 
 '''
 print('importing...')
-from recvfile import recvFile
+from mysocket import recvFile, sendFileJdt
 from interactive import listen
 from pickle_socket import PickleSocket
 try:
@@ -105,7 +105,7 @@ def send(s):
     print('Sending...')
     s.sendObj(basename(filename))
     s.sendObj(size)
-    s.socket.sendfile(open(filename,'rb'))
+    sendFileJdt(s.socket, open(filename,'rb'))
     print('File sent:',filename)
 
 def recv(s):

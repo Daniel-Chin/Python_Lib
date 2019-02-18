@@ -10,7 +10,7 @@ __all__ = ['PickleSocket', 'RemoteClosedDuringPickle']
 PAGE = 4096
 
 class PickleSocket():
-    def __init__(self,upon_this_socket=None):
+    def __init__(self, upon_this_socket=None):
         if upon_this_socket is None:
             self.socket=socket()
         else:

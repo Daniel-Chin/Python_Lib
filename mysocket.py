@@ -3,6 +3,11 @@ My socket utils. Provides `recvall`, `recvFile`, and `sendFileJdt`.
 '''
 import jdt
 from socket import socket
+import os
+
+PAGE = 4096
+RUSH = 128
+RUSHxPAGE = RUSH * PAGE
 
 def recvFile(s, file_len, to_filename):
     '''
@@ -13,9 +18,9 @@ def recvFile(s, file_len, to_filename):
     with open(to_filename, 'wb+') as to_file:
         left = file_len
         while left:
-            for i in range(128):
-                left -= to_file.write(s.recv(min(left, 4096)))
-            recved = s.recv(min(left, 4096))
+            for i in range(RUSH):
+                left -= to_file.write(s.recv(min(left, PAGE)))
+            recved = s.recv(min(left, PAGE))
             if recved == b'':
                 if left:
                     assert False
@@ -42,3 +47,25 @@ def recvall(s, size, use_list = True):
         while len(recved) < size:
             recved += s.recv(left)
     return recved
+
+def sendFileJdt(s, file):
+    assert type(s) is socket
+    save_pos = file.tell()
+    total = file.seek(0, os.SEEK_END)
+    if not total:
+        print('mysocket Warning: file.seek did not return file size, using plan B. Daniel: change it to `seek() or tell()`')
+        total = file.tell()
+    file.seek(save_pos)
+    j = jdt.CommJdt(total, msg = 'send')
+    estimated_sent = 0
+    read = None
+    while read != b'':
+        if estimated_sent > total:
+            print('mysocket warning: OMG it actually happens! estimation drifted up! ')
+        else:
+            j.update(estimated_sent)
+        for i in range(RUSH):
+            read = file.read(PAGE)
+            s.sendall(read)
+        estimated_sent += RUSHxPAGE
+    j.complete()

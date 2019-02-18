@@ -31,6 +31,7 @@ def getPort():
             return DEFAULT_PORT
         else:
             return int(op)
+
 class LoudReceiver(Thread):
     def __init__(self, socket):
         super(__class__, self).__init__()
@@ -42,6 +43,9 @@ class LoudReceiver(Thread):
                 print(' *', self.socket.recv(PAGE).decode())
         finally:
             self.socket.close()
+
+def backgroundServe(*args, **kw):
+    Thread(None, serveNow, 'background serveNow', args, kw).start()
 
 if __name__ == '__main__':
     port = getPort()
