@@ -35,7 +35,7 @@ Exception handling:
 
 [a,b,c]*3
 
-list[-3:-2:1]
+list[-1:-9:-2]
 
 {}.get('Vera','Not found')
 
@@ -62,3 +62,5 @@ To: resize CMD
 
 To: compile exe or Mac exe
     PyInstaller
+
+f'1+1={1+1}'

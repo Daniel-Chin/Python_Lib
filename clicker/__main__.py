@@ -44,7 +44,9 @@ def main():
     for ip in potential_ip:
         addr = 'http://%s:%d' % (ip, PORT)
         try:
-            imgs.append(qrcode.make(addr))
+            qrCode = qrcode.main.QRCode()
+            qrCode.add_data(addr)
+            qrCode.print_ascii()
         except:
             print('Error 198456')
         print(addr)
