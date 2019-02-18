@@ -27,7 +27,7 @@ def getPort():
         return int(sys.argv[-1])
     else:
         op = input('Which port? (default %d) : ' % DEFAULT_PORT)
-        if int(op) == 0:
+        if op.strip() == '':
             return DEFAULT_PORT
         else:
             return int(op)

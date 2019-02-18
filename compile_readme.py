@@ -31,6 +31,8 @@ SUPPRESS = [
     'To the Earth/Bin/Draft.txt', 
     'To the Earth/Bin/EditSave.py', 
     'To the Earth/Bin/Weapons.txt', 
+    'recvall.py', 
+    'recvfile.py', 
 ]
 
 import sys
@@ -38,19 +40,15 @@ import os
 from os import path
 from myfile import openAsciize
 
-has_warning = False
-
 def main():
     os.chdir(path.dirname(path.abspath(__file__)))
     with open('readme.md', 'w+') as out:
         with open('readme_head.md', 'r') as f:
             out.write(f.read())
         documentate('', out, depth = 1)
-    if has_warning:
-        input('Enter...')
+    input('Done. Enter...')
 
 def documentate(cd, out, depth, folder_documented = False):
-    global has_warning
     if depth >= 2:
         try:
             with open('readme.md', 'r') as f:
@@ -90,7 +88,6 @@ def documentate(cd, out, depth, folder_documented = False):
                         identifier = cd + node
                         if identifier not in SUPPRESS and not folder_documented:
                             print('No doc for file', identifier)
-                            has_warning = True
         else:   # isdir
             if node in ('.git', '__pycache__'):
                 continue

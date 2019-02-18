@@ -150,6 +150,9 @@ Don't run this.
 ## mymath.py
 More math utils than just `import math`
 
+## mysocket.py
+My socket utils. Provides `recvall`, `recvFile`, and `sendFileJdt`. 
+
 ## mythread.py
 My threading utils
 
@@ -207,14 +210,6 @@ Get prime numbers
 
 ## qr_now.py
 Make a QR code instantly
-
-## recvall.py
-Receive `size` bytes from `socket`. Blocks until gets all.   
-Somehow doesn't handle socket closing.   
-I will fix that when I have time. 
-
-## recvfile.py
-receive a file from a socket with known length. 
 
 ## serve_now.py
 Immediately open a port, accept connection  
