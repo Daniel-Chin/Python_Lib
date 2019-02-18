@@ -2,33 +2,36 @@ import qrcode
 from colorama import Fore, Back, Style, init
 init()
 
-def printQR(data = None):
+def getLines(data):
+    lines = []
     qrCode = qrcode.main.QRCode()
     qrCode.add_data(data)
     matrix = qrCode.get_matrix()
-    if len(matrix) % 2 == 1:
-        matrix.append(matrix[0])
-    iter_matrix = iter(matrix)
-    for row_up in iter_matrix:
-        row_down = next(iter_matrix)
+    for row in matrix[2:-2]:
         line = []
-        for up, down in zip(row_up, row_down):
-            if up ^ down:
-                char = '▄'
+        for pixel in row[3:-3]:
+            if pixel:
+                line.append(Back.BLACK)
             else:
-                char = '⃪'
-            if up:
-                line.append(Fore.WHITE)
-                line.append(Back.LIGHTBLACK_EX)
-            else:
-                line.append(Back.LIGHTWHITE_EX)
-                line.append(Fore.BLACK)
-            line.append(char)
-        print(*line, sep = '')
-    print(Style.RESET_ALL, end = '')
+                line.append(Back.WHITE)
+        line.append('')
+        lines.append('  '.join(line))
+    return lines
+
+def printQR(data, data_2 = None):
+    if data_2 is None:
+        lines = getLines(data)
+    else:
+        lines_1 = getLines(data)
+        lines_2 = getLines(data_2)
+        delta = len(lines_2) - len(lines_1)
+        for i in range(delta):
+            lines_1.append(lines_1[-1])
+        lines = [x + y for x, y in zip(lines_1, lines_2)]
+    print(*lines, Style.RESET_ALL, sep = '\n')
 
 if __name__ == '__main__':
-    print('You can print stuff before')
-    printQR()
+    input('You can print stuff before. Enter...')
+    printQR('Test text', 'Other')
     print('And after. ')
     input('Enter...')

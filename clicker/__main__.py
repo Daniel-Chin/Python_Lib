@@ -15,8 +15,7 @@ import sys
 from myhttp import *
 import os
 from time import sleep
-import qrcode
-from threading import Thread
+from myqr import printQR
 from local_ip import getLocalIP
 
 PORT = 2338
@@ -29,27 +28,16 @@ def main():
     abspath = os.path.abspath(__file__)
     dname = os.path.dirname(abspath)
     os.chdir(dname)
-    potential_ip = getLocalIP()
-    imgs = []
-    class ShowImgThread(Thread):
-        def __init__(self, img):
-            Thread.__init__(self)
-            self.img = img
-        
-        def run(self):
-            self.img.show()
-    
-    potential_ip = [x for x in potential_ip if x != '192.168.56.1']
-    # Cisco Anyconnect shit
-    for ip in potential_ip:
-        addr = 'http://%s:%d' % (ip, PORT)
-        try:
-            qrCode = qrcode.main.QRCode()
-            qrCode.add_data(addr)
-            qrCode.print_ascii()
-        except:
-            print('Error 198456')
-        print(addr)
+    potential_ip = {*getLocalIP()} - {'192.168.56.1'} # Cisco Anyconnect shit
+    addrs = ['http://%s:%d' % (ip, PORT) for ip in potential_ip]
+    if len(potential_ip) < 3:
+        print(*addrs, sep = ' ' * 4)
+        printQR(*addrs)
+    else:
+        for addr in addrs:
+            print(addr)
+            printQR(addr)
+            print()
     print('Ctrl+C to stop.')
     print('Q to display QR code for phone scan.')
     try:
