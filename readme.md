@@ -150,6 +150,9 @@ Don't run this.
 ## mymath.py
 More math utils than just `import math`
 
+## myqr.py
+Prints QR code to terminal. Ascii only: black whitespace and white whitespace
+
 ## mysocket.py
 My socket utils. Provides `recvall`, `recvFile`, and `sendFileJdt`. 
 
@@ -207,6 +210,11 @@ Expect unexpected behaviors.
 
 ## prime.py
 Get prime numbers
+
+### qrchat/__main__.py
+Sets up a server, displays a QR code. Scan it to go to a web page. Exchange raw texts!    
+Useful for sending a URL from the phone to the laptop.    
+Warning: No authentication or encryption. Don't type in secrets. Don't assume who the remote is.  
 
 ## qr_now.py
 Make a QR code instantly

@@ -1,3 +1,6 @@
+'''
+Prints QR code to terminal. Ascii only: black whitespace and white whitespace
+'''
 import qrcode
 from colorama import Fore, Back, Style, init
 init()

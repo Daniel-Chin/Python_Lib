@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<style>
+.btn {
+  font-size: 10vw;
+  background-color: black;
+  color: white;
+  font-family: "comic sans", "verdana", "sans serif", "arial", "times new roman";
+  width: 100%;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  transition: 0.3s;
+  user-select: none;
+}
+
+.btn:active {
+  background-color: #077    ;
+  transition: 0s;
+}
+
+input {
+  font-size: 5vw;
+  width: 100%;
+}
+</style>
+<script>
+const send = function () {
+  const input = document.getElementById("inputBox");
+  var xhttp = new XMLHttpRequest();
+  xhttp.open("GET", 'msg' + encodeURIComponent(input.value), true);
+  xhttp.send();
+  input.value = '';
+}
+</script>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width">
+    <title>QR Chat by Daniel</title>
+  </head>
+  <body>
+    <input id="inputBox" type="text" /><br />
+    <button onclick="send();" class="btn">
+        send
+    </button>
+  </body>
+</html>
