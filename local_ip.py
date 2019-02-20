@@ -16,3 +16,7 @@ else:
             if 'IPv4' in line:
                 potential_ip.append(line.split(': ')[1])
         return potential_ip
+
+if __name__ == '__main__':
+    print(getLocalIP())
+    input('enter...')

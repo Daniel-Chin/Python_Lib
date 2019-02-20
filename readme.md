@@ -98,6 +98,9 @@ Formatting time data in a friendly manner.
 ## graphic_terminal.py
 Tools to do graphics in the terminal.
 
+## httpmim.py
+HTTP man in middle. Prints all traffic. Useful for investigating how http works. Although Chrome Dev Tools prolly have something like this already.  
+
 ## hub.py
 Hub: forward all socket messages.   
 Connect, sendall(b'OK'), forward...
