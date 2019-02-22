@@ -1,163 +1,154 @@
-mywords = None
+features = None
 feature_length = None
+train = None
+test = None
 
 def spread():
-    f = open("spam_train.txt","r")
-    f_validation = open("validation.txt","w")
-    f_train = open("train.txt","w")
-    n = 0
-    while n < 1000:
-        line = f.readline()
-        f_validation.write(line)
-        n +=1
-    f_validation.close()
-    while n>=1000:
-        line = f.readline()
-        n +=1
-        if n == 1108 or n == 4185 or n == 4683:
-            continue
-        if len(line) == 0:
-            break
-        f_train.write(line)
-    f_train.close()
-    f.close()
+    global train, test
+    with open("spam_train.txt","r") as f:
+        spam_train = [x.strip() for x in f.readlines()]
+    spam_train.pop(4682) # important: from big to small
+    spam_train.pop(4184)
+    spam_train.pop(1107)
+    with open("spam_test.txt","r") as f:
+        spam_test = [x.strip() for x in f.readlines()]
+    options = {
+        'v': 'train = spam_train[1000 : 1000 + N];   test = spam_train[:1000]', 
+        't': 'train = spam_train[:N];                test = spam_test', 
+    }
+    fullname = {'v': 'validation mode', 't': 'testing mode   '}
+    print()
+    print('We have two raw files: spam_train (%d) and spam_test (%d).' % (len(spam_train), len(spam_test)))
+    print('How do you want to extract samples from them?')
+    for mode, code in options.items():
+        print(' *', fullname[mode], ':', code)
+    inp = ''
+    while inp not in options.keys():
+        inp = input(f'Type {"/".join(options.keys())} >>')
+    code = options[inp]
+    print()
+    print('This will be run: ')
+    print(code)
+    N = int(input('please specify N = '))
+    codes = [line.split(' = ')[1] for line in code.replace('N', str(N)).split(';')]
+    train, test = eval(codes[0]), eval(codes[1])
+    train = parseEmail(train)
+    print('training data', len(train), 'emails')
+    test = parseEmail(test)
+    print('testing data', len(test), 'emails')
 
-def lst_of_samples(data):
-    f = open(data,"r")
-    lst_of_examples = []
-    while True:
-        line = f.readline().rstrip('\n')
-        if len(line) == 0:
-            break
-        lst_of_examples.append(line.split(' '))
-    f.close()
-    return lst_of_examples
+def parseEmail(str_emails):
+    emails = []
+    for str_email in str_emails:
+        emails.append(str_email.split(' '))
+    return emails
 
-def words(data,X):
-    lst0 = lst_of_samples(data)
-    myset = set()
-    for i in lst0:
-        myset.update(i)
-    lst1 = list(myset)
-    dic={}
-    for i in lst1:
-        dic[i]=0
-    lst_feature = []
-    for email in lst0:
-        for word in email:
-            dic[word] += 1
-    for word, times in dic.items():
-        if times >= X:
-            lst_feature.append(word)
-    lst_feature.remove('1')
-    lst_feature.remove('0')
-    return lst_feature
- 
-"""...........................................................................................................................""" 
-def feature_vector(email):
-    lst_vector=[]
-    email.split(' ')
-    for i in mywords:
-        if i in email:
-            lst_vector.append(1)
+def findHighWords(X):
+    stats = {}
+    for email in train:
+        word_set = set(email) - {'0', '1'}
+        for word in word_set:
+            stats[word] = stats.get(word, 0) + 1
+            # If exist, +1. If not, =1. 
+    high_words = []
+    for word, appearance in stats.items():
+        if appearance >= X:
+            high_words.append(word)
+    return high_words
+
+''' ####################################################### '''
+def feature_data(email):
+    vector = []
+    for word in features:
+        if word in email:
+            vector.append(1)
         else:
-            lst_vector.append(0)
-    return lst_vector
+            vector.append(0)
+    return vector
 
-def feature_data(lst):
-    lst_vector=[]
-    for i in mywords:
-        if i in lst:
-            lst_vector.append(1)
+def vectorizeEmails(emails):
+    vector = []
+    total = len(emails)
+    for i, email in enumerate(emails):
+        if email[0] == '1':
+            is_spam = 1
         else:
-            lst_vector.append(0)
-    return lst_vector
+            is_spam = -1
+        print('Vectorizing email', i, '/', total, '...', end = '\r', flush = True)
+        vector.append(feature_data(email) + [is_spam])
+    print('All emails vectorized.', ' ' * 10)
+    return vector
 
+def predict(vector_email, w):
+    tem = 0
+    for j in range(feature_length):
+        tem += w[j] * vector_email[j]
+    return tem
 
-def perceptron_train(data):
-    lst_samples_vector= []
-    for i in lst_of_samples(data):
-        if '1' in i:
-            a = feature_data(i)
-            a.append(1)
-            lst_samples_vector.append(a)    
-        else:
-            a = feature_data(i)
-            a.append(-1)
-            lst_samples_vector.append(a)
-    w = []
-    n = 0
-    while n < feature_length:
-        w.append(0)
-        n += 1
+def perceptron_train(iter_max):
+    vector_emails = vectorizeEmails(train)
+    w = [0] * feature_length
     k = 0
     iteration = 0
-    while True:
-        iteration +=1
-        print(iteration)
+    while iter_max == 0 or iteration < iter_max:
+        iteration += 1
+        print('iteration', iteration, '...', end = '\r', flush = True)
         mark = 0
-        for i in lst_samples_vector:
-            tem = 0
-            for j in range(feature_length):
-                tem += w[j]*i[j]
-            a = i[feature_length]*tem
-            if a > 0:
-                w = w
-            else:
+        for vector_email in vector_emails:
+            score = vector_email[-1] * predict(vector_email, w)
+            if score <= 0:
                 for j in range(feature_length):
-                    w[j] = int(w[j]) + int(i[feature_length])*int(i[j])
-                    mark += 1
+                    w[j] += vector_email[-1] * vector_email[j]
+                mark += 1
+        print('iteration', iteration, end = ' ')
         if mark == 0:
+            print('result: good. mark = 0')
             break
         else:
+            print('result: not so good. mark =', mark)
             k += mark
-            continue
-    return w,k,iteration
-    print(w,k,iteration)
+    return w, k, iteration
 
-def perceptron_error(w,data_test):
-    marker = 0
-    lst_samples_vector= []
-    for i in lst_of_samples(data_test):
-        if '1' in i:
-            a = feature_data(i)
-            a.append(1)
-            lst_samples_vector.append(a)
-        else:
-            a = feature_data(i)
-            a.append(-1)
-            lst_samples_vector.append(a)
-
-    for i in lst_samples_vector:
-        tem = 0
-        for j in range(feature_length):
-            tem += w[j]*i[j]
-        a = i[feature_length]*tem
-        if a > 0:
-            marker =marker
-        else:
-            marker += 1
-    error = marker/len(lst_samples_vector)
+def perceptron_error(w, tester):
+    mark = 0
+    vector_emails = vectorizeEmails(tester)
+    print('Testing predictions...', end = '\r', flush = True)
+    for vector_email in vector_emails:
+        if predict(vector_email, w) * vector_email[-1] <= 0:
+            mark += 1
+    error = mark / len(vector_emails)
     return error
 
+def common_words(w):
+    dic = dict(zip(features, w))
+    tem_w = w
+    tem_w.sort()
+    lst_max = [x for x in features if dic[x] >= tem_w[-12]]
+    lst_min = [x for x in features if dic[x] <= tem_w[11]]
+    print('the list of the words with the most positive weights is', lst_max)
+    print('the list of the words with the most negative weights is', lst_min)
+
 def main():
-	global mywords, feature_length
-	spread()
-	X = int(input('please input the number determine the feature of data'))
-	training_data = input('please input the training data')
-	validation_data = input('please input the validation data')
-	mywords = words(training_data,X)
-	feature_length = len(mywords)
-	print(feature_length)
-	training_result = perceptron_train(training_data)
-	w = training_result[0]
-	k = training_result[1]
-	iter = training_result[2]
-	print('the total update number is',k)
-	print('the total iteration is',iter)
-	training_error = perceptron_error(w,training_data)
-	print('the perceptron error of training data is',training_error)
-	validation_error = perceptron_error(w,validation_data)
-	print('the perceptron error of validation data is', validation_error)
+    global features, feature_length
+    prompt, default = 'please input the number determine the feature of data = ', '26'
+    print(prompt + default, end = '\r')
+    X = int(input(prompt).strip() or default)
+    spread()
+    print('Selecting features...', end = '\r', flush = True)
+    features = findHighWords(X)
+    feature_length = len(features)
+    print('feature_length =', feature_length, ' ' * 10)
+    prompt, default = "please enter the control number of the iteration. Enter 0 to release control = ", '30'
+    print(prompt + default, end = '\r')
+    iter_max = int(input(prompt).strip() or default)
+    print('Traning starts.')
+    w, k, iter = perceptron_train(iter_max)
+    print('the total update number is', k)
+    print('the total iteration is', iter)
+    training_error = perceptron_error(w, train)
+    print('the perceptron error of training data is',training_error)
+    validation_error = perceptron_error(w, test)
+    print('the perceptron error of validation/test data is', validation_error)
+    common_words(w)
 
 main()

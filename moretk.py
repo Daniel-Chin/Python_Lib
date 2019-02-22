@@ -4,6 +4,7 @@ More tkinter gadgets
 import tkinter as tk
 import threading
 from PIL import Image, ImageTk
+from graphic_terminal import eastAsianStrLen
 
 def screenCenter(root):
     root.update_idletasks()
@@ -210,12 +211,7 @@ def bilingualStringLen(string, fontsize = 18):
     '''
     counts a chinese character as length of 2. 
     '''
-    length = 0
-    for char in string:
-        if len(char.encode()) > 1:
-            length+=2.2
-        else:
-            length+=1
+    length = eastAsianStrLen(string, 2.2)
     length = int(length * fontsize / 18)
     return length
 

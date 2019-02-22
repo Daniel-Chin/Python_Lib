@@ -102,6 +102,7 @@ def strCommonStart(list_strs, known_len = 0):
     return list_strs[0][:i + 1]
 
 def chooseFromEntries(matches):
+    input('Warning: interactive/__init__/chooseFromEntries will be deprecated!!! Enter...')
     if len(matches)==1:
         return matches[0]
     elif matches==[]:

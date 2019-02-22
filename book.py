@@ -9,8 +9,7 @@ from math import sqrt
 import pickle
 from os import system, listdir
 from time import time
-from listen import listen
-import listen as _listen
+from interactive import listen
 from friendly_time import friendlyTime 
 from getpass import getpass
 import random
@@ -20,7 +19,6 @@ if platform.system() == 'Linux':
     PATH = '/sdcard/Daniel/Beeph/'
 else:
     PATH = ''
-_listen.msvcrt = None
 
 print('Loading classes and functions...')
 
