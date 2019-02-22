@@ -3,19 +3,18 @@ Terminal interactivity utils.
 
 One vulnerability in `listen`. Do help(listen) for details. 
 '''
-#===============================================================================
-# I do not know why this was here. 
-# if 'flush' not in getargspec(print).args:
-#     print_3 = print
-#     def print(*args, flush = False, **kw):
-#         print_3(*args, **kw)
-#===============================================================================
-__all__ = ['listen', 'strCommonStart', 'AbortionError', 'cls', 'askForFile', 'askSaveWhere']
+__all__ = ['listen', 'strCommonStart', 'AbortionError', 'cls', 'askForFile', 'askSaveWhere', 'inputChin']
 from time import sleep
 from .console_explorer import *
 from .cls import cls
+from colorama import init, Back, Fore, Style
+init()
+from terminalsize import get_terminal_size
+from graphic_terminal import *
+import string
 
 FPS = 30
+CURSOR_WRAP = Back.GREEN + Fore.WHITE + '%s' + Style.RESET_ALL
 
 try:
     import msvcrt
@@ -120,3 +119,163 @@ def chooseFromEntries(matches):
         except:
             print("Search aborted. ")
             return None
+
+_abbr = '...'
+ABBR = [*'...']
+ABBR[0] = Back.MAGENTA + Fore.WHITE + ABBR[0]
+ABBR[-1] += Style.RESET_ALL
+ABBR_LEN = len(_abbr) + 1
+def printWithCursor(prompt, line, cursor):
+    if cursor == len(line):
+        line += ' '
+    chars, [cursor] = eastAsianStrSparse(line, [cursor])
+    chars[cursor] = CURSOR_WRAP % chars[cursor]
+    width = get_terminal_size()[0] - eastAsianStrLen(prompt) - 1
+    offset = min(cursor - width // 2, len(chars) - width)
+    if offset > 0:
+        chars = chars[offset + ABBR_LEN:]
+        if chars[0] == '':
+            chars.pop(0)
+        chars = ABBR + [' '] + chars
+    offset = len(chars) - width
+    if offset > 0:
+        if chars[-offset] == '':
+            offset += 1
+        chars = chars[:-offset - ABBR_LEN]
+        chars += [' '] + ABBR
+    line = ''.join(chars)
+    print(prompt, line.replace('\x1a', '^Z'), end = '\r', flush = True, sep = '')
+
+def inputChin(prompt = '', default = '', history = [], kernal = None):
+    '''
+    `kernal` for tab key auto complete. 
+    '''
+    default = str(default)
+    line = default
+    cursor = len(line)
+    history_selection = len(history)
+    while True:
+        printWithCursor(prompt, line, cursor)
+        op = listen()
+        last_len = len(line)
+        if op == b'\r':
+            clearLine()
+            print(prompt + line.replace('\x1a', '^Z'))
+            return line
+        elif op == b'\x08': # backspace
+            if cursor >= 1:
+                line = line[:cursor - 1] + line[cursor:]
+                cursor -= 1
+        elif op == b'\xe0S':    # del
+            if cursor <= len(line):
+                line = line[:cursor] + line[cursor + 1:]
+        elif op == b'\xe0H':    # up
+            history_selection -= 1
+            if history_selection in range(len(history)):
+                line = history[history_selection]
+                cursor = len(line)
+            else:
+                history_selection += 1
+        elif op == b'\xe0P':    # down
+            history_selection += 1
+            if history_selection in range(len(history)):
+                line = history[history_selection]
+                cursor = len(line)
+            else:
+                history_selection -= 1
+        elif op == b'\xe0K':    # left
+            cursor -= 1
+            if cursor not in range(len(line) + 1):
+                cursor += 1
+        elif op == b'\xe0M':    # right
+            cursor += 1
+            if cursor not in range(len(line) + 1):
+                cursor -= 1
+        elif op == b'\xe0G':    # home
+            cursor = 0
+        elif op == b'\xe0O':    # end
+            cursor = len(line)
+        elif op == b'\xe0s': # Ctrl Left
+            cursor = wordStart(line, cursor)
+        elif op == b'\xe0t': # Ctrl Right
+            cursor = wordEnd(line, cursor)
+        elif op == b'\x7f':  # Ctrl Backspace
+            old_cursor = cursor
+            cursor = wordStart(line, cursor)
+            line = line[:cursor] + line[old_cursor:]
+        elif op == b'\xe0\x93': # Ctrl Del
+            old_cursor = cursor
+            cursor = wordEnd(line, cursor)
+            line = line[:old_cursor] + line[cursor:]
+            cursor = old_cursor
+        elif op == b'\t':
+            # auto complete
+            if kernal is not None:
+                legal_prefix = string.ascii_letters + string.digits + '_'
+                reversed_names = []
+                name_end = cursor
+                name_start = cursor - 1
+                while True:
+                    if name_start >= 0 and line[name_start] in legal_prefix:
+                        name_start -= 1
+                    else:
+                        reversed_names.append(line[name_start + 1:name_end])
+                        name_end = name_start
+                        name_start -= 1
+                        if name_start < 0 or line[name_end] != '.':
+                            break
+                keyword = reversed_names.pop(0)
+                names = reversed(reversed_names)
+                to_search = kernal.send('dir(%s)' % '.'.join(names))
+                if len(reversed_names) == 0:
+                    # include builtins
+                    to_search += dir(__builtins__)
+                next(kernal)
+                candidates = [x for x in to_search if x.startswith(keyword)]
+                if len(candidates) >= 1:
+                    if len(candidates) == 1:
+                        to_become = candidates[0]
+                    if len(candidates) > 1:
+                        clearLine()
+                        print('auto-complete: ', end = '')
+                        [print(x, end = '\t') for x in candidates]
+                        print()
+                        to_become = strCommonStart(candidates, len(keyword))
+                    to_insert = to_become[len(keyword):]
+                    line = line[:cursor] + to_insert + line[cursor:]
+                    cursor += len(to_insert)
+        elif op[0] in range(1, 26) or op[0] in (0, 224):
+            pass    # invalid char
+        else:   # typed char
+            line = line[:cursor] + op.decode() + line[cursor:]
+            cursor += 1
+        clearLine()
+
+def wordStart(line, cursor):
+    word_started = False
+    i = cursor
+    for i in range(cursor - 1, -1, -1):
+        if line[i].isalpha():
+            word_started = True
+        else:
+            if word_started:
+                i += 1
+                break
+    return i
+
+def wordEnd(line, cursor):
+    word_started = False
+    word_ended = False
+    i = cursor
+    for i in range(cursor, len(line)):
+        if line[i].isalpha():
+            if word_ended:
+                break
+            else:
+                word_started = True
+        else:
+            if word_started:
+                word_ended = True
+    else:
+        i = len(line)
+    return i

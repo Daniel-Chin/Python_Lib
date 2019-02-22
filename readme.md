@@ -61,15 +61,16 @@ A lighter IPython that launches very quickly. Supports runtime embed.
 For a clean namespace.
 
 ### console/__init__.py
-Windows only. If not windows, console() calls IPython.embed().   
-Advantages over IPython:   
-    1. Lighter  
-    2. Other threads can still print things when user is inputting commands  
-    3. Tab auto-completes your phrase, even under Windows! (I'm proud.)   
-Issues:   
-    1. If you wanna scroll up, you need to input().  
-    2. Reassigning module global variables will not be visible to module native codes. Sorry.   
-    3. No multi-line code continuation yet
+Windows only. If not windows, `console()` calls `IPython.embed()`.   
+Advantages over IPython:    
+    1. Lighter    
+    2. Other threads can still print things when user is inputting commands    
+    3. Tab auto-completes your phrase, even under Windows! (I'm proud.)    
+Issues:    
+    1. Reassigning module global variables will not be visible to module native codes. Sorry.    
+Fexed Issues:    
+    1. If you wanna scroll up, you don't need to input() anymore!    
+    2. Multi-line code continuation is implemented!  
 
 ## count.py
 For counting votes and ranking the counts. 
@@ -96,7 +97,10 @@ Evaluate beautiful formulas like ???(2??3??4)
 Formatting time data in a friendly manner. 
 
 ## graphic_terminal.py
-Tools to do graphics in the terminal.
+Tools to do graphics in the terminal.    
+`clearLine`: fill the current line with ' ' (whitespace)    
+`eastAsianStrLen`: length of str as displayed on terminal (so chinese characters and other fullwidth chars count as 2 or more spaces)    
+`displayAllColors`: display all colors that your terminal supports.  
 
 ## httpmim.py
 HTTP man in middle. Prints all traffic. Useful for investigating how http works. Although Chrome Dev Tools prolly have something like this already.  

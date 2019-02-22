@@ -4,13 +4,12 @@ For a clean namespace.
 def Kernal(namespace = {}):
     from os import system as cmd
     from pprint import pprint
-    def cls():
-        cmd('cls')
+    from interactive import cls
     
     if namespace:
         for name in namespace:
-            if name[0] != '_':
-                exec(name + '=namespace[\''+name+'\']')
+            if not name.startswith('_'):
+                exec(f'{name}=namespace["{name}"]')
         del name
     del namespace
     while True:
@@ -41,4 +40,5 @@ if __name__ == '__main__':
     kernal = Kernal({})
     next(kernal)
     while True:
-        kernal.send(input('>> '))
+        print(kernal.send(input('>> ')))
+        next(kernal)

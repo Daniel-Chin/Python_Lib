@@ -64,3 +64,21 @@ To: compile exe or Mac exe
     PyInstaller
 
 f'1+1={1+1}'
+
+while else?
+	while next(iter(range(3))):
+		pass
+	else:
+		willDo()
+
+	while next(iter(range(3))):
+		break
+	else:
+		willNotDo()
+
+	while False:
+		pass
+	else:
+		willDo()
+
+'yes' if True else 'no'
