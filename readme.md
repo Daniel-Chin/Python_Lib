@@ -19,24 +19,6 @@ Find Vera/
 Beer on the Wall/  
 
 # Documentation
-## Archive/
-Meaningless Archive of random Python Scripts I wrote.
-
-## ascii_table.py
-A beautiful script to print the ascii table. 
-
-## babble.py
-Repeatedly prints 'wobo wabble' indefinitely. 
-
-## Beer on the Wall/
-Bamboozling lyric-rolling music-playing windows-only python script
-
-## book.py
-A file system. 
-
-## cache_no_hash.py
-Inefficiently cache and lookup function returns. 
-
 ### clicker/__main__.py
 Windows only.   
 Use your phone to send UP and DOWN to your computer!   
@@ -47,21 +29,24 @@ Don't run this if you don't know what you are doing.
 Only run this if you are in a safe network, or inside a firewall.   
 I am not responsible if someone attacks your computer through this server. 
 
-## Color_Tiles/
-A game
+## jdt.py
+Progress bar. 
 
-## compile_readme.py
-Iterate through all files in this repo  
-build a readme.md for Github. 
+## md2html.py
+Translate markdown .md file to html file. 
+
+## book.py
+A file system. 
+
+## cache_no_hash.py
+Inefficiently cache and lookup function returns. 
 
 ## console/
 A lighter IPython that launches very quickly. Supports runtime embed.
 
-### console/kernal.py
-For a clean namespace.
-
 ### console/__init__.py
 Windows only. If not windows, `console()` calls `IPython.embed()`.   
+Usage: `console({**locals(), **globals()})`  
 Advantages over IPython:    
     1. Lighter    
     2. Other threads can still print things when user is inputting commands    
@@ -72,18 +57,24 @@ Fexed Issues:
     1. If you wanna scroll up, you don't need to input() anymore!    
     2. Multi-line code continuation is implemented!  
 
-## count.py
-For counting votes and ranking the counts. 
+### console/kernal.py
+For a clean namespace.
 
-## dict_shape.py
-Compare the shape of two dicts.   
-i.e. is the structure the same? are the keys the same? 
+### interactive/__init__.py
+Terminal interactivity utils.   
+  
+One vulnerability in `listen`. Do help(listen) for details. 
+
+### interactive/console_explorer.py
+An android-friendly console file explorer. 
+
+### macro/__main__.py
+Record, play, save, and load macros.   
+Windows only.  
+PROTECTION: global hooked button to stop macro = Windows Key 
 
 ## echo.py
 print(sys.argv)
-
-### Find Vera/Find_Vera V2.py
-A game by Daniel
 
 ## forcemap.py
 Like dummy.Pool.map, but no limit of number of threads.   
@@ -96,93 +87,17 @@ Evaluate beautiful formulas like ???(2??3??4)
 ## friendly_time.py
 Formatting time data in a friendly manner. 
 
-## graphic_terminal.py
-Tools to do graphics in the terminal.    
-`clearLine`: fill the current line with ' ' (whitespace)    
-`eastAsianStrLen`: length of str as displayed on terminal (so chinese characters and other fullwidth chars count as 2 or more spaces)    
-`displayAllColors`: display all colors that your terminal supports.  
-
-## httpmim.py
-HTTP man in middle. Prints all traffic. Useful for investigating how http works. Although Chrome Dev Tools prolly have something like this already.  
-
-## hub.py
-Hub: forward all socket messages.   
-Connect, sendall(b'OK'), forward...
-
-### interactive/console_explorer.py
-An android-friendly console file explorer. 
-
-### interactive/__init__.py
-Terminal interactivity utils.   
-  
-One vulnerability in `listen`. Do help(listen) for details. 
-
-## ipynb_to_py.py
-Converts ipynb to py.   
-Works even when Jupyter is not installed. 
-
-## jdt.py
-Progress bar. 
-
 ## lab.py
 This is for me only.   
 You won't get why this code is here.   
 Give up. 
 
-## local_ip.py
-Find out local IP addr on Windows
-
-### macro/__main__.py
-Record, play, save, and load macros.   
-Windows only.  
-PROTECTION: global hooked button to stop macro = Windows Key 
-
-## md2html.py
-Translate markdown .md file to html file. 
+## hub.py
+Hub: forward all socket messages.   
+Connect, sendall(b'OK'), forward...
 
 ## moretk.py
 More tkinter gadgets
-
-## my.py
-My misc little tools. 
-
-## myfile.py
-Unreliable file utils
-
-## myhttp.py
-Serves through a (super) simplified version of http protocol.   
-Warning: Running this may expose your computer to attacks.   
-Don't run this. 
-
-## mymath.py
-More math utils than just `import math`
-
-## myqr.py
-Prints QR code to terminal. Ascii only: black whitespace and white whitespace
-
-## mysocket.py
-My socket utils. Provides `recvall`, `recvFile`, and `sendFileJdt`. 
-
-## mythread.py
-My threading utils
-
-## myxml.py
-XML parser
-
-## Notes.txt
-My personal notebook for learning Python. 
-
-## nothing.py
-
-
-## oneship.py
-?????????  
-Transmit files over the internet / LAN  
-No encryption! Consider everything you transmit broadcast to the entire network. 
-
-## os_stimulate.py
-My laptop is weird. Running this script makes opening and terminating processes faster.   
-Speculation: Taking CPU time away from Windows Defender? 
 
 ## pdf_unspread.py
 Original author: pmaupin  
@@ -196,6 +111,31 @@ Creates unspread.my.pdf
 Chops each page in half, e.g. if a source were  
 created in booklet form, you could extract individual  
 pages.
+
+## my.py
+My misc little tools. 
+
+## myfile.py
+Unreliable file utils
+
+## myhttp.py
+Serves through a (super) simplified version of http protocol.   
+Warning: Running this may expose your computer to attacks.   
+Don't run this. 
+
+## mythread.py
+My threading utils
+
+## oneship.py
+?????????  
+Transmit files over the internet / LAN  
+No encryption! Consider everything you transmit broadcast to the entire network. 
+
+## myxml.py
+XML parser
+
+## nothing.py
+
 
 ## pickle_preview.py
 Preview a pickle file
@@ -218,20 +158,16 @@ Expect unexpected behaviors.
 ## prime.py
 Get prime numbers
 
-### qrchat/__main__.py
-Sets up a server, displays a QR code. Scan it to go to a web page. Exchange raw texts!    
-Useful for sending a URL from the phone to the laptop.    
-Warning: No authentication or encryption. Don't type in secrets. Don't assume who the remote is.  
-
-## qr_now.py
-Make a QR code instantly
-
-## serve_now.py
-Immediately open a port, accept connection  
-and does nothing. 
-
 ## stats.py
 What I learned from Statistics for Business and Finance. 
+
+## tree.py
+Data type that stores file directory structure. 
+
+## beepher.py
+This is to be imported.   
+Class Beepher is like an IO wrapper.   
+Beepher(raw, key)
 
 ## terminalsize.py
 Contributors of this code: Alexander Belchenko, Harco Kuppens, Justin Riley.   
@@ -239,6 +175,34 @@ http://code.activestate.com/recipes/440694-determine-size-of-console-window-on-w
 https://stackoverflow.com/questions/566746/how-to-get-linux-console-window-width-in-python  
 https://gist.github.com/jtriley/1108174   
 I changed python2 to python3, and added crediting printing. 
+
+## graphic_terminal.py
+Tools to do graphics in the terminal.    
+`clearLine`: fill the current line with ' ' (whitespace)    
+`eastAsianStrLen`: length of str as displayed on terminal (so chinese characters and other fullwidth chars count as 2 or more spaces)    
+`displayAllColors`: display all colors that your terminal supports.  
+
+## serve_now.py
+Immediately open a port, accept connection  
+and does nothing. 
+
+## local_ip.py
+Find out local IP addr on Windows
+
+## Archive/
+Meaningless Archive of random Python Scripts I wrote.
+
+## Beer on the Wall/
+Bamboozling lyric-rolling music-playing windows-only python script
+
+## Color_Tiles/
+A game
+
+### Find Vera/Find_Vera V2.py
+A game by Daniel
+
+## Notes.txt
+My personal notebook for learning Python. 
 
 ### To the Earth/To the Earth V8.py
 A game by Daniel.   
@@ -271,10 +235,52 @@ Updates description:
     V8:  
         Changed the abbr of Space Corgi to " Corgi"
 
-## tree.py
-Data type that stores file directory structure. 
+## babble.py
+Repeatedly prints 'wobo wabble' indefinitely. 
+
+## compile_readme.py
+Iterate through all files in this repo  
+build a readme.md for Github. 
+
+## count.py
+For counting votes and ranking the counts. 
+
+## dict_shape.py
+Compare the shape of two dicts.   
+i.e. is the structure the same? are the keys the same? 
+
+## ipynb_to_py.py
+Converts ipynb to py.   
+Works even when Jupyter is not installed. 
+
+## os_stimulate.py
+My laptop is weird. Running this script makes opening and terminating processes faster.   
+Speculation: Taking CPU time away from Windows Defender? 
+
+## qr_now.py
+Make a QR code instantly
+
+## ascii_table.py
+A beautiful script to print the ascii table. 
+
+## mymath.py
+More math utils than just `import math`
+
+## mysocket.py
+My socket utils. Provides `recvall`, `recvFile`, and `sendFileJdt`. 
 
 ## wget.py
 Downloads a web resource.   
 Provide no argument to enter interactive mode. 
+
+## myqr.py
+Prints QR code to terminal. Ascii only: black whitespace and white whitespace
+
+## httpmim.py
+HTTP man in middle. Prints all traffic. Useful for investigating how http works. Although Chrome Dev Tools prolly have something like this already.  
+
+### qrchat/__main__.py
+Sets up a server, displays a QR code. Scan it to go to a web page. Exchange raw texts!    
+Useful for sending a URL from the phone to the laptop.    
+Warning: No authentication or encryption. Don't type in secrets. Don't assume who the remote is.  
 
