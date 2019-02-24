@@ -28,6 +28,11 @@ A beautiful script to print the ascii table.
 ## babble.py
 Repeatedly prints 'wobo wabble' indefinitely. 
 
+## beepher.py
+This is to be imported.   
+Class Beepher is like an IO wrapper.   
+Beepher(raw, key)
+
 ## Beer on the Wall/
 Bamboozling lyric-rolling music-playing windows-only python script
 
@@ -62,6 +67,7 @@ For a clean namespace.
 
 ### console/__init__.py
 Windows only. If not windows, `console()` calls `IPython.embed()`.   
+Usage: `console({**locals(), **globals()})`  
 Advantages over IPython:    
     1. Lighter    
     2. Other threads can still print things when user is inputting commands    

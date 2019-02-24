@@ -1,5 +1,6 @@
 '''
 Windows only. If not windows, `console()` calls `IPython.embed()`. 
+Usage: `console({**locals(), **globals()})`
 Advantages over IPython:  
     1. Lighter  
     2. Other threads can still print things when user is inputting commands  
