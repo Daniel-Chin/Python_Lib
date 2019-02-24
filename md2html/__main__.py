@@ -1,5 +1,6 @@
 '''
-Translate markdown .md file to html file. 
+Translate markdown .md file to html file.  
+Note: to work on WordPress, avoid level one header (# Title).  
 '''
 import argparse
 
@@ -12,16 +13,20 @@ def main():
             print(*args, file = html, **kw)
         # write('<!DOCTYPE html>')
         write('<html><body>')
-        with open(args.input, 'r') as md:
-            for line in md:
-                write(translateLine(line))
+        try:
+            with open(args.input, 'r') as md:
+                for line in md:
+                    write(translateLine(line))
+        except FileNotFoundError:
+            print('Please run python -m md2html -h')
+            return
         write('</body></html>')
     print('Done. Written to', args.output)
 
 def parseArgs():
-    parser = argparse.ArgumentParser(description = 'Convert markdown to html')
-    parser.add_argument('--input', '-i', type = str, default = 'src.md', help = 'input markdown file')
-    parser.add_argument('--output', '-o', type = str, default = 'build.html', help = 'output html file')
+    parser = argparse.ArgumentParser(description = 'Convert markdown to html', epilog = __doc__)
+    parser.add_argument('--input', '-i', type = str, default = 'src.md', help = 'input markdown file. Default: src.md')
+    parser.add_argument('--output', '-o', type = str, default = 'build.html', help = 'output html file. Default: build.html')
     return parser.parse_args()
 
 def translateLine(src):

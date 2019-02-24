@@ -137,8 +137,9 @@ Record, play, save, and load macros.
 Windows only.  
 PROTECTION: global hooked button to stop macro = Windows Key 
 
-## md2html.py
-Translate markdown .md file to html file. 
+### md2html/__main__.py
+Translate markdown .md file to html file.    
+Note: to work on WordPress, avoid level one header (# Title).  
 
 ## moretk.py
 More tkinter gadgets
