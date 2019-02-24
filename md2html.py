@@ -20,17 +20,17 @@ def main():
 
 def parseArgs():
     parser = argparse.ArgumentParser(description = 'Convert markdown to html')
-    parser.add_argument('--input', '-i', type = str, default = 'raw.md', help = 'input markdown file')
+    parser.add_argument('--input', '-i', type = str, default = 'src.md', help = 'input markdown file')
     parser.add_argument('--output', '-o', type = str, default = 'build.html', help = 'output html file')
     return parser.parse_args()
 
-def translateLine(raw):
+def translateLine(src):
     n_hash = 0
-    while raw.startswith('#'):
+    while src.startswith('#'):
         n_hash += 1
-        raw = raw[1:]
+        src = src[1:]
     tag = n_hash2Tag(n_hash)
-    s = raw.strip() + '&nbsp;'
+    s = src.strip() + '&nbsp;'
     s = handleLinks(s)
     return tag % s
 
