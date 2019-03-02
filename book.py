@@ -1,5 +1,5 @@
 '''
-A file system. 
+sys.argv[1] in ('sun', 'pad') 
 '''
 print('Importing...')
 import platform
@@ -9,7 +9,8 @@ from math import sqrt
 import pickle
 from os import system, listdir
 from time import time
-from interactive import listen
+from listen import listen
+import listen as _listen
 from friendly_time import friendlyTime 
 from getpass import getpass
 import random
@@ -19,6 +20,7 @@ if platform.system() == 'Linux':
     PATH = '/sdcard/Daniel/Beeph/'
 else:
     PATH = ''
+_listen.msvcrt = None
 
 print('Loading classes and functions...')
 
@@ -360,7 +362,7 @@ def multilineInput():
 def gen(length = 8):
     length = int(length)
     population = list(string.ascii_letters + string.digits + '-')
-    [population.remove(x) for x in 'oO1IlS5']
+    [population.remove(x) for x in 'oO1Il']
     def isValid(word):
         has_lower = False
         has_upper = False
@@ -372,9 +374,14 @@ def gen(length = 8):
             has_num |= char.isnumeric()
             has_sym |= char == '-'
         return has_lower and has_upper and has_num and has_sym
-    candidate = ''
-    while not isValid(candidate):
+    for _ in range(64):
         candidate = ''.join([random.choices(population)[0] for _ in range(length)])
+        if isValid(candidate):
+            break
+        else:
+            candidate = 'FAILED'
+    else:
+        print('Failed to generate. Maybe length not long enough. ')
     return candidate
 
 def inputWithGen(prompt = ''):
