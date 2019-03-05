@@ -37,7 +37,7 @@ Beepher(raw, key)
 Bamboozling lyric-rolling music-playing windows-only python script
 
 ## book.py
-A file system. 
+a file system.  
 
 ## cache_no_hash.py
 Inefficiently cache and lookup function returns. 

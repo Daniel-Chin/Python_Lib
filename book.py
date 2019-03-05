@@ -1,5 +1,5 @@
 '''
-sys.argv[1] in ('sun', 'pad') 
+a file system.  
 '''
 print('Importing...')
 import platform
@@ -127,7 +127,7 @@ class Book:
             elif op == 'exit':
                 break
             else:
-                self.silentSearch(op)
+                self.silentSearch(op, loud = True)
                 if self.now is not None:
                     self.show()
     
@@ -221,11 +221,13 @@ class Book:
                     keys[k],keys[k+1] = keys[k+1],keys[k]
         return dict(zip(keys, entrys))
     
-    def silentSearch(self, keyword = None):
+    def silentSearch(self, keyword = None, loud = False):
         if keyword is None:
             keyword = input('Keyword: ').lower()
         matches = [x for x in self.dict.keys() if keyword in x.lower()]
         try:
+            if not loud:
+                raise ValueError
             i = [x.lower() for x in matches].index(keyword)
             self.now = matches[i]
         except ValueError:
