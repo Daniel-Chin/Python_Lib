@@ -191,7 +191,7 @@ class Book:
             buffer += 'last modified at ' + friendlyTime(
                 self.dict[self.now].time)
             buffer += self.dict[self.now].content
-            run('less', Input = buffer)
+            run('less', input = buffer)
     
     def list(self):
         print('Enter to list by name, "t" to list by time. >')
