@@ -223,9 +223,13 @@ class Book:
     
     def silentSearch(self, keyword = None):
         if keyword is None:
-            keyword = input('Keyword: ')
-        matches = [x for x in self.dict.keys() if keyword.lower() in x.lower()]
-        self.now = chooseFromEntries(matches)
+            keyword = input('Keyword: ').lower()
+        matches = [x for x in self.dict.keys() if keyword in x.lower()]
+        try:
+            i = [x.lower() for x in matches].index(keyword)
+            self.now = matches[i]
+        except ValueError:
+            self.now = chooseFromEntries(matches)
     
     def save(self):
         file = open(self.filename, 'wb')
