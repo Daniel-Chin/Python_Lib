@@ -16,6 +16,7 @@ from getpass import getpass
 import random
 import string
 import sys
+from subprocess import run
 if platform.system() == 'Linux':
     PATH = '/sdcard/Daniel/Beeph/'
 else:
@@ -185,11 +186,12 @@ class Book:
     
     def show(self):
         if self._smartEntryCheck():
-            print()
-            print('|:', self.now)
-            print('last modified at', friendlyTime(
-                self.dict[self.now].time))
-            print(self.dict[self.now].content)
+            buffer = '\n'
+            buffer += '|: ' + self.now
+            buffer += 'last modified at ' + friendlyTime(
+                self.dict[self.now].time)
+            buffer += self.dict[self.now].content
+            run('less', Input = buffer)
     
     def list(self):
         print('Enter to list by name, "t" to list by time. >')
