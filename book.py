@@ -187,10 +187,10 @@ class Book:
     def show(self):
         if self._smartEntryCheck():
             buffer = '\n'
-            buffer += '|: ' + self.now
+            buffer += '|: ' + self.now + '\n'
             buffer += 'last modified at ' + friendlyTime(
-                self.dict[self.now].time)
-            buffer += self.dict[self.now].content
+                self.dict[self.now].time) + '\n'
+            buffer += self.dict[self.now].content + '\n'
             run('less', input = buffer.encode())
     
     def list(self):
