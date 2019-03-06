@@ -331,7 +331,6 @@ class Book:
     
     def append(self):
         if self._smartEntryCheck():
-            self.show()
             print('Append: ')
             to_append = multilineInput()
             cls()
