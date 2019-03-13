@@ -1,7 +1,7 @@
 from string import ascii_letters, ascii_lowercase, ascii_uppercase
 from functools import lru_cache
 
-class ImprobableTypo(Exception):
+class ImprobableChar(Exception):
     pass
 
 keyboard = (
@@ -33,7 +33,7 @@ def guess(char):
                         pass
                 result.append([])
             return result[:-1]
-    raise ImprobableTypo
+    raise ImprobableChar
 
 UNSHIFT_MAP = {
     '{': '[', 

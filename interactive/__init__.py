@@ -3,7 +3,8 @@ Terminal interactivity utils.
 
 One vulnerability in `listen`. Do help(listen) for details. 
 '''
-__all__ = ['listen', 'strCommonStart', 'AbortionError', 'cls', 'askForFile', 'askSaveWhere', 'inputChin']
+__all__ = ['listen', 'strCommonStart', 'AbortionError', 
+    'cls', 'askForFile', 'askSaveWhere', 'inputChin']
 from time import sleep
 from .console_explorer import *
 from .cls import cls
@@ -144,7 +145,7 @@ def printWithCursor(prompt, line, cursor):
         chars = chars[:-offset - ABBR_LEN]
         chars += [' '] + ABBR
     line = ''.join(chars)
-    print(prompt, line.replace('\x1a', '^Z'), end = '\r', flush = True, sep = '')
+    print(prompt, line.replace('\x1a', '^Z').replace('\x12', '^R'), end = '\r', flush = True, sep = '')
 
 def inputChin(prompt = '', default = '', history = [], kernal = None):
     '''
@@ -160,7 +161,7 @@ def inputChin(prompt = '', default = '', history = [], kernal = None):
         last_len = len(line)
         if op == b'\r':
             clearLine()
-            print(prompt + line.replace('\x1a', '^Z'))
+            print(prompt + line.replace('\x1a', '^Z').replace('\x12', '^R'))
             return line
         elif op == b'\x08': # backspace
             if cursor >= 1:
@@ -244,7 +245,7 @@ def inputChin(prompt = '', default = '', history = [], kernal = None):
                     to_insert = to_become[len(keyword):]
                     line = line[:cursor] + to_insert + line[cursor:]
                     cursor += len(to_insert)
-        elif op[0] in range(1, 26) or op[0] in (0, 27, 224):
+        elif op[0] in range(1, 18) or op[0] in range(19, 26) or op[0] in (0, 27, 224):
             pass    # invalid char
         else:   # typed char
             line = line[:cursor] + op.decode() + line[cursor:]

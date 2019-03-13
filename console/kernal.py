@@ -20,6 +20,7 @@ def Kernal(namespace = {}):
     def restart():
         '''
         runs __file__. This usually restarts the module. 
+        You can use Ctrl + R to invoke this function too. 
         '''
         import sys
         if __file__ is not None:

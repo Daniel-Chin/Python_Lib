@@ -4,7 +4,9 @@ Tools to do graphics in the terminal.
 `eastAsianStrLen`: length of str as displayed on terminal (so chinese characters and other fullwidth chars count as 2 or more spaces)  
 `displayAllColors`: display all colors that your terminal supports.  
 '''
-__all__ = ['clearLine', 'eastAsianStrToWidths', 'eastAsianStrLen', 'eastAsianStrLeft', 'eastAsianStrRight', 'displayAllColors', 'eastAsianStrSparse']
+__all__ = ['clearLine', 'eastAsianStrToWidths', 
+    'eastAsianStrLen', 'eastAsianStrLeft', 'eastAsianStrRight', 
+    'displayAllColors', 'eastAsianStrSparse']
 from terminalsize import get_terminal_size
 from unicodedata import east_asian_width
 from colorama import init, Back, Fore, Style

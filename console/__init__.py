@@ -1,16 +1,17 @@
 '''
 Windows only. If not windows, `console()` calls `IPython.embed()`. 
-Usage: `console({**locals(), **globals()})`
+Usage: `console(globals())` or `console({**locals(), **globals()})`
 Advantages over IPython:  
     1. Lighter  
     2. Other threads can still print things when user is inputting commands  
     3. Tab auto-completes your phrase, even under Windows! (I'm proud.)  
-    4. Testing your module, tried of having to `import` everytime you make an edit? `restart()` is what you need here. 
+    4. Tired of having to `import` to test your module everytime you make an edit? `restart()` is what you need here.  
 Issues:  
     1. Reassigning module global variables will not be visible to module native codes. Sorry.  
-Fexed Issues:  
+Fixed Issues:  
     1. If you wanna scroll up, you don't need to input() anymore!  
     2. Multi-line code continuation is implemented!  
+    3. If input command is longer than terminal width, camera rolls.  
 '''
 import platform
 from interactive import inputChin
@@ -59,6 +60,11 @@ def console(namespace = {}, prompt = '>>> ', use_input = False, fixer = None):
             assert False
         if command == '':
             continue
+        if command == '\x12':   #^R
+            command = 'restart()'
+        if command == 'help':
+            print('Module `console`:')
+            print(__doc__)
         history.append(command.split('\n')[-1])
         result = kernal.send(command)
         next(kernal)
