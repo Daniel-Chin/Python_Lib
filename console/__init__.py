@@ -5,6 +5,7 @@ Advantages over IPython:
     1. Lighter  
     2. Other threads can still print things when user is inputting commands  
     3. Tab auto-completes your phrase, even under Windows! (I'm proud.)  
+    4. Testing your module, tried of having to `import` everytime you make an edit? `restart()` is what you need here. 
 Issues:  
     1. Reassigning module global variables will not be visible to module native codes. Sorry.  
 Fexed Issues:  
@@ -20,7 +21,7 @@ def console(namespace = {}, prompt = '>>> ', use_input = False, fixer = None):
     if platform.system() != 'Windows':
         if namespace:
             for name in namespace:
-                if not name.startswith('_'):
+                if not name.startswith('_') or name == '__file__':
                     exec(f'{name}=namespace["{name}"]')
             del name
         del namespace
@@ -42,7 +43,7 @@ def console(namespace = {}, prompt = '>>> ', use_input = False, fixer = None):
                 command = 'exit()'
         else:
             command = inputChin(prompt, '', history, kernal)
-            if command[-1] == ':':
+            if command[:1] == '@' or command[-1:] in ':({[' or command[-3:] == "'''": # `-1:` so blank input doesnt trigger IndexError
                 got = command
                 while got != '':
                     history += got

@@ -72,6 +72,7 @@ Advantages over IPython:
     1. Lighter    
     2. Other threads can still print things when user is inputting commands    
     3. Tab auto-completes your phrase, even under Windows! (I'm proud.)    
+    4. Testing your module, tried of having to `import` everytime you make an edit? `restart()` is what you need here.   
 Issues:    
     1. Reassigning module global variables will not be visible to module native codes. Sorry.    
 Fexed Issues:    
@@ -79,7 +80,9 @@ Fexed Issues:
     2. Multi-line code continuation is implemented!  
 
 ## count.py
-For counting votes and ranking the counts. 
+For counting votes and ranking the counts.    
+Oh! I guess `from collections import Counter` does the same for you!    
+Although my thing is still more console friendly.  
 
 ## dict_shape.py
 Compare the shape of two dicts.   
@@ -204,7 +207,7 @@ Chops each page in half, e.g. if a source were
 created in booklet form, you could extract individual  
 pages.
 
-## pickle_preview.py
+### pickle_preview/__main__.py
 Preview a pickle file
 
 ## pickle_socket.py
@@ -280,6 +283,11 @@ Updates description:
 
 ## tree.py
 Data type that stores file directory structure. 
+
+## typofix/
+My personal tool to fix typos.  
+Assume you only do horizontal typos. No vertical typos. You may mistype E as R, but never as D.  
+Word data is from https://norvig.com/big.txt
 
 ## wget.py
 Downloads a web resource.   

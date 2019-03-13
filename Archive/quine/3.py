@@ -1,0 +1,1 @@
+s='';print(s.replace("\x5f", "'%s'" % s))

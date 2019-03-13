@@ -1,5 +1,7 @@
 '''
-For counting votes and ranking the counts. 
+For counting votes and ranking the counts.  
+Oh! I guess `from collections import Counter` does the same for you!  
+Although my thing is still more console friendly.  
 '''
 import collections
 import operator

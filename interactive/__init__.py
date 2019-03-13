@@ -244,7 +244,7 @@ def inputChin(prompt = '', default = '', history = [], kernal = None):
                     to_insert = to_become[len(keyword):]
                     line = line[:cursor] + to_insert + line[cursor:]
                     cursor += len(to_insert)
-        elif op[0] in range(1, 26) or op[0] in (0, 224):
+        elif op[0] in range(1, 26) or op[0] in (0, 27, 224):
             pass    # invalid char
         else:   # typed char
             line = line[:cursor] + op.decode() + line[cursor:]
