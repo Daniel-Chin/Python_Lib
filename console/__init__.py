@@ -8,6 +8,7 @@ Advantages over IPython:
     4. Tired of having to `import` to test your module everytime you make an edit? `restart()` is what you need here.  
 Issues:  
     1. Reassigning module global variables will not be visible to module native codes. Sorry.  
+    2. For unknown reasons, you cannot declare any name present in kernal.py that is invisible to the env.  
 Fixed Issues:  
     1. If you wanna scroll up, you don't need to input() anymore!  
     2. Multi-line code continuation is implemented!  
@@ -44,10 +45,12 @@ def console(namespace = {}, prompt = '>>> ', use_input = False, fixer = None):
                 command = 'exit()'
         else:
             command = inputChin(prompt, '', history, kernal)
-            if command[:1] == '@' or command[-1:] in ':({[' or command[-3:] == "'''": # `-1:` so blank input doesnt trigger IndexError
+            stripped = command.strip()
+            if stripped[:1] == '@' or stripped[-1:] in ':({[\\' or stripped[-3:] == "'''": 
+                # `:1` so blank input doesnt trigger IndexError
                 got = command
                 while got != '':
-                    history += got
+                    history.append(got)
                     got = inputChin('... ', '', history, kernal)
                     command += '\n' + got
         if fixer is not None:

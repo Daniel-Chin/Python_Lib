@@ -1,3 +1,6 @@
+__all__ = ['ImprobableChar', 'guess', 'shift', 'unshift', 
+    'RIGHT_BORDER', 'ALL_CHARS', 'RIGHT_BORDER_MAP']
+
 from string import ascii_letters, ascii_lowercase, ascii_uppercase
 from functools import lru_cache
 
@@ -14,9 +17,9 @@ keyboard = (
 def guess(char):
     if char in UNSHIFT_MAP.keys() or char in ascii_uppercase:
         is_shift = True
+        char = unshift(char)
     elif char in UNSHIFT_MAP.values() or char in ascii_lowercase:
         is_shift = False
-    char = unshift(char)
     result = [[]]
     for line in keyboard:
         pos = line.find(char)
@@ -64,6 +67,23 @@ def shift(char):
         except KeyError:
             return char
 
+RIGHT_BORDER_MAP = {
+    'p': '[', 
+    'l': ';', 
+    'm': ',', 
+    'P': '{', 
+    'L': ':', 
+    'M': '<', 
+    '[': '[', 
+    ';': ';', 
+    ',': ',', 
+    '{': '{', 
+    ':': ':', 
+    '<': '<', 
+}
+RIGHT_BORDER = {*RIGHT_BORDER_MAP}
+ALL_CHARS = {*ascii_letters, *RIGHT_BORDER}
+
 if __name__ == '__main__':
-    from console import *
+    from console import console
     console(globals())

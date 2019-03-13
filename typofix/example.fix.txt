@@ -1,0 +1,9 @@
+I am just typing random words without looking at my screen, 
+I just realized that once you remember how the fixer works, you can type in an appropriate fashion to cater to it. 
+How many rupia have I made> I do not know. This is just a test to see if my code has any bug in it. 
+
+Now just testing if comma is accidentally a letter, hoping that went well. 
+
+What if I switch two letters? 
+
+What if I switch two letters and did some horizontal typos? 

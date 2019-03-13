@@ -22,12 +22,12 @@ def Kernal(namespace = {}):
         runs __file__. This usually restarts the module. 
         You can use Ctrl + R to invoke this function too. 
         '''
-        import sys
+        from sys import exit
         if __file__ is not None:
             cls()
             cmd('py ' + __file__)
             print('Ended.')
-            sys.exit(0)
+            exit(0)
         else:
             print('To use `restart()`, you have to supply a namespace with __file__, for example, globals().')
     while True:
@@ -49,8 +49,8 @@ def Kernal(namespace = {}):
             exec(__command + '\r')
             yield None
         except SystemExit:
-            import sys
-            sys.exit(0)
+            from sys import exit
+            exit(0)
         except:
             import traceback
             traceback.print_exc()

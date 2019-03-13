@@ -4,7 +4,7 @@ Terminal interactivity utils.
 One vulnerability in `listen`. Do help(listen) for details. 
 '''
 __all__ = ['listen', 'strCommonStart', 'AbortionError', 
-    'cls', 'askForFile', 'askSaveWhere', 'inputChin']
+    'cls', 'askForFile', 'askSaveWhere', 'inputChin', 'multiLineInput']
 from time import sleep
 from .console_explorer import *
 from .cls import cls
@@ -147,13 +147,14 @@ def printWithCursor(prompt, line, cursor):
     line = ''.join(chars)
     print(prompt, line.replace('\x1a', '^Z').replace('\x12', '^R'), end = '\r', flush = True, sep = '')
 
-def inputChin(prompt = '', default = '', history = [], kernal = None):
+def inputChin(prompt = '', default = '', history = [], kernal = None, cursor = None):
     '''
     `kernal` for tab key auto complete. 
     '''
     default = str(default)
     line = default
-    cursor = len(line)
+    if cursor is None:
+        cursor = len(line)
     history_selection = len(history)
     while True:
         printWithCursor(prompt, line, cursor)
@@ -227,7 +228,7 @@ def inputChin(prompt = '', default = '', history = [], kernal = None):
                             break
                 keyword = reversed_names.pop(0)
                 names = reversed(reversed_names)
-                to_search = kernal.send('dir(%s)' % '.'.join(names))
+                to_search = kernal.send('dir(%s)' % '.'.join(names)) or []
                 if len(reversed_names) == 0:
                     # include builtins
                     to_search += dir(__builtins__)
@@ -245,7 +246,10 @@ def inputChin(prompt = '', default = '', history = [], kernal = None):
                     to_insert = to_become[len(keyword):]
                     line = line[:cursor] + to_insert + line[cursor:]
                     cursor += len(to_insert)
-        elif op[0] in range(1, 18) or op[0] in range(19, 26) or op[0] in (0, 27, 224):
+        elif op == b'\x1b':  # ESC
+            line = ''
+            cursor = 0
+        elif op[0] in range(1, 18) or op[0] in range(19, 26) or op[0] in (0, 224):
             pass    # invalid char
         else:   # typed char
             line = line[:cursor] + op.decode() + line[cursor:]
@@ -280,3 +284,21 @@ def wordEnd(line, cursor):
     else:
         i = len(line)
     return i
+
+def multiLineInput(toIO = None):
+    if toIO is None:
+        buffer = []
+        def append(s):
+            buffer.append(s)
+    else:
+        def append(s):
+            toIO.write(s)
+            toIO.write('\n')
+    try:
+        while True:
+            append(input())
+    except EOFError:
+        if toIO is None:
+            return '\n'.join(buffer)
+        else:
+            return toIO
