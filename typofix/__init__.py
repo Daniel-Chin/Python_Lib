@@ -1,4 +1,4 @@
-from .keyboard import *
+from typofix.keyboard import *
 import pickle
 from itertools import combinations_with_replacement, product
 from colorama import Back, Fore, Style, init
@@ -88,7 +88,7 @@ def fixIO(inFile, outFile, interactive = False):
             if read in ALL_CHARS:
                 word += read
             elif read == '=':
-                if word.lower() in all_words:
+                if word == '' or word.lower() in all_words:
                     write(word)
                     write('=')
                 else:
