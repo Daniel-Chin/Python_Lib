@@ -45,14 +45,23 @@ def console(namespace = {}, prompt = '>>> ', use_input = False, fixer = None):
                 command = 'exit()'
         else:
             command = inputChin(prompt, '', history, kernal)
+            if not command:
+                continue
             stripped = command.strip()
-            if stripped[:1] == '@' or stripped[-1:] in ':({[\\' or stripped[-3:] == "'''": 
+            long_string = stripped.count("'''") % 2 == 1
+            if long_string or stripped[:1] == '@' or stripped[-1:] in ':({[\\': 
                 # `:1` so blank input doesnt trigger IndexError
                 got = command
-                while got != '':
+                while True:
                     history.append(got)
                     got = inputChin('... ', '', history, kernal)
                     command += '\n' + got
+                    if long_string:
+                        if got.count("'''") % 2 == 1:
+                            break
+                    else:
+                        if not got:
+                            break
         if fixer is not None:
             command = fixer(command)
         if command in ('exit', 'exit()', '\x1a'):

@@ -22,10 +22,10 @@ try:
     import sys
     def getFullCh():
         first=msvcrt.getch()
-        if first in (b'\x00', b'\xe0'):
-            return first + msvcrt.getch()
-        else:
+        if first[0] in range(1, 128):
             return first
+        else:   # \x00 \xe0 Wider chars
+            return first + msvcrt.getch()
     # if sys.getwindowsversion() >= (10, 0, 17134) and False: # Strange windows update on 2018/10/22
     #     __getFullCh = getFullCh
     #     def getFullCh():
@@ -252,7 +252,7 @@ def inputChin(prompt = '', default = '', history = [], kernal = None, cursor = N
         elif op[0] in range(1, 18) or op[0] in range(19, 26) or op[0] in (0, 224):
             pass    # invalid char
         else:   # typed char
-            line = line[:cursor] + op.decode() + line[cursor:]
+            line = line[:cursor] + op.decode('ANSI') + line[cursor:]
             cursor += 1
         clearLine()
 
