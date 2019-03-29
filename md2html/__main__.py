@@ -69,13 +69,13 @@ class Translator:
                 print('Problem line:', src)
                 sys.exit(1)
             if self.code_block_started:
-                s = s.replace('```', '</code>')
+                s = s.replace('```', '[/code]')
             else:
                 language = s[backticks[0]:].strip()
                 if language:
-                    tag = '<code class="language-%s">' % language
+                    tag = '[code language="%s"]' % language
                 else:
-                    tag = '<code>'
+                    tag = '[code]'
                 s = s[:backticks[0] - 3] + tag
             self.code_block_started = not self.code_block_started
         if '`' in s:    # code segment
@@ -84,7 +84,7 @@ class Translator:
                 print('Error: odd number of ` in one line. ')
                 print('Problem line:', src)
                 sys.exit(1)
-            s = ''.join([x + y for x, y in zip(parts[:-1], cycle(['<code>', '</code>']))]) + parts[-1]
+            s = ''.join([x + y for x, y in zip(parts[:-1], cycle(['[code]', '[/code]']))]) + parts[-1]
         return s
 
 def main():
