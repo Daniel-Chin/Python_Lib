@@ -160,7 +160,7 @@ def inputChin(prompt = '', default = '', history = [], kernal = None, cursor = N
         printWithCursor(prompt, line, cursor)
         op = listen()
         last_len = len(line)
-        if op == b'\r':
+        if op in b'\r\n':
             clearLine()
             print(prompt + line.replace('\x1a', '^Z').replace('\x12', '^R'))
             return line

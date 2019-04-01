@@ -89,7 +89,7 @@ def sysArgvOrInput():
         return sys.argv[1]
     else:
         print('(Drag file here)')
-        return input('path/file.ext=')
+        return input('path/file.ext=').strip('"')
 
 if __name__ == '__main__':
     if len(sys.argv) >= 2:
