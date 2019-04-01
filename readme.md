@@ -196,6 +196,10 @@ No encryption! Consider everything you transmit broadcast to the entire network.
 My laptop is weird. Running this script makes opening and terminating processes faster.   
 Speculation: Taking CPU time away from Windows Defender? 
 
+## pdf_litouzhibei.py
+LiTouZhiBei(????????????).    
+Converts pdf from [p1, p2...] to [p1, p1, p2, p2...]  
+
 ## pdf_unspread.py
 Original author: pmaupin  
 https://github.com/pmaupin/pdfrw  
