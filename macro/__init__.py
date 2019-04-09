@@ -203,14 +203,15 @@ def save(macro):
         pickle.dump(macro, f)
     print('Success. ')
 
-def load():
+def load(name = None):
     '''
     * to load all. 
     '''
-    list_dir = listdir(SAVED)
-    print('Your macros: {')
-    [print('   ', x) for x in list_dir]
-    name = input('} which to load? ')
+    if name is None:
+        list_dir = listdir(SAVED)
+        print('Your macros: {')
+        [print('   ', x) for x in list_dir]
+        name = input('} which to load? ')
     if name == '*':
         result = {}
         for name in list_dir:
