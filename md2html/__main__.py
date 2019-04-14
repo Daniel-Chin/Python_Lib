@@ -82,7 +82,7 @@ class Translator:
             parts = s.split('`')
             if len(parts) % 2 == 0:
                 print('Error: odd number of ` in one line. ')
-                print('Problem line:', src)
+                print('Problem line:', s)
                 sys.exit(1)
             s = ''.join([x + y for x, y in zip(parts[:-1], cycle(['[code]', '[/code]']))]) + parts[-1]
         return s

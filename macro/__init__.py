@@ -47,7 +47,7 @@ class Sleep:
     def __init__(self, delta_time):
         self.delta_time = delta_time
     
-    def do():
+    def do(self):
         pass
     
     def __repr__(self):

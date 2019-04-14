@@ -143,10 +143,10 @@ Give up.
 ## local_ip.py
 Find out local IP addr on Windows
 
-### macro/__main__.py
-Record, play, save, and load macros.   
+## macro/
+Record, play, save, and load macros.  
 Windows only.  
-PROTECTION: global hooked button to stop macro = Windows Key 
+PROTECTION: global hooked button to stop macro = Windows Key
 
 ### md2html/__main__.py
 Translate markdown .md file to html file.    
