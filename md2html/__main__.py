@@ -7,7 +7,7 @@ import re
 import sys
 from itertools import cycle
 
-FONT_SIZE = (12, 36, 24, 18, 16, 14, 13, 13, 13)
+FONT_SIZE = (20, 36, 24, 18, 16, 14, 13, 13, 13)
 
 class Translator:
     def __init__(self):

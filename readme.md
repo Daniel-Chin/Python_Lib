@@ -22,6 +22,9 @@ Beer on the Wall/
 ## Archive/
 Meaningless Archive of random Python Scripts I wrote.
 
+### Archive/archive_rrrr.py
+To archive http://rrrrthats5rs.com
+
 ## ascii_table.py
 A beautiful script to print the ascii table. 
 
@@ -114,6 +117,9 @@ HTTP man in middle. Prints all traffic. Useful for investigating how http works.
 ## hub.py
 Hub: forward all socket messages.   
 Connect, sendall(b'OK'), forward...
+
+## indentprinter.py
+Indent log output in a logical way.  
 
 ### interactive/console_explorer.py
 An android-friendly console file explorer. 
