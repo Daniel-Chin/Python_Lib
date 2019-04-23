@@ -94,6 +94,9 @@ print(sys.argv)
 ### Find Vera/Find_Vera V2.py
 A game by Daniel
 
+## flashplayer/
+Play swf files.
+
 ## forcemap.py
 Like dummy.Pool.map, but no limit of number of threads.   
 Useful when IO-bound. 
@@ -119,7 +122,15 @@ Hub: forward all socket messages.
 Connect, sendall(b'OK'), forward...
 
 ## indentprinter.py
-Indent log output in a logical way.  
+Indent log output in a logical way.    
+Try this:    
+```python  
+from indentprinter import *  
+bois = ['Collie', 'Husky', 'Shoob', 'Shibe']  
+print('All bois:')  
+with indentPrinter:  
+    [print(x) for x in bois]  
+```
 
 ### interactive/console_explorer.py
 An android-friendly console file explorer. 

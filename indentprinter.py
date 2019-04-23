@@ -1,5 +1,13 @@
 '''
 Indent log output in a logical way.  
+Try this:  
+```python
+from indentprinter import *
+bois = ['Collie', 'Husky', 'Shoob', 'Shibe']
+print('All bois:')
+with indentPrinter:
+    [print(x) for x in bois]
+```
 '''
 __all__ = ['print', 'indentPrinter']
 
