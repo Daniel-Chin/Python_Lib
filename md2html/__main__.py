@@ -95,7 +95,7 @@ def main():
         # write('<!DOCTYPE html>')
         write('<html><body>')
         try:
-            with open(args.input, 'r') as md:
+            with open(args.input, 'r', encoding = 'utf-8') as md:
                 translator = Translator()
                 for line in md:
                     write(translator.translateLine(line))
