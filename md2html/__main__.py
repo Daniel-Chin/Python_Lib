@@ -66,7 +66,7 @@ class Translator:
         if backticks:
             if len(backticks) >= 2:
                 print('Error: two "```"s in one line. ')
-                print('Problem line:', src)
+                print('Problem line:', s)
                 sys.exit(1)
             if self.code_block_started:
                 s = s.replace('```', '</code>')
