@@ -9,6 +9,7 @@ Advantages over IPython:
 Issues:  
     1. Reassigning module global variables will not be visible to module native codes. Sorry.  
     2. For unknown reasons, you cannot declare any name present in kernal.py that is invisible to the env.  
+    3. iniline generator cannot access namespace. I can't stably replicate this issue, and I don't know what this is about.  
 Fixed Issues:  
     1. If you wanna scroll up, you don't need to input() anymore!  
     2. Multi-line code continuation is implemented!  
