@@ -14,6 +14,8 @@ Fixed Issues:
     1. If you wanna scroll up, you don't need to input() anymore!  
     2. Multi-line code continuation is implemented!  
     3. If input command is longer than terminal width, camera rolls.  
+Future:  
+    1. Consider adding a dynamic `return` feature.  
 '''
 import platform
 from interactive import inputChin
