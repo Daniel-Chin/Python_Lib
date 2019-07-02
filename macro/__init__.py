@@ -1,4 +1,4 @@
-__all__ = ['record', 'play', 'save', 'load', 'MismatchError']
+__all__ = ['record', 'play', 'save', 'load', 'MismatchError', 'Failsafe']
 from console import console
 from time import time, sleep
 from ctypes import windll, Structure, c_long, byref

@@ -269,6 +269,11 @@ https://stackoverflow.com/questions/566746/how-to-get-linux-console-window-width
 https://gist.github.com/jtriley/1108174   
 I changed python2 to python3, and added crediting printing. 
 
+## terraria.py
+Terraria bot.  Automated fishing.    
+Vision: bait catching, and defending invasions.    
+Result: Failed! This macro does not work on Terraria!  
+
 ### To the Earth/To the Earth V8.py
 A game by Daniel.   
   
