@@ -152,6 +152,8 @@ def inputChin(prompt = '', default = '', history = [], kernal = None, cursor = N
     `kernal` for tab key auto complete. 
     '''
     default = str(default)
+    if msvcrt is None:
+        return input(prompt + f' (default = {default})')
     line = default
     if cursor is None:
         cursor = len(line)
