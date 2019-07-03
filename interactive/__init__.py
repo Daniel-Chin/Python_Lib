@@ -121,6 +121,9 @@ def chooseFromEntries(matches):
             print("Search aborted. ")
             return None
 
+def printabilize(x):
+    return x.replace('\x1a', '^Z').replace('\x12', '^R')
+
 _abbr = '...'
 ABBR = [*'...']
 ABBR[0] = Back.MAGENTA + Fore.WHITE + ABBR[0]
@@ -145,7 +148,7 @@ def printWithCursor(prompt, line, cursor):
         chars = chars[:-offset - ABBR_LEN]
         chars += [' '] + ABBR
     line = ''.join(chars)
-    print(prompt, line.replace('\x1a', '^Z').replace('\x12', '^R'), end = '\r', flush = True, sep = '')
+    print(prompt, printabilize(line), end = '\r', flush = True, sep = '')
 
 def inputChin(prompt = '', default = '', history = [], kernal = None, cursor = None):
     '''
@@ -164,7 +167,9 @@ def inputChin(prompt = '', default = '', history = [], kernal = None, cursor = N
         last_len = len(line)
         if op in b'\r\n':
             clearLine()
-            print(prompt + line.replace('\x1a', '^Z').replace('\x12', '^R'))
+            print(prompt + printabilize(line))
+            if '\x1a' in line:  # ^Z
+                raise EOFError(f'"{printabilize(line)}"')
             return line
         elif op == b'\x08': # backspace
             if cursor >= 1:

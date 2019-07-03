@@ -47,7 +47,10 @@ def console(namespace = {}, prompt = '>>> ', use_input = False, fixer = None):
             except EOFError:
                 command = 'exit()'
         else:
-            command = inputChin(prompt, '', history, kernal)
+            try:
+                command = inputChin(prompt, '', history, kernal)
+            except EOFError:
+                command = 'exit()'
             if not command:
                 continue
             stripped = command.strip()
@@ -67,7 +70,7 @@ def console(namespace = {}, prompt = '>>> ', use_input = False, fixer = None):
                             break
         if fixer is not None:
             command = fixer(command)
-        if command in ('exit', 'exit()', '\x1a'):
+        if command in ('exit', 'exit()'):
             try:
                 kernal.send('exit')
             except StopIteration:
