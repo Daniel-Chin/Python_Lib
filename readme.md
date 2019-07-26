@@ -78,7 +78,9 @@ Issues:
 Fixed Issues:    
     1. If you wanna scroll up, you don't need to input() anymore!    
     2. Multi-line code continuation is implemented!    
-    3. If input command is longer than terminal width, camera rolls.  
+    3. If input command is longer than terminal width, camera rolls.    
+Future:    
+    1. Consider adding a dynamic `return` feature.  
 
 ## count.py
 For counting votes and ranking the counts.    
@@ -193,6 +195,9 @@ My threading utils
 
 ## myxml.py
 XML parser
+
+## netid2profile.py
+For an NYU person, convert their netID to profile.  
 
 ## Notes.txt
 My personal notebook for learning Python. 
