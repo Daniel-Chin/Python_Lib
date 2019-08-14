@@ -1,5 +1,6 @@
 '''
-For a clean namespace.
+For a clean namespace.  
+I later realized that this can be done with arguments to exec and eval.  
 '''
 def Kernal(namespace = {}):
     from os import system as cmd
