@@ -14,6 +14,8 @@ Fixed Issues:
     1. If you wanna scroll up, you don't need to input() anymore!  
     2. Multi-line code continuation is implemented!  
     3. If input command is longer than terminal width, camera rolls.  
+Future:  
+    1. Consider adding a dynamic `return` feature.  
 '''
 import platform
 from interactive import inputChin
@@ -45,7 +47,10 @@ def console(namespace = {}, prompt = '>>> ', use_input = False, fixer = None):
             except EOFError:
                 command = 'exit()'
         else:
-            command = inputChin(prompt, '', history, kernal)
+            try:
+                command = inputChin(prompt, '', history, kernal)
+            except EOFError:
+                command = 'exit()'
             if not command:
                 continue
             stripped = command.strip()
@@ -65,7 +70,7 @@ def console(namespace = {}, prompt = '>>> ', use_input = False, fixer = None):
                             break
         if fixer is not None:
             command = fixer(command)
-        if command in ('exit', 'exit()', '\x1a'):
+        if command in ('exit', 'exit()'):
             try:
                 kernal.send('exit')
             except StopIteration:
