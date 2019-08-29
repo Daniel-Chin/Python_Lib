@@ -4,7 +4,8 @@ For an NYU person, convert their netID to profile.
 import webbrowser
 from interactive import inputChin
 
-MAGIC = 'https://globalhome.nyu.edu/group/people/profile?user=%s'
+# MAGIC = 'https://globalhome.nyu.edu/group/people/profile?user=%s'
+MAGIC = 'https://globalhome.nyu.edu/people/search/%s'
 
 def netid2profile(netid):
     webbrowser.open(MAGIC % netid, new=2)
