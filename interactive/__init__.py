@@ -49,9 +49,9 @@ def listen(choice = [], timeout = 0):
     Supports non-windows. 
     '''
     try:
-        bChoice = list(x.encode() for x in choice)
+        bChoice = [x.encode() for x in choice]
     except AttributeError:
-        bChoice = list(choice)
+        bChoice = [*choice]
     print('', end = '', flush = True)     # Just to flush
     if msvcrt is None:
         if bChoice == []:
