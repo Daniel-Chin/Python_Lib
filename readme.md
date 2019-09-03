@@ -25,6 +25,9 @@ Meaningless Archive of random Python Scripts I wrote.
 ### Archive/archive_rrrr.py
 To archive http://rrrrthats5rs.com
 
+#### Archive/mim/mim.py
+To test the security of getpass.  
+
 ## ascii_table.py
 A beautiful script to print the ascii table. 
 
@@ -61,7 +64,8 @@ build a readme.md for Github.
 A lighter IPython that launches very quickly. Supports runtime embed.
 
 ### console/kernal.py
-For a clean namespace.
+For a clean namespace.    
+I later realized that this can be done with arguments to exec and eval.  
 
 ### console/__init__.py
 Windows only. If not windows, `console()` calls `IPython.embed()`.   
@@ -204,6 +208,9 @@ My personal notebook for learning Python.
 
 ## nothing.py
 
+
+## nyu_ip/
+Just to see how often NYU LAN re-allocates IP.
 
 ## oneship.py
 ?????????  
