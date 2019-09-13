@@ -4,7 +4,7 @@ Terminal interactivity utils.
 One vulnerability in `listen`. Do help(listen) for details. 
 '''
 __all__ = ['listen', 'strCommonStart', 'AbortionError', 
-    'cls', 'askForFile', 'askSaveWhere', 'inputChin', 'multiLineInput']
+    'cls', 'askForFile', 'askSaveWhere', 'inputChin', 'multiLineInput', 'inputUntilValid']
 from time import sleep
 from .console_explorer import *
 from .cls import cls
@@ -309,3 +309,28 @@ def multiLineInput(toIO = None):
             return '\n'.join(buffer)
         else:
             return toIO
+
+def inputUntilValid(prompt, validator, case_sensitive = False, legalize = None):
+    '''
+    `validator` can be a function returning boolean, or an iter.  
+    '''
+    try:
+        if not case_sensitive:
+            validator = [x.lower() for x in validator]
+        else:
+            validator = {*validator}
+        is_iter = True
+        prompt += ' ' + '/'.join(validator) + ' > '
+    except TypeError:
+        is_iter = False
+    while True:
+        candidate = input(prompt)
+        if not case_sensitive:
+            candidate = candidate.lower()
+        if legalize is not None:
+            try:
+                candidate = legalize(candidate)
+            except:
+                continue
+        if (is_iter and candidate in validator) or (not is_iter and validator(candidate)):
+            return candidate

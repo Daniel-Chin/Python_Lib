@@ -84,7 +84,8 @@ Fixed Issues:
     2. Multi-line code continuation is implemented!    
     3. If input command is longer than terminal width, camera rolls.    
 Future:    
-    1. Consider adding a dynamic `return` feature.  
+    1. Consider adding a dynamic `return` feature.    
+    2. `traceback` is deleted every 
 
 ## count.py
 For counting votes and ranking the counts.    
@@ -174,6 +175,16 @@ Note: to work on WordPress, avoid level one header (# Title).
 ## moretk.py
 More tkinter gadgets
 
+### multi_term/__init__.py
+Provides multiple terminal windows for output.    
+Supports Windows OS.    
+Uses sockets to inter-process communication.    
+Future work:    
+* Support more OSes.    
+* Allow input from other terminals.    
+* support logging  
+* Remote terminal?  
+
 ## my.py
 My misc little tools. 
 
@@ -192,7 +203,7 @@ More math utils than just `import math`
 Prints QR code to terminal. Ascii only: black whitespace and white whitespace
 
 ## mysocket.py
-My socket utils. Provides `recvall`, `recvFile`, and `sendFileJdt`. 
+My socket utils. Provides `recvall`, `recvFile`, `sendFileJdt`, and `findAPort`.  
 
 ## mythread.py
 My threading utils
@@ -250,6 +261,9 @@ pip install, and imports
 ## playwav.py
 Light-weight wav player. 
 
+## Ports.txt
+Port specification for my applications.  
+
 ## port_forward.py
 Provides fake p2p, port forwarding.   
   
@@ -266,6 +280,18 @@ Warning: No authentication or encryption. Don't type in secrets. Don't assume wh
 
 ## qr_now.py
 Make a QR code instantly
+
+## safeserver/
+A simple file server.  
+Serves file in a folder.  
+Has a simple html page interface.  
+Built upon safe_http.py, please see its documentation.
+
+## safe_http.py
+Really tries to be safe against injection attacks.    
+Intentionally uses single thread only.    
+Only answers GET. Does not abide by request http header fields.    
+Does not defend against DoS.  
 
 ## serve_now.py
 Immediately open a port, accept connection  

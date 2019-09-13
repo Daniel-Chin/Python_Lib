@@ -1,5 +1,5 @@
 '''
-My socket utils. Provides `recvall`, `recvFile`, and `sendFileJdt`. 
+My socket utils. Provides `recvall`, `recvFile`, `sendFileJdt`, and `findAPort`.  
 '''
 import jdt
 from socket import socket
@@ -69,3 +69,16 @@ def sendFileJdt(s, file):
             s.sendall(read)
         estimated_sent += RUSHxPAGE
     j.complete()
+
+def findAPort(hostname = 'localhost', search_range = range(3000, 4000)):
+    '''
+    finds an available port in `range`, default 3000~4000.  
+    Returns (socket, port), where socket is binded but not listening.  
+    '''
+    for port in search_range:
+        serverSock = socket()
+        try:
+            serverSock.bind((hostname, port))
+            return (serverSock, port)
+        except OSError:
+            serverSock.close()

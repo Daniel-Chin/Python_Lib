@@ -16,6 +16,7 @@ Fixed Issues:
     3. If input command is longer than terminal width, camera rolls.  
 Future:  
     1. Consider adding a dynamic `return` feature.  
+    2. `traceback` is deleted every 
 '''
 import platform
 from interactive import inputChin

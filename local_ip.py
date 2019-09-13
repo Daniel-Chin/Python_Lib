@@ -3,7 +3,7 @@ Find out local IP addr on Windows
 '''
 import platform
 if platform.system() != 'Windows':
-    print('getLocalIP only works on Windows. ')
+    print('Warning: getLocalIP only works on Windows. ')
     def getLocalIP():
         return []
 else:

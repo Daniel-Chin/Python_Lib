@@ -33,6 +33,8 @@ SUPPRESS = [
     'To the Earth/Bin/Weapons.txt', 
     'recvall.py', 
     'recvfile.py', 
+    'multi_term/another_term.py', 
+    'multi_term/__main__.py', 
 ]
 
 import sys
