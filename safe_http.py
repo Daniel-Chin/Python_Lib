@@ -1,4 +1,5 @@
 '''
+An HTTP backend server.  
 Really tries to be safe against injection attacks.  
 Intentionally uses single thread only.  
 Only answers GET. Does not abide by request http header fields.  

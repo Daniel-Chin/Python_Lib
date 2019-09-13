@@ -290,6 +290,7 @@ Problems:
 * Does not sanitize html. But Don't panic! This is a file server and the threat only originates from local file names. Plus, "<>" is not allowed in filename.
 
 ## safe_http.py
+An HTTP backend server.    
 Really tries to be safe against injection attacks.    
 Intentionally uses single thread only.    
 Only answers GET. Does not abide by request http header fields.    
