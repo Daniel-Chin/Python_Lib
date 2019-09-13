@@ -9,8 +9,8 @@ from math import sqrt
 import pickle
 from os import system, listdir
 from time import time
-from listen import listen
-import listen as _listen
+import interactive
+from interactive import listen
 from friendly_time import friendlyTime 
 from getpass import getpass
 import random
@@ -21,7 +21,7 @@ if platform.system() == 'Linux':
     PATH = '/sdcard/Daniel/Beeph/'
 else:
     PATH = ''
-_listen.msvcrt = None
+interactive.msvcrt = None
 
 print('Loading classes and functions...')
 
@@ -145,11 +145,18 @@ class Book:
     def cls(self):
         cls()
     
-    def gen(self, length = 8):
-        length = int(length)    # Command line arg is str. 
-        print(gen(length))
+    def gen(self, *args):
+        print(gen(*args))
         input('Enter... ')
         cls()
+    
+    def gendigit(self, *args):
+        print(gendigit(*args))
+        input('Enter... ')
+        cls()
+    
+    def modified(self):
+        print('Book is', *[] if self.unsaved_change else ['NOT'], 'modified.')
     
     def _smartEntryCheck(self):
         if self.now is None:
@@ -366,21 +373,28 @@ def multilineInput():
         content = inputWithGen()
     return '\n'.join(buffer)
 
-def gen(length = 8):
+def gen(length = 8, population = 'ascii'):
     length = int(length)
-    population = list(string.ascii_letters + string.digits + '-')
-    [population.remove(x) for x in '0O1Il']
-    def isValid(word):
-        has_lower = False
-        has_upper = False
-        has_num = False
-        has_sym = False
-        for char in word:
-            has_lower |= char.islower()
-            has_upper |= char.isupper()
-            has_num |= char.isnumeric()
-            has_sym |= char == '-'
-        return has_lower and has_upper and has_num and has_sym
+    if population == 'ascii':
+        population = [*string.ascii_letters, *string.digits, '-']
+        def isValid(word):
+            has_lower = False
+            has_upper = False
+            has_num = False
+            has_sym = False
+            for char in word:
+                has_lower |= char.islower()
+                has_upper |= char.isupper()
+                has_num |= char.isnumeric()
+                has_sym |= char == '-'
+            return has_lower and has_upper and has_num and has_sym
+    elif population == 'digit':
+        population = [*string.digits]
+        isValid = lambda x: True
+    else:
+        population = [*population]
+        isValid = lambda x: True
+    [population.remove(x) for x in '0O1Il' if x in population]
     for _ in range(64):
         candidate = ''.join([random.choices(population)[0] for _ in range(length)])
         if isValid(candidate):
@@ -391,10 +405,15 @@ def gen(length = 8):
         print('Failed to generate. Maybe length not long enough. ')
     return candidate
 
+def gendigit(length = 6):
+    return gen(length, 'digit')
+
 def inputWithGen(prompt = ''):
     op = input(prompt)
     if op.split(' ')[0] == 'gen':
         return gen(*op.split(' ')[1:])
+    elif op.split(' ')[0] == 'gendigit':
+        return gendigit(*op.split(' ')[1:])
     else:
         return op
 
