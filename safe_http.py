@@ -3,17 +3,18 @@ Really tries to be safe against injection attacks.
 Intentionally uses single thread only.  
 Only answers GET. Does not abide by request http header fields.  
 Does not defend against DoS.  
+Problems:  
+* socket.send without timeout. Could block the entire scheduling.  
 '''
 from socket import socket, timeout, gethostname, gethostbyname
 from local_ip import getLocalIP
-import logging
 import os
 from interactive import inputUntilValid
 from time import asctime
-import traceback
-from io import StringIO
+from multi_term import TerminalThreePack
+from io import BytesIO
+from time import time
 
-ESCAPE = '<log>\n'
 ACCEPT_TIMEOUT = .005
 HANDLE_TIMEOUT = .1
 LISTEN = 1
@@ -21,61 +22,62 @@ TOP_SPEED = [2 * 1024 * 1024, '2 MB']
 PAGE = int(ACCEPT_TIMEOUT * TOP_SPEED[0])
 
 options = {
-    'max_connections': (1, '"" if not x else int(x)', 'x == "" or x > 0'), 
+    'max_connections': (32, '"" if not x else int(x)', 'x == "" or x > 0'), 
     'port': (80, '"" if not x else int(x)', 'x == "" or x > 0'), 
 }
 
-def main(Handler, log_dir = None, **kw):
+def main(Handler, app_name = 'Safe HTTP', log_dir = None, **kw):
     '''
-    `Handler` is a class that has the following methods:  
-        __init__(self, request, sock, addr, time_out):  
-            `log()` to write logs.  
-        do(self):  
-            Return 'wait', 'done', or 'close'.  
-            Risk of spinlock: The main loop try-wait on do(). Do not do nothing and return 'wait'.  
+    `Handler` is a class whose following methods you can override:  
+        __init__(self, request, sock, addr, time_out, debug, info, warning):  
+            Should be non-blocking.  
+        prepareResponse(self, debug, info, warning):  
+            Prepare the `self.response_content`.  
+            Set `self.content_length`.  
+            Should return sooner than `self.time_out`.  
+            Return 'wait' to indicate job not done yet. You will be re-elected to execute `prepareResponse()`.  
+            Return 'done' to indicate job complete. Call unlink yourself.  
+            Return 'close' to demand the socket to be closed and removed.  
+            Risk of spinlock: The main loop try-waits. Do not do nothing and return 'wait'.  
         unlink(self):  
             called to release files.  
     '''
-    initLog(log_dir)
+    terminals, debug, info, warning = initTerminals(app_name, log_dir)
     try:
-        log('socket read is maxed at', PAGE // 1024, 'KB, allowing', TOP_SPEED[1], '/ s under ACCEPT_TIMEOUT =', ACCEPT_TIMEOUT, 's.')
-        loadOptions(kw)
+        info.print('socket read is maxed at', PAGE // 1024, 'KB, allowing', TOP_SPEED[1], '/ s under ACCEPT_TIMEOUT =', ACCEPT_TIMEOUT, 's.')
+        loadOptions(kw, info)
         serverSock = socket()
         serverSock.bind(('', options['port']))
         serverSock.listen(LISTEN)
-        local_ip = getLocalIP
+        local_ip = getLocalIP()
         if not local_ip:
             local_ip = [gethostname()]
             local_ip.append(gethostbyname(local_ip[0]))
-        log('listening at', local_ip, '...')
+        info.print('listening at', local_ip, '...')
         try:
-            loop(serverSock, Handler)
+            loop(serverSock, Handler, debug, info, warning)
+        except KeyboardInterrupt:
+            RECEIVED_CTRL_C = 'Received ^C. '
+            info.print(RECEIVED_CTRL_C)
+            print(RECEIVED_CTRL_C)
         finally:
-            force(serverSock.close)
-        log('Exiting main().')
+            force(serverSock.close, debug, info, warning)
+        info.print('Exiting main(). ')
     except Exception as e:
-        tempIO = StringIO()
-        traceback.print_exc(file = tempIO)
-        tempIO.seek(0)
-        log(tempIO.read(), level = logging.ERROR)
+        warning.exception()
         raise e
 
-def initLog(log_dir):
+def initTerminals(app_name, log_dir):
     log_dir = log_dir or os.getcwd()
-    log_filename = os.path.join(log_dir, asctime().replace(':', '_') + '.log')
-    print('Log file will be at', log_filename)
+    log_time_dir = os.path.join(log_dir, asctime().replace(':', '-').replace(' ', '_'))
+    print('Log file will be at', log_time_dir)
     if inputUntilValid('Is that OK?', 'yn') != 'y':
         raise Exception('User chose to abort.')
-    logging.basicConfig(format='%(asctime)s %(message)s', 
-                    filename = log_filename)
-    logging.root.setLevel(logging.NOTSET)
+    os.mkdir(log_time_dir)
+    terminals = TerminalThreePack(app_name, log_time_dir)
+    return terminals, terminals['debug'], terminals['info'], terminals['warning']
 
-def log(*args, sep = ' ', end = '\n', flush = False, level = logging.INFO):
-    text = sep.join([str(x) for x in args]) + end
-    print(text, flush = flush, end = '')
-    logging.log(level, text + ESCAPE)
-
-def loadOptions(kw):
+def loadOptions(kw, info):
     print('Loading options...')
     for key, (default, legalize, validator) in [*options.items()]:
         try:
@@ -85,7 +87,8 @@ def loadOptions(kw):
             options[key] = inputUntilValid('Otherwise, input value: ', lambda x: eval(validator), legalize = lambda x: eval(legalize))
             if options[key] == '':
                 options[key] = default
-    log('Launching with options: {', *[f'\n\t{k}\t: {v}' for k, v in options.items()], '\n}')
+    info.print('Launching with options: {', *[f'\n\t{k}\t: {v}' for k, v in options.items()], '\n}')
+    print('OK. ')
 
 class Client:
     def __init__(self, sock, addr):
@@ -94,72 +97,93 @@ class Client:
         self.buffer = b''
         self.handler = None
 
-def loop(serverSock, Handler):
-    log('Starting main loop.')
+def loop(serverSock, Handler, debug, info, warning):
+    info.print('Starting main loop.')
     clients = []
     try:
+        sleep = False
         while True:
             # Single thread, try_wait logic
             if len(clients) < options['max_connections']:
-                if all([x.handler is None for x in clients]):
-                    serverSock.settimeout(5)
-                else:
-                    serverSock.settimeout(ACCEPT_TIMEOUT)
+                if sleep != all([x.handler is None for x in clients]):
+                    sleep = not sleep
+                    if sleep:
+                        info.print('Switching to sleep mode. ')
+                        serverSock.settimeout(1)
+                    else:
+                        info.print('Switching to awake mode. ')
+                        serverSock.settimeout(ACCEPT_TIMEOUT)
                 try:
                     sock, addr = serverSock.accept()
-                    assert ESCAPE not in addr
-                    log(addr, 'Accepted. ')
+                    info.print(addr, 'Accepted. ')
                     clients.append(Client(sock, addr))
-                    log('Now we have', len(clients), 'clients. ')
+                    debug.print('Now we have', len(clients), 'clients. ')
                     sock.settimeout(HANDLE_TIMEOUT)
                 except timeout:
                     pass
-            for i, client in [*reversed(enumerate(clients))]:
+            for i, client in reversed([*enumerate(clients)]):
                 if client.handler is None:
                     try:
+                        debug.print(client.addr, 'Receiving request...')
                         recved = client.sock.recv(PAGE)
                         assert recved != b''
+                    except timeout:
+                        continue
+                    except AssertionError:
+                        unlink(clients, i, debug, info, warning)
+                        continue
                     except Exception as e:
-                        log(client.addr, 'Shutdown with exception', sanitize(str(e)))
-                        unlink(clients, i)
+                        info.print(client.addr, 'Shutdown with unknown exception', e)
+                        warning.exception()
+                        unlink(clients, i, debug, info, warning)
                         continue
                     client.buffer += recved
                     splited = client.buffer.split(b'\r\n\r\n', 1)
-                    if len(splited > 1):
+                    if len(splited) > 1:
                         byte_request, client.buffer = splited
-                        request = Request(byte_request)
+                        request = Request(byte_request, debug, info, warning)
                         if request.valid:
-                            log('Handling request from', client.addr, ':', sanitize(str(request)))
-                            client.handler = Handler(request, client.sock, client.addr, HANDLE_TIMEOUT)
+                            info.print(client.addr, 'request parsed. ')
+                            debug.print(client.addr, request)
+                            client.handler = Handler(request, client.sock, client.addr, HANDLE_TIMEOUT, debug, info, warning)
+                            client.sock.settimeout(None)
                         else:
-                            unlink(clients, i)
+                            warning.print(client.addr, 'invalide request. ')
+                            unlink(clients, i, debug, info, warning)
                             continue
-                result = client.handler.do()
-                if result == 'done':
-                    client.handler = None
-                elif result == 'close':
-                    log('Handler of', addr, 'demanded shutdown.')
-                    unlink(clients, i)
-                    continue
-                elif result == 'wait':
-                    pass
+                    else:
+                        warning.print(client.addr, 'sent partial request. Waiting for more... ')
+                if client.handler is not None:
+                    debug.print('do begin')
+                    result = client.handler.do(debug, info, warning)
+                    debug.print('do end')
+                    if result == 'done':
+                        client.handler = None
+                    elif result == 'close':
+                        info.print('Handler of', addr, 'demanded shutdown.')
+                        unlink(clients, i, debug, info, warning)
+                        continue
+                    elif result == 'wait':
+                        pass
+                    else:
+                        raise ValueError(f'Handler of {addr} returned invalid value: {result}')
     finally:
         while clients:
-            unlink(clients, 0)
+            unlink(clients, 0, debug, info, warning)
 
-def force(function):
+def force(function, debug, info, warning):
     try:
         function()
     except Exception as e:
-        log('`force` ignoring', e)
+        warning.print('`force` ignoring', e)
 
 class Request:
-    def __init__(self, segment):
+    def __init__(self, segment, debug, info, warning):
         self.valid = False
         try:
             lines = segment.decode().split('\r\n')
         except UnicodeDecodeError:
-            log('Request does not decode into str.')
+            warning.print('Request does not decode into str.')
             return
         try:
             parsing = lines.pop(0)
@@ -170,58 +194,95 @@ class Request:
             ) = parsing.split(' ')
             if self.command != 'GET':
                 parsing = sanitize(parsing, 'Escaped sequence found in request! ')
-                log('Ignoring non-GET request:', parsing)
+                warning.print('Ignoring non-GET request:', parsing)
                 return
             self.header_fields = {}
             for parsing in lines:
                 kw, value = parsing.split(':', 1)
                 self.header_fields[kw.strip(' ')] = value.strip(' ')
         except Exception as e:
-            parsing = sanitize(parsing, 'Escaped sequence found in request! ')
-            log('Request has bad line:', parsing, level = logging.ERROR)
+            warning.print('Request has bad line:', parsing)
             return
         self.valid = True
     
     def __str__(self):
         return self.command + ' ' + self.target
 
-def sanitize(x, message):
-    while ESCAPE in x:
-        log(message + 'Sign of an attack!', level = logging.ERROR)
-        x = x.replace(ESCAPE, '')
-    return x
-
-def unlink(clients, i):
+def unlink(clients, i, debug, info, warning):
     addr = clients[i].addr
-    log('Closing', addr)
-    force(clients[i].sock.close)
-    clients[i].unlink()
+    debug.print('Closing', addr)
+    force(clients[i].sock.close, debug, info, warning)
+    clients[i].handler and clients[i].handler.unlink()
     clients.pop(i)
-    log(addr, 'Closed. ')
+    info.print(addr, 'Closed. ')
+    debug.print('Remaining:', len(clients), 'clients. ')
 
 class BaseHandler:
-    log = log
-    
-    def __init__(self, request, sock, addr, time_out):
+    def __init__(self, request, sock, addr, time_out, debug, info, warning):
         self.request = request
         self.sock = sock
         self.addr = addr
         self.time_out = time_out
+        self.response_content = BytesIO()
+        self.response_ready = False
+        self.content_length = None
+        self.content_type = 'text/html'
     
-    def do(self):
+    def do(self, debug, info, warning):
+        if self.response_ready:
+            debug.print(self.addr, 'serving response...')
+            return self.serveResponse(debug, info, warning)
+        debug.print(self.addr, 'preparing response...')
+        result = self.prepareResponse(debug, info, warning)
+        if result == 'done':
+            self.respondHead(self.content_length)
+            self.response_ready = True
+            return self.do(debug, info, warning)
+        else:
+            return result
+    
+    def prepareResponse(self, debug, info, warning):  
         '''
         Override this method
         '''
-        data = b"What a shame! The programmer didn't override do()."
-        self.respondHead(len(data))
-        self.sock.send(data)
-        return 'close'
+        self.response_content.write(b"What a shame! The programmer didn't override do().")
+        self.content_length = self.response_content.tell()
+        self.response_content.seek(0)
+        return 'done'
+    
+    def serveResponse(self, debug, info, warning):
+        when_stop = time() + self.time_out
+        n_cycles = 0
+        while time() < when_stop:
+            n_cycles += 1
+            data = self.response_content.read(PAGE)
+            if not data:
+                info.print(self.addr, 'is responded.')
+                return 'close'
+            try:
+                n_bytes_sent = self.sock.send(data)
+            except (ConnectionAbortedError, ConnectionResetError):
+                info.print(self.addr, 'remote shutdown. ')
+                return 'close'
+            self.response_content.seek(
+                self.response_content.tell() \
+                - len(data) + n_bytes_sent, 
+            )
+        debug.print(f'1 timeout + {format(time() - when_stop, ".1f")} s = {n_cycles} cycles. ')
+        debug.print(self.addr, 'progress', format(self.response_content.tell() / self.content_length * 100, '.1f') + '%')
+        return 'wait'
+    
+    def unlink(self):
+        '''
+        Override this method
+        '''
+        ...
 
-    def respondHead(self, content_length, content_type = 'text/html'):
+    def respondHead(self, content_length):
         response = f'''HTTP/1.1 200 OK\r
 Content-Length: {content_length}\r
-Content-Type: {content_type}\r\n\r\n'''
+Content-Type: {self.content_type}\r\n\r\n'''
         self.sock.send(response.encode())
 
 if __name__ == '__main__':
-    main(print)
+    main(BaseHandler)

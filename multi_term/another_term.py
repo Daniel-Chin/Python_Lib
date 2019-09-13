@@ -1,5 +1,6 @@
 from . import PORT
 from socket import socket, timeout
+from os import system
 
 PAGE = 4096
 
@@ -17,6 +18,14 @@ def main():
     port = int(buffer.decode().strip())
     sock = socket()
     sock.connect(('localhost', port))
+    buffer = b''
+    while b'\n' not in buffer:
+        try:
+            buffer += sock.recv(1)
+        except timeout:
+            pass
+    title = buffer.decode().strip()
+    system(f'title {title}')
     while True:
         try:
             recved = sock.recv(PAGE)

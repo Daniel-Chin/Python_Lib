@@ -182,7 +182,7 @@ Uses sockets to inter-process communication.
 Future work:    
 * Support more OSes.    
 * Allow input from other terminals.    
-* support logging  
+* Replace lock for semaphore to launch terminals in parallel.    
 * Remote terminal?  
 
 ## my.py
@@ -285,13 +285,17 @@ Make a QR code instantly
 A simple file server.  
 Serves file in a folder.  
 Has a simple html page interface.  
-Built upon safe_http.py, please see its documentation.
+Built upon safe_http.py. Please see its documentation.  
+Problems:  
+* Does not sanitize html. But Don't panic! This is a file server and the threat only originates from local file names. Plus, "<>" is not allowed in filename.
 
 ## safe_http.py
 Really tries to be safe against injection attacks.    
 Intentionally uses single thread only.    
 Only answers GET. Does not abide by request http header fields.    
-Does not defend against DoS.  
+Does not defend against DoS.    
+Problems:    
+* socket.send without timeout. Could block the entire scheduling.  
 
 ## serve_now.py
 Immediately open a port, accept connection  

@@ -5,7 +5,7 @@ Uses sockets to inter-process communication.
 Future work:  
 * Support more OSes.  
 * Allow input from other terminals.  
-* support logging
+* Replace lock for semaphore to launch terminals in parallel.  
 * Remote terminal?  
 '''
 
@@ -49,7 +49,6 @@ class TerminalServer(dict):
         terminal = AnotherTerminal(name, sock, header)
         self[name] = terminal
         print(f'New terminal launched @ {addr}. ')
-        terminal.print(f'--- Terminal "{name}" ---')
         return terminal
     
     def closeAll(self):
@@ -66,6 +65,8 @@ class AnotherTerminal:
         self.header = header
         self.threads = []
         self.lock = Lock()
+        self.print(name, header = '')
+        self.print(f'\n\n--- Terminal "{name}" ---', header = '')
     
     def setLogger(self, name, filename, level):
         self.logger = logging.getLogger(name)

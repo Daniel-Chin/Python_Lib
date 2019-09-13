@@ -99,3 +99,4 @@ else:
         print('import terminalsize: Special thank to Alexander Belchenko, Harco Kuppens, and Justin Riley for writing a wonderful script that detects terminal size across OSes. ')
     else:
         print('Thanks to Belchenko, Kuppens, and Riley! ')
+    print()
