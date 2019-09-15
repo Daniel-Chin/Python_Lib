@@ -1,13 +1,18 @@
 '''
-a file system.  
+A file system.  
+Encrypts the file system with Fernet.  
 '''
 print('Importing...')
+from base64 import urlsafe_b64encode
+from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
+from cryptography.hazmat.primitives import hashes
+from cryptography.hazmat.backends import default_backend
+from cryptography.fernet import Fernet
 import platform
-from beepher import Beepher
 from io import BytesIO
 from math import sqrt
 import pickle
-from os import system, listdir
+from os import system, listdir, urandom
 from time import time
 import interactive
 from interactive import listen
@@ -17,20 +22,23 @@ import random
 import string
 import sys
 from subprocess import run
+interactive.msvcrt = None
+
 if platform.system() == 'Linux':
-    PATH = '/sdcard/Daniel/Beeph/'
+    PATH = '/sdcard/Daniel/book/'
 else:
     PATH = ''
-interactive.msvcrt = None
+SALT_LEN = 16
+HASH_ITER = 100_000
 
 print('Loading classes and functions...')
 
 def main():
     print('MAIN')
     filename = loadFilename()
-    key = getpass('?' * 666 + ' ')
+    password = getpass('?' * 666 + ' ')
     cls()
-    book = Book(filename, key)
+    book = Book(filename, password)
     try:
         book._mainloop()
     except EOFError:
@@ -61,7 +69,7 @@ def loadFilename():
             [print(name) for name in list_dir]
             filename = input('filename=').lower()
             if filename not in list_dir:
-                filename += '.beeph'
+                filename += '.book'
                 assert filename in list_dir, 'No such file. '
             return PATH + filename
         else:
@@ -89,12 +97,21 @@ class Book:
     '''
     All public methods can be called by user thru input(). 
     '''
-    def __init__(self, filename, key):
+    def __init__(self, filename, password):
         self.unsaved_change = False
         self.now = None
         self.filename = filename
-        self.key = key
-        beepher = Beepher(open(filename,'rb'), key, 'r')
+        self.salt = os.urandom(SALT_LEN)
+        kdf = PBKDF2HMAC(
+            algorithm = hashes.SHA256(), 
+            length = KEY_LEN, 
+            salt = self.salt, 
+            iterations = HASH_ITER, 
+            backend = default_backend(), 
+        )
+        key = urlsafe_b64encode(kdf.derive(password))
+        self.fernet = Fernet(key)
+        beepher = Beepher(open(filename, 'rb'), password, 'r')
         if beepher.read(1) == b'':
             # file is empty
             input('The file is empty. Enter to create an empty Beepher book. ')
@@ -241,10 +258,13 @@ class Book:
             self.now = chooseFromEntries(matches)
     
     def save(self):
-        file = open(self.filename, 'wb')
-        beepher = Beepher(file, self.key, 'w')
-        pickle.dump(self.dict, beepher)
-        file.close()
+        pickleIO = BytesIO()
+        pickle.dump(self.dict, pickleIO)
+        pickleIO.seek(0)
+        data = pickleIO.read()
+        crypt = self.fernet.encrypt(data)
+        with open(self.filename, 'wb') as f:
+            file.write(crypt)
         self.unsaved_change = False
         print('Saved. ')
     
