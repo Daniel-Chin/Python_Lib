@@ -29,6 +29,7 @@ if platform.system() == 'Linux':
 else:
     PATH = ''
 SALT_LEN = 16
+KEY_LEN = 32
 HASH_ITER = 100_000
 
 print('Loading classes and functions...')
