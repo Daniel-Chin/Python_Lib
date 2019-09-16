@@ -7,7 +7,7 @@ from base64 import urlsafe_b64encode
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.backends import default_backend
-from cryptography.fernet import Fernet
+from cryptography.fernet import Fernet, InvalidToken
 import platform
 from io import BytesIO
 from math import sqrt
@@ -16,13 +16,13 @@ from os import system, listdir, urandom
 from time import time
 import interactive
 from interactive import listen
+interactive.msvcrt = None
 from friendly_time import friendlyTime 
 from getpass import getpass
 import random
 import string
 import sys
 from subprocess import run
-interactive.msvcrt = None
 
 if platform.system() == 'Linux':
     PATH = '/sdcard/Daniel/book/'
@@ -39,7 +39,12 @@ def main():
     filename = loadFilename()
     password = getpass('?' * 666 + ' ')
     cls()
-    book = Book(filename, password)
+    book = Book()
+    try:
+        book._readFile(filename, password)
+    except WrongPassword:
+        print('Wrong password. ')
+        return
     try:
         book._mainloop()
     except EOFError:
@@ -98,29 +103,49 @@ class Book:
     '''
     All public methods can be called by user thru input(). 
     '''
-    def __init__(self, filename, password):
+    def __init__(self):
         self.unsaved_change = False
         self.now = None
+        self.dict = {}
+    
+    def _readFile(self, filename, password):
         self.filename = filename
+        print('Reading file...', end = '\r', flush = True)
         with open(filename, 'rb') as f:
             self.salt = f.read(SALT_LEN)
             assert len(self.salt) == SALT_LEN
             crypt = f.read()
+        print('File loaded.   ')
+        self.fernet = self._getFernet(password, self.salt)
+        print('Decrypting...', end = '\r', flush = True)
+        try:
+            data = self.fernet.decrypt(crypt)
+        except InvalidToken:
+            raise WrongPassword
+        print('Decryption success. ')
+        print('Unpickling...', end = '\r', flush = True)
+        pickleIO = BytesIO()
+        pickleIO.write(data)
+        pickleIO.seek(0)
+        try:
+            self.dict = pickle.load(pickleIO)
+        except:
+            raise WrongPassword
+        print('Unpickling done.')
+        print('Entry count:', len(self.dict))
+    
+    def _getFernet(self, password, salt):
+        print('Deriving key...', end = '\r', flush = True)
         kdf = PBKDF2HMAC(
             algorithm = hashes.SHA256(), 
             length = KEY_LEN, 
-            salt = self.salt, 
+            salt = salt, 
             iterations = HASH_ITER, 
             backend = default_backend(), 
         )
         key = urlsafe_b64encode(kdf.derive(password.encode()))
-        self.fernet = Fernet(key)
-        data = self.fernet.decrypt(crypt)
-        pickleIO = BytesIO()
-        pickleIO.write(data)
-        pickleIO.seek(0)
-        self.dict = pickle.load(pickleIO)
-        print('Entry count:', len(self.dict))
+        print('Key derived.   ')
+        return Fernet(key)
     
     def _mainloop(self):
         while True:
@@ -173,7 +198,7 @@ class Book:
         input('Enter... ')
         cls()
     
-    def modified(self):
+    def isModified(self):
         print('Book is', *[] if self.unsaved_change else ['NOT'], 'modified.')
     
     def _smartEntryCheck(self):
@@ -367,6 +392,29 @@ class Book:
             self.dict[self.now].time = time()
             self.unsaved_change = True
             print('Append success. ')
+    
+    def changePass(self):
+        print('Setting password.')
+        try:
+            mismatch = True
+            password1 = getpass('New password:')
+            password2 = getpass('Repeat:')
+            assert password1 == password2
+            password3 = getpass('Type in reverse:')
+            assert password1 == ''.join(reversed(password3))
+            mismatch = False
+            print('Confirm to set new password?')
+            assert listen(['y', 'n']) == b'y'
+        except AssertionError:
+            if mismatch:
+                print('Password mismatch.')
+            print('Abort. Did not set new password.')
+            return False
+        self.salt = urandom(SALT_LEN)
+        self.fernet = self._getFernet(password1, self.salt)
+        self.unsaved_change = True
+        print('Password loaded. ')
+        return True
 
 def chooseFromEntries(matches):
     if len(matches)==1:
@@ -438,6 +486,28 @@ def inputWithGen(prompt = ''):
         return gendigit(*op.split(' ')[1:])
     else:
         return op
+
+def newBook():
+    book = Book()
+    assert book.changePass()
+    while True:
+        book.filename = input('path/file.ext = ')
+        try:
+            with open(book.filename, 'wb+') as f:
+                f.write(b'test')
+            break
+        except EOFError:
+            print('^Z received. Abort. ')
+            return
+        except Exception as e:
+            print('Exception:', e)
+            print("Let's try again. ")
+            continue
+    print('Saving the new book... ')
+    book.save()
+
+class WrongPassword(Exception):
+    pass
 
 if __name__ == '__main__':
     main()

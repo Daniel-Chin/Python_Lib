@@ -38,7 +38,8 @@ Repeatedly prints 'wobo wabble' indefinitely.
 Bamboozling lyric-rolling music-playing windows-only python script
 
 ## book.py
-a file system.  
+A file system.    
+Encrypts the file system with Fernet.  
 
 ## cache_no_hash.py
 Inefficiently cache and lookup function returns. 
