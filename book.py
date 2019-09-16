@@ -266,7 +266,7 @@ class Book:
         data = pickleIO.read()
         crypt = self.fernet.encrypt(data)
         with open(self.filename, 'wb') as f:
-            file.write(crypt)
+            f.write(crypt)
         self.unsaved_change = False
         print('Saved. ')
     
