@@ -2,7 +2,6 @@
 A file system.  
 Encrypts the file system with Fernet.  
 '''
-from beepher import Beepher
 print('Importing...')
 from base64 import urlsafe_b64encode
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
@@ -103,7 +102,10 @@ class Book:
         self.unsaved_change = False
         self.now = None
         self.filename = filename
-        self.salt = urandom(SALT_LEN)
+        with open(filename, 'rb') as f:
+            self.salt = f.read(SALT_LEN)
+            assert len(self.salt) == SALT_LEN
+            crypt = f.read()
         kdf = PBKDF2HMAC(
             algorithm = hashes.SHA256(), 
             length = KEY_LEN, 
@@ -113,15 +115,12 @@ class Book:
         )
         key = urlsafe_b64encode(kdf.derive(password.encode()))
         self.fernet = Fernet(key)
-        beepher = Beepher(open(filename, 'rb'), password, 'r')
-        if beepher.read(1) == b'':
-            # file is empty
-            input('The file is empty. Enter to create an empty Beepher book. ')
-            self.dict = {}
-        else:
-            beepher.seek(0)
-            self.dict = pickle.load(beepher)
-            print('Entry count:', len(self.dict))
+        data = self.fernet.decrypt(crypt)
+        pickleIO = BytesIO()
+        pickleIO.write(data)
+        pickleIO.seek(0)
+        self.dict = pickle.load(pickleIO)
+        print('Entry count:', len(self.dict))
     
     def _mainloop(self):
         while True:
