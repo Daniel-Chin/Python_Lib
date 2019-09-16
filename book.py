@@ -110,7 +110,7 @@ class Book:
             iterations = HASH_ITER, 
             backend = default_backend(), 
         )
-        key = urlsafe_b64encode(kdf.derive(password))
+        key = urlsafe_b64encode(kdf.derive(password.encode()))
         self.fernet = Fernet(key)
         beepher = Beepher(open(filename, 'rb'), password, 'r')
         if beepher.read(1) == b'':
