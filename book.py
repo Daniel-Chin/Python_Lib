@@ -101,7 +101,7 @@ class Book:
         self.unsaved_change = False
         self.now = None
         self.filename = filename
-        self.salt = os.urandom(SALT_LEN)
+        self.salt = urandom(SALT_LEN)
         kdf = PBKDF2HMAC(
             algorithm = hashes.SHA256(), 
             length = KEY_LEN, 
