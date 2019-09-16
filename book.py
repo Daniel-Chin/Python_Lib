@@ -2,6 +2,7 @@
 A file system.  
 Encrypts the file system with Fernet.  
 '''
+from beepher import Beepher
 print('Importing...')
 from base64 import urlsafe_b64encode
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
