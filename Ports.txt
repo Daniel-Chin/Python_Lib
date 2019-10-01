@@ -9,3 +9,5 @@ Port specification for my applications.
 2340 TCP	Local only port. Implemented thru firewall
 2341 TCP	Simplinstrument ableton-python-processing-arduino
 2342 TCP	multi_term portAllocator
+2343 TCP	Where Dit'Go Frontend
+2344 TCP	Where Dit'Go Backend
