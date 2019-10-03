@@ -1,0 +1,14 @@
+What the difference? 
+	A: 
+		try:
+			...
+		finally:
+			mustRun()
+	B:
+		try:
+			...
+		except:
+			mustRun()
+			raise
+
+			
