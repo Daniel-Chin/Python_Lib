@@ -39,8 +39,10 @@ class LoudReceiver(Thread):
     
     def run(self):
         try:
-            while True:
-                print(' *', self.socket.recv(PAGE).decode())
+            recved = None
+            while recved != b'':
+                recved = self.socket.recv(PAGE)
+                print(' *', recved.decode())
         finally:
             self.socket.close()
 
