@@ -1,0 +1,12 @@
+pip install keyboard
+pip install mouse
+pip install colorama
+pip install getch
+pip install 
+pip install 
+pip install 
+pip install 
+pip install 
+pip install 
+pip install 
+pip install 
