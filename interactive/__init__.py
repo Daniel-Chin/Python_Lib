@@ -5,7 +5,7 @@ One vulnerability in `listen`. Do help(listen) for details.
 '''
 __all__ = ['listen', 'strCommonStart', 'AbortionError', 
     'cls', 'askForFile', 'askSaveWhere', 'inputChin', 'multiLineInput', 'inputUntilValid']
-from time import sleep
+
 from .console_explorer import *
 from .cls import cls
 from colorama import init, Back, Fore, Style
@@ -13,28 +13,50 @@ init()
 from terminalsize import get_terminal_size
 from graphic_terminal import *
 import string
+from threading import Thread, Lock, Event
+try:
+    import msvcrt
+    getch = msvcrt
+except ImportError:
+    import getch
 
 FPS = 30
 CURSOR_WRAP = Back.GREEN + Fore.WHITE + '%s' + Style.RESET_ALL
 
-try:
-    import msvcrt
-    import sys
+class CharGettor(Thread):
+    def __init__(self):
+        super().__init__()
+        self.queue = []
+        self.to_listen = False
+        self.lock = Lock()
+        self.event = Event()
+        self.go_on = True
+    
+    def listen(self):
+        self.to_listen = True
+        self.event.set()
+    
     def getFullCh():
-        first=msvcrt.getch()
+        first = getch.getch()
         if first[0] in range(1, 128):
-            return first
+            full_ch = first
         else:   # \x00 \xe0 Wider chars
-            return first + msvcrt.getch()
-    # if sys.getwindowsversion() >= (10, 0, 17134) and False: # Strange windows update on 2018/10/22
-    #     __getFullCh = getFullCh
-    #     def getFullCh():
-    #         ch = __getFullCh()
-    #         if len(ch) == 1:
-    #             assert msvcrt.getch() == b'\x00'
-    #         return ch
-except ImportError:
-    msvcrt = None
+            full_ch = first + getch.getch()
+        self.queue.append(full_ch)
+    
+    def run(self):
+        while self.go_on:
+            if self.to_listen:
+                full_ch = self.getFullCh()
+                self.to_listen -= 1
+                self.queue.append(full_ch)
+            else:
+                self.event.wait()
+                self.event.clear()
+    
+    def stop(self):
+        self.go_on = False
+        self.event.set()
 
 def listen(choice = [], timeout = 0):
     '''
@@ -53,21 +75,6 @@ def listen(choice = [], timeout = 0):
     except AttributeError:
         bChoice = [*choice]
     print('', end = '', flush = True)     # Just to flush
-    if msvcrt is None:
-        if bChoice == []:
-            op = input()
-            if op == '':
-                return b'\r'    # So android doesn't need to type "\r"
-        else:
-            print(bChoice)
-            repr_bChoice = [str(x) for x in bChoice]
-            op = None
-            while op not in repr_bChoice:
-                print("b'    '\rb'", end = '', flush = True)
-                op = "b'%s'" % input()
-                if op == "b''" and b'\r' in bChoice:
-                    return b'\r'    # So android doesn't need to type "\r"
-            return eval(op)
     if timeout != 0:
         try:
             for i in range(int(timeout * FPS)):
