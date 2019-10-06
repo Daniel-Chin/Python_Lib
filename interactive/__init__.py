@@ -1,10 +1,10 @@
 '''
 Terminal interactivity utils. 
-
-One vulnerability in `listen`. Do help(listen) for details. 
 '''
 __all__ = ['listen', 'strCommonStart', 'AbortionError', 
-    'cls', 'askForFile', 'askSaveWhere', 'inputChin', 'multiLineInput', 'inputUntilValid']
+    'cls', 'askForFile', 'askSaveWhere', 'inputChin', 'multiLineInput', 
+    'inputUntilValid', 
+]
 
 from .console_explorer import *
 from .cls import cls
@@ -13,7 +13,9 @@ init()
 from terminalsize import get_terminal_size
 from graphic_terminal import *
 import string
-from threading import Thread, Lock, Event
+from threading import Thread, Lock, Condition
+from time import monotonic as monoTime
+import atexit
 try:
     import msvcrt
     getch = msvcrt
@@ -24,49 +26,82 @@ FPS = 30
 CURSOR_WRAP = Back.GREEN + Fore.WHITE + '%s' + Style.RESET_ALL
 
 class CharGettor(Thread):
+    '''
+    On non-windows, we do not have `msvcrt.kbhit`.  
+    Also, `getch` does not take `timeout` argument.  
+    Hence, it is fundamentally impossible 
+    to provide a seamless non-blocking interface for getch.  
+    This class uses a deamon thread and tries to deal with this headache.  
+    The drawback is, if the program exits 
+    while the thread is waiting for a char,  
+    the user needs to press a key to let the deamon thread join.  
+    '''
     def __init__(self):
         super().__init__()
-        self.queue = []
-        self.to_listen = False
-        self.lock = Lock()
-        self.event = Event()
+        self.char_got = None
+        self.consumeLock = Lock()
+        self.produceLock = Lock()
+        self.produceLock.acquire()
+        self.producer_working = False
         self.go_on = True
+        self.setDaemon(True)
+        atexit.register(self.stop)
     
-    def listen(self):
-        self.to_listen = True
-        self.event.set()
+    def consume(self, timeout = -1):
+        '''
+        `timeout`: 0 is nonblocking, -1 is wait forever.  
+        Return False if timeout.  
+        '''
+        if not self.producer_working:
+            if self.char_got is None:
+                self.producer_working = True
+                self.consumeLock.acquire()
+                self.produceLock.release()
+            else:
+                return self.popChar()
+        if self.consumeLock.acquire(timeout = timeout):
+            return self.popChar()
+        else:
+            return None
     
-    def getFullCh():
+    def produce(self):
+        self.produceLock.acquire()
+        if self.go_on:
+            self.getFullCh()
+            self.producer_working = False
+            self.consumeLock.release()
+    
+    def popChar(self):
+        try:
+            return self.char_got
+        finally:
+            self.char_got = None
+    
+    def getFullCh(self):
         first = getch.getch()
         if first[0] in range(1, 128):
             full_ch = first
         else:   # \x00 \xe0 Wider chars
             full_ch = first + getch.getch()
-        self.queue.append(full_ch)
+        self.char_got = full_ch
     
     def run(self):
         while self.go_on:
-            if self.to_listen:
-                full_ch = self.getFullCh()
-                self.to_listen -= 1
-                self.queue.append(full_ch)
-            else:
-                self.event.wait()
-                self.event.clear()
+            self.produce()
     
     def stop(self):
         self.go_on = False
-        self.event.set()
+        self.produceLock.release()
+        if self.producer_working:
+            print(f'{self.__class__}: If program not terminating, '
+              + 'press a key. ')
+        self.join()
 
-def listen(choice = [], timeout = 0):
+def listen(choice = [], timeout = -1):
     '''
-    Vulnerability Warning: 
-        This function calls `evel`. User can eval any element repr in bChoice. 
-        If you supply this function with normal arguments, you should be safe. 
-        Don't let the `choice` argument depend on previous user input! 
     choice can be an iterable of choices or a single choice. 
     Elements can be b'' or ''.
-    If timeout=0, it's blocking. 
+    If timeout = -1, it's blocking. 
     timeout is in second. 
     Supports non-windows. 
     '''
@@ -75,21 +110,15 @@ def listen(choice = [], timeout = 0):
     except AttributeError:
         bChoice = [*choice]
     print('', end = '', flush = True)     # Just to flush
-    if timeout != 0:
-        try:
-            for i in range(int(timeout * FPS)):
-                if msvcrt.kbhit():
-                    op = getFullCh()
-                    if bChoice == [] or op in bChoice:
-                        return op
-                sleep(1/FPS)
+    
+    if timeout != -1:
+        deadline = monoTime() + timeout
+    while True:
+        op = charGettor.consume(-1 if timeout == -1 else deadline - monoTime())
+        if op and (bChoice == [] or op in bChoice):
+            return op
+        if timeout != -1 and monoTime() > deadline:
             return None
-        except KeyboardInterrupt:
-            return b'\x03'  # ^C. For consistency when calling listen(timeout=0) and ^C. 
-    op = getFullCh()
-    while not (bChoice == [] or op in bChoice):
-        op = getFullCh()
-    return op
 
 def strCommonStart(list_strs, known_len = 0):
     '''
@@ -341,3 +370,6 @@ def inputUntilValid(prompt, validator, case_sensitive = False, legalize = None):
                 continue
         if (is_iter and candidate in validator) or (not is_iter and validator(candidate)):
             return candidate
+
+charGettor = CharGettor()
+charGettor.start()
