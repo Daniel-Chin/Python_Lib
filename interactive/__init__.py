@@ -16,6 +16,7 @@ import string
 from threading import Thread, Lock, Condition
 from time import monotonic as monoTime
 import atexit
+from sys import stdout
 try:
     import msvcrt
     getch = msvcrt
@@ -32,9 +33,10 @@ class CharGettor(Thread):
     Hence, it is fundamentally impossible 
     to provide a seamless non-blocking interface for getch.  
     This class uses a deamon thread and tries to deal with this headache.  
-    The drawback is, if the program exits 
-    while the thread is waiting for a char,  
-    the user needs to press a key to let the deamon thread join.  
+    Drawbacks:  
+    * If the program exits while the thread is waiting for a char, 
+        the user needs to press a key to let the deamon thread join.  
+    * A `timeout` = 0 does not guarantee a read from the char queue.  
     '''
     def __init__(self):
         super().__init__()
@@ -42,7 +44,6 @@ class CharGettor(Thread):
         self.consumeLock = Lock()
         self.produceLock = Lock()
         self.produceLock.acquire()
-        self.producer_working = False
         self.go_on = True
         self.setDaemon(True)
         atexit.register(self.stop)
@@ -52,15 +53,13 @@ class CharGettor(Thread):
         `timeout`: 0 is nonblocking, -1 is wait forever.  
         Return False if timeout.  
         '''
-        if not self.producer_working:
-            if self.char_got is None:
-                self.producer_working = True
-                self.consumeLock.acquire()
-                self.produceLock.release()
-            else:
-                return self.popChar()
         if self.consumeLock.acquire(timeout = timeout):
-            return self.popChar()
+            if self.char_got is not None:
+                self.consumeLock.release()
+                return self.popChar()
+            else:
+                self.produceLock.release()
+                return self.consume(timeout)
         else:
             return None
     
@@ -68,7 +67,6 @@ class CharGettor(Thread):
         self.produceLock.acquire()
         if self.go_on:
             self.getFullCh()
-            self.producer_working = False
             self.consumeLock.release()
     
     def popChar(self):
@@ -92,30 +90,46 @@ class CharGettor(Thread):
     def stop(self):
         self.go_on = False
         self.produceLock.release()
-        if self.producer_working:
-            print(f'{self.__class__}: If program not terminating, '
-              + 'press a key. ')
+        if self.consumeLock.locked():
+            print(f'{self.__class__}: Program not terminating? '
+              + 'Press a key. ')
         self.join()
 
-def listen(choice = [], timeout = -1):
+class Universe:
+    def __contains__(self, x):
+        return True
+
+def listen(choice = {}, timeout = -1):
     '''
-    choice can be an iterable of choices or a single choice. 
-    Elements can be b'' or ''.
-    If timeout = -1, it's blocking. 
-    timeout is in second. 
-    Supports non-windows. 
+    `choice`:  
+        can be an iterable of choices or a single choice.   
+        Elements can be byte or string.  
+        If empty, accepts anything.  
+    `timeout`:  
+        in seconds. -1 is blocking. 
+        The function returns None if timeout.  
+    Supports non-windows.  
     '''
-    try:
-        bChoice = [x.encode() for x in choice]
-    except AttributeError:
-        bChoice = [*choice]
-    print('', end = '', flush = True)     # Just to flush
+    if choice:
+        bChoice = set()
+        for option in choice:
+            if type(option) is str:
+                option = option.encode()
+            elif type(option) is int:
+                option = bytes([option])
+            if type(option) is not bytes:
+                raise TypeError('`choice` argument type mismatch')
+            bChoice.add(option)
+    else:
+        bChoice = Universe()
+    
+    stdout.flush()
     
     if timeout != -1:
         deadline = monoTime() + timeout
     while True:
         op = charGettor.consume(-1 if timeout == -1 else deadline - monoTime())
-        if op and (bChoice == [] or op in bChoice):
+        if op and op in bChoice:
             return op
         if timeout != -1 and monoTime() > deadline:
             return None
