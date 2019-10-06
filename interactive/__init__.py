@@ -14,14 +14,15 @@ from terminalsize import get_terminal_size
 from graphic_terminal import *
 import string
 from threading import Thread, Lock, Condition
-from time import monotonic as monoTime
+from time import monotonic as monoTime, sleep
 import atexit
 from sys import stdout
 try:
     import msvcrt
-    getch = msvcrt
+    is_windows = True
 except ImportError:
     import getch
+    is_windows = False
 
 FPS = 30
 CURSOR_WRAP = Back.GREEN + Fore.WHITE + '%s' + Style.RESET_ALL
@@ -32,26 +33,57 @@ class CharGettor(Thread):
     Also, `getch` does not take `timeout` argument.  
     Hence, it is fundamentally impossible 
     to provide a seamless non-blocking interface for getch.  
-    This class uses a deamon thread and tries to deal with this headache.  
+    This class chooses to use a deamon thread.  
     Drawbacks:  
     * If the program exits while the thread is waiting for a char, 
         the user needs to press a key to let the deamon thread join.  
-    * A `timeout` = 0 does not guarantee a read from the char queue.  
+    * A `timeout` = 0 does not guarantee a read from the keyboard buffer.  
+    * After a timeout, the user's next key press will be 
+        "eaten" and saved to `char_got`, so `input()` will not 
+        get it.  
+    For a detailed demo of these drawbacks and their solutions,  
+    see ./charGettor_demo.py
+    On Windows, things work just fine, except we use repeated 
+    polling of `msvcrt.kbhit`, `FPS` times per sec.  
     '''
     def __init__(self):
         super().__init__()
-        self.char_got = None
-        self.consumeLock = Lock()
-        self.produceLock = Lock()
-        self.produceLock.acquire()
-        self.go_on = True
-        self.setDaemon(True)
-        atexit.register(self.stop)
-    
-    def consume(self, timeout = -1):
+        if is_windows:
+            self.consume = self.consumeWindows
+        else:
+            self.consume = self.consumeNonWindows
+            self.char_got = None
+            self.consumeLock = Lock()
+            self.produceLock = Lock()
+            self.produceLock.acquire()
+            self.go_on = True
+            self.setDaemon(True)
+            atexit.register(self.stop)
+            self.start()
+
+    def consumeWindows(self, timeout = -1):
         '''
         `timeout`: 0 is nonblocking, -1 is wait forever.  
-        Return False if timeout.  
+        Return None if timeout.  
+        '''
+        if timeout == -1:
+            return self.getFullCh()
+        if timeout < 0:
+            raise ValueError(f'timeout must > 0, got {timeout}')
+        try:
+            for i in range(timeout * FPS + 1):
+                if msvcrt.kbhit():
+                    return self.getFullCh()
+                sleep(1 / FPS)
+        except KeyboardInterrupt:
+            # If ^C arrives when we sleep
+            return b'\x03'  # Just for consistency. See ./charGettor_demo.py
+        return None
+    
+    def consumeNonWindows(self, timeout = -1):
+        '''
+        `timeout`: 0 is nonblocking, -1 is wait forever.  
+        Return None if timeout.  
         '''
         if self.consumeLock.acquire(timeout = timeout):
             if self.char_got is not None:
@@ -66,7 +98,7 @@ class CharGettor(Thread):
     def produce(self):
         self.produceLock.acquire()
         if self.go_on:
-            self.getFullCh()
+            self.ch_got = self.getFullCh()
             self.consumeLock.release()
     
     def popChar(self):
@@ -75,14 +107,47 @@ class CharGettor(Thread):
         finally:
             self.char_got = None
     
-    def getFullCh(self):
-        first = getch.getch()
-        if first[0] in range(1, 128):
-            full_ch = first
-        else:   # \x00 \xe0 Wider chars
-            full_ch = first + getch.getch()
-            print('wide', first[0], full_ch[1])
-        self.char_got = full_ch
+    if is_windows:
+        def getFullCh(self):
+            '''
+            Returns bytes  
+            '''
+            first = msvcrt.getch()
+            if first[0] in range(1, 128):
+                full_ch = first
+            else:   # \x00 \xe0 multi bytes scan code
+                full_ch = first + msvcrt.getch()
+            return full_ch
+    else:
+        def getFullCh(self, priorize_esc_or_arrow):
+            '''
+            Returns bytes  
+            Problem: 
+                on Linux, function keys and arrow keys  
+                scan code is multi bytes, starting with \x1b.  
+                However, ESC scan code is single byte \x1b,  
+                which means it is impossible to differentiate.  
+                The caller of this function has to know in advance 
+                whether the user is expected to press ESC or 
+                arrow keys.  
+                Set `priorize_esc_or_arrow` to True or False.  
+            The parsing scheme of function keys is not researched.  
+            Please open an issue if you have the docs of Linux scan codes.  
+            '''
+            ch = getch.getch()
+            if ch == '\x1b':
+                if not priorize_esc_or_arrow:
+                    new = getch.getch()
+                    ch += new
+                    if new in '[O': 
+                        new = ''
+                        while new in ';' + string.digits:
+                            new = getch.getch()
+                            ch += new
+                        assert new in '~' + string.ascii_uppercase
+                    else:
+                        pass    # alt + regular
+            return ch.encode()
     
     def run(self):
         while self.go_on:
@@ -108,8 +173,12 @@ def listen(choice = {}, timeout = -1):
         If empty, accepts anything.  
     `timeout`:  
         in seconds. -1 is blocking. 
-        The function returns None if timeout.  
     Supports non-windows.  
+    The function returns None if timeout.  
+    Problems:  
+        *There are several problems with this function that 
+        you need to know about!*  
+        Please see `help(CharGettor)`.  
     '''
     if choice:
         bChoice = set()
@@ -387,4 +456,3 @@ def inputUntilValid(prompt, validator, case_sensitive = False, legalize = None):
             return candidate
 
 charGettor = CharGettor()
-charGettor.start()
