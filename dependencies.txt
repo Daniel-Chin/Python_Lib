@@ -1,3 +1,6 @@
+'''
+Dependencies of this repo.  
+'''
 pip install keyboard
 pip install mouse
 pip install colorama

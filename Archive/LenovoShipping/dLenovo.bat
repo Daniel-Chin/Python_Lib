@@ -1,0 +1,2 @@
+py lenovo.py
+pause
