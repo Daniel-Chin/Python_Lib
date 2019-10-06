@@ -80,7 +80,7 @@ class CharGettor(Thread):
             return b'\x03'  # Just for consistency. See ./charGettor_demo.py
         return None
     
-    def consumeNonWindows(self, timeout = -1, priorize_esc_or_arrow):
+    def consumeNonWindows(self, timeout = -1, priorize_esc_or_arrow = True):
         '''
         `timeout`: 0 is nonblocking, -1 is wait forever.  
         Return None if timeout.  
