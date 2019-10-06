@@ -1,3 +1,6 @@
+'''
+Questions I have about Python.  
+'''
 What the difference? 
 	A: 
 		try:
@@ -11,4 +14,4 @@ What the difference?
 			mustRun()
 			raise
 
-			
+Socket. How do I know how many bytes were sent if timeout? 

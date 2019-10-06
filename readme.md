@@ -22,11 +22,122 @@ Beer on the Wall/
 ## Archive/
 Meaningless Archive of random Python Scripts I wrote.
 
+### Archive/'Response Generator'/
+A prank.  
+It was freshman year. I was introduced to Python by NYUSH.  
+I made this for Zane.  
+Try figuring out what it does.
+
+#### Archive/'Response Generator'/Siri Chin - Mac.py
+Don't be reading this.   
+Don't be spoiled.   
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+Yeah Zane I'm talking about you!   
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+All right then, if you insist...
+
+#### Archive/'Response Generator'/Siri Chin - Win.py
+Don't be reading this.   
+Don't be spoiled.   
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+Yeah Zane I'm talking about you!   
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+All right then, if you insist...
+
 ### Archive/archive_rrrr.py
 To archive http://rrrrthats5rs.com
 
+### Archive/LAN_scan/
+Scans LAN
+
+### Archive/legacy_archive/
+This was before I started to use Github, and I didn't do documentation.  
+Consider this the pre-historical era.
+
+### Archive/LenovoShipping/
+Tried to implement SSH when I was young.
+
 #### Archive/mim/mim.py
 To test the security of getpass.  
+
+### Archive/OneFileFly/
+Transmit one file.  
+Deprecated. Replaced by ../oneship
+
+#### Archive/OneFileFly/OneFileFly.py
+by Daniel
+
+### Archive/SleepProber/
+Keeps beeping, until the computer sleeps.  
+Purpose: so you can tell if your computer is asleep.  
+Useful in rare occasions.
+
+### Archive/WireVoice/
+Simple experiment of dealing with sound data in real time.
 
 ## ascii_table.py
 A beautiful script to print the ascii table. 
@@ -99,6 +210,9 @@ i.e. is the structure the same? are the keys the same?
 
 ## echo.py
 print(sys.argv)
+
+## examine_dependencies.py
+Examines a directory of .py files and find all imports.  
 
 ### Find Vera/Find_Vera V2.py
 A game by Daniel

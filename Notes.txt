@@ -82,6 +82,3 @@ while else?
 		willDo()
 
 'yes' if True else 'no'
-
-Questions:
-	Socket. How do I know how many bytes were sent if timeout? 
