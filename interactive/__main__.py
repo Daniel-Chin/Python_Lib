@@ -6,6 +6,13 @@ from interactive import charGettor as c
 from time import sleep
 from os import getpid
 print('pid',getpid())
+
+print(c.consume())
+print(c.consume(timeout = 1))
+input('enter..')
+exit()
+
+
 print(listen(timeout = 1))
 sleep(1)
 print(listen(b'asd', timeout = 0))
