@@ -81,6 +81,7 @@ class CharGettor(Thread):
             full_ch = first
         else:   # \x00 \xe0 Wider chars
             full_ch = first + getch.getch()
+            print('wide', first[0], full_ch[1])
         self.char_got = full_ch
     
     def run(self):
