@@ -80,7 +80,7 @@ class CharGettor(Thread):
             return b'\x03'  # Just for consistency. See ./charGettor_demo.py
         return None
     
-    def consumeNonWindows(self, timeout = -1):
+    def consumeNonWindows(self, timeout = -1, priorize_esc_or_arrow):
         '''
         `timeout`: 0 is nonblocking, -1 is wait forever.  
         Return None if timeout.  
@@ -90,6 +90,7 @@ class CharGettor(Thread):
                 self.consumeLock.release()
                 return self.popChar()
             else:
+                self.priorize_esc_or_arrow = priorize_esc_or_arrow
                 self.produceLock.release()
                 return self.consume(timeout)
         else:
@@ -119,7 +120,7 @@ class CharGettor(Thread):
                 full_ch = first + msvcrt.getch()
             return full_ch
     else:
-        def getFullCh(self, priorize_esc_or_arrow):
+        def getFullCh(self):
             '''
             Returns bytes  
             Problem: 
@@ -136,7 +137,7 @@ class CharGettor(Thread):
             '''
             ch = getch.getch()
             if ch == '\x1b':
-                if not priorize_esc_or_arrow:
+                if not self.priorize_esc_or_arrow:
                     new = getch.getch()
                     ch += new
                     if new in '[O': 
@@ -275,8 +276,6 @@ def inputChin(prompt = '', default = '', history = [], kernal = None, cursor = N
     `kernal` for tab key auto complete. 
     '''
     default = str(default)
-    if msvcrt is None:
-        return input(prompt + f' (default = {default})')
     line = default
     if cursor is None:
         cursor = len(line)
