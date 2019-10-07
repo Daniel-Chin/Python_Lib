@@ -305,10 +305,13 @@ def inputChin(prompt = '', default = '', history = [], kernal = None, cursor = N
         elif op == KEY_CODE.ESC:
             line = ''
             cursor = 0
-        elif op[0] in range(1, 18) or op[0] in range(19, 26) or op[0] in (0, 224):
+        elif op[0] in range(1, 18) \
+            or op[0] in range(19, 26) \
+            or op[0] in (0, 224):
             pass    # invalid char
         else:   # typed char
-            line = line[:cursor] + op.decode('ANSI') + line[cursor:]
+            line = line[:cursor] + op.decode() + line[cursor:]
+            # I used ANSI in a previous version. Still don't know why I did that  
             cursor += 1
         clearLine()
 
