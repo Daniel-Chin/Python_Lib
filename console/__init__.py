@@ -24,16 +24,6 @@ from .kernal import Kernal
 import random
 
 def console(namespace = {}, prompt = '>>> ', use_input = False, fixer = None):
-    if platform.system() != 'Windows':
-        if namespace:
-            for name in namespace:
-                if not name.startswith('_') or name == '__file__':
-                    exec(f'{name}=namespace["{name}"]')
-            del name
-        del namespace
-        from IPython import embed
-        embed()
-        return
     if random.randint(0, 5) == 0:
         print('console.console Warning: no support for reassigning module global variables. ')
     else:
