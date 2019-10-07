@@ -53,7 +53,7 @@ class CharGettor(Thread):
                 self.produceLock.release()
                 return self.consume(timeout)
         else:
-            print('acquire fail', flush = True)
+            print('acquire fail')
             return None
     
     def produce(self):
