@@ -99,7 +99,7 @@ class CharGettor(Thread):
     def produce(self):
         self.produceLock.acquire()
         if self.go_on:
-            self.ch_got = self.getFullCh()
+            self.char_got = self.getFullCh()
             self.consumeLock.release()
     
     def popChar(self):
@@ -136,7 +136,6 @@ class CharGettor(Thread):
             Please open an issue if you have the docs of Linux scan codes.  
             '''
             ch = getch.getch()
-            print('first', ch)
             if ch == '\x1b':
                 if not self.priorize_esc_or_arrow:
                     new = getch.getch()
