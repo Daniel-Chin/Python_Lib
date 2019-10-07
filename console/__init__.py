@@ -42,6 +42,8 @@ def console(namespace = {}, prompt = '>>> ', use_input = False, fixer = None):
                 command = inputChin(prompt, '', history, kernal)
             except EOFError:
                 command = 'exit()'
+            except KeyboardInterrupt:
+                command = 'print("KeyboardInterrupt")'
             if not command:
                 continue
             stripped = command.strip()
@@ -51,7 +53,11 @@ def console(namespace = {}, prompt = '>>> ', use_input = False, fixer = None):
                 got = command
                 while True:
                     history.append(got)
-                    got = inputChin('... ', '', history, kernal)
+                    try:
+                        got = inputChin('... ', '', history, kernal)
+                    except KeyboardInterrupt:
+                        command = 'print("KeyboardInterrupt")'
+                        break
                     command += '\n' + got
                     if long_string:
                         if got.count("'''") % 2 == 1:

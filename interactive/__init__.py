@@ -82,21 +82,13 @@ def tryGetch(timeout = None):
     Return None if timeout.  
     '''
     if timeout is None:
-        try:
-            return getFullCh()
-        except KeyboardInterrupt:
-            # If ^C arrives when we stdin.read(1),
-            return KEY_CODE.CTRL_C  # Just for consistency. 
+        return getFullCh()
     if timeout < 0:
         raise ValueError(f'timeout must > 0, got {timeout}')
-    try:
-        for i in range(timeout * FPS + 1):
-            if kbHit.kbhit():
-                return getFullCh()
-            sleep(1 / FPS)
-    except KeyboardInterrupt:
-        # If ^C arrives when we sleep,
-        return KEY_CODE.CTRL_C  # Just for consistency. 
+    for i in range(timeout * FPS + 1):
+        if kbHit.kbhit():
+            return getFullCh()
+        sleep(1 / FPS)
     return None
 
 class Universe:
@@ -135,6 +127,8 @@ def listen(choice = {}, timeout = None):
         full_ch = tryGetch(
             timeout and max(0, deadline - monoTime())
         )
+        if full_ch == KEY_CODE.CTRL_C:
+            raise KeyboardInterrupt
         if full_ch and full_ch in bChoice:
             return full_ch
         if timeout is not None and monoTime() > deadline:
