@@ -15,9 +15,11 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 '''
 '''
+THIS IS NOT THE ORIGINAL VERSION OF THE SCRIPT.  
 This scripted was written by SIMON D. LEVY.  
-See https://simondlevy.academic.wlu.edu/
-Script location: https://simondlevy.academic.wlu.edu/files/software/kbhit.py
+See https://simondlevy.academic.wlu.edu/  
+Script location: https://simondlevy.academic.wlu.edu/files/software/kbhit.py  
+Modification by Daniel Chin: changed KBHit.getch to return bytes.  
 '''
 
 import os
@@ -77,10 +79,10 @@ class KBHit:
         s = ''
 
         if os.name == 'nt':
-            return msvcrt.getch().decode('utf-8')
+            return msvcrt.getch()
 
         else:
-            return sys.stdin.read(1)
+            return sys.stdin.read(1).encode('utf-8')
 
 
     def getarrow(self):

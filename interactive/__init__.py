@@ -15,174 +15,85 @@ from graphic_terminal import *
 import string
 from time import monotonic as monoTime, sleep
 from sys import stdout
-try:
-    import msvcrt
-    is_windows = True
-except ImportError:
-    import getch
-    import atexit
-    from threading import Thread, Lock
-    is_windows = False
+from .kbhit import KBHit
+import platform
 
 FPS = 30
 CURSOR_WRAP = Back.GREEN + Fore.WHITE + '%s' + Style.RESET_ALL
 
-class CharGettor(Thread):
-    '''
-    On non-windows, we do not have `msvcrt.kbhit`.  
-    Also, `getch` does not take `timeout` argument.  
-    Hence, it is fundamentally impossible 
-    to provide a seamless non-blocking interface for getch.  
-    This class chooses to use a deamon thread.  
-    Drawbacks:  
-    * If the program exits while the thread is waiting for a char, 
-        the user needs to press a key to let the deamon thread join.  
-    * A `timeout` = 0 does not guarantee a read from the keyboard buffer.  
-    * After a timeout, the user's next key press will be 
-        "eaten" and saved to `char_got`, so `input()` will not 
-        get it.  
-    For a detailed demo of these drawbacks and their solutions,  
-    see ./charGettor_demo.py
-    On Windows, things work just fine, except we use repeated 
-    polling of `msvcrt.kbhit`, `FPS` times per sec.  
-    '''
-    def __init__(self):
-        super().__init__()
-        if is_windows:
-            self.consume = self.consumeWindows
-        else:
-            self.consume = self.consumeNonWindows
-            self.char_got = None
-            self.consumeLock = Lock()
-            self.produceLock = Lock()
-            self.produceLock.acquire()
-            self.go_on = True
-            self.setDaemon(True)
-            atexit.register(self.stop)
-            self.start()
+kbHit = KBHit()
 
-    def consumeWindows(self, timeout = -1):
+if platform.system().lower() == 'windows':
+    def getFullCh():
+        first = kbHit.getch()
+        if first[0] in range(1, 128):
+            full_ch = first
+        else:   # \x00 \xe0 multi bytes scan code
+            full_ch = first + kbHit.getch()
+        return full_ch
+else:
+    def getFullCh():
         '''
-        `timeout`: 0 is nonblocking, -1 is wait forever.  
-        Return None if timeout.  
+        Problem: 
+            on Linux, function keys and arrow keys  
+            scan code is multi bytes, starting with \x1b.  
+            However, ESC scan code is single byte \x1b,  
+            which means it is impossible to differentiate.  
+            The caller of this function has to know in advance 
+            whether the user is expected to press ESC or 
+            arrow keys.  
+            Set `priorize_esc_or_arrow` to True or False.  
+        The parsing scheme of function keys is derived from testing.  
+        Please open an issue if you have the spec of Linux scan codes.  
         '''
-        if timeout == -1:
-            return self.getFullCh()
-        if timeout < 0:
-            raise ValueError(f'timeout must > 0, got {timeout}')
-        try:
-            for i in range(timeout * FPS + 1):
-                if msvcrt.kbhit():
-                    return self.getFullCh()
-                sleep(1 / FPS)
-        except KeyboardInterrupt:
-            # If ^C arrives when we sleep
-            return b'\x03'  # Just for consistency. See ./charGettor_demo.py
-        return None
-    
-    def consumeNonWindows(self, timeout = -1, priorize_esc_or_arrow = True):
-        '''
-        `timeout`: 0 is nonblocking, -1 is wait forever.  
-        Return None if timeout.  
-        '''
-        print('enter', timeout)
-        if self.consumeLock.acquire(timeout = timeout):
-            print('acquired')
-            if self.char_got is not None:
-                self.consumeLock.release()
-                return self.popChar()
-            else:
-                self.priorize_esc_or_arrow = priorize_esc_or_arrow
-                self.produceLock.release()
-                return self.consume(timeout)
-        else:
-            print('acquire fail')
-            return None
-    
-    def produce(self):
-        self.produceLock.acquire()
-        if self.go_on:
-            self.char_got = self.getFullCh()
-            self.consumeLock.release()
-    
-    def popChar(self):
-        try:
-            return self.char_got
-        finally:
-            self.char_got = None
-    
-    if is_windows:
-        def getFullCh(self):
-            '''
-            Returns bytes  
-            '''
-            first = msvcrt.getch()
-            if first[0] in range(1, 128):
-                full_ch = first
-            else:   # \x00 \xe0 multi bytes scan code
-                full_ch = first + msvcrt.getch()
-            return full_ch
-    else:
-        def getFullCh(self):
-            '''
-            Returns bytes  
-            Problem: 
-                on Linux, function keys and arrow keys  
-                scan code is multi bytes, starting with \x1b.  
-                However, ESC scan code is single byte \x1b,  
-                which means it is impossible to differentiate.  
-                The caller of this function has to know in advance 
-                whether the user is expected to press ESC or 
-                arrow keys.  
-                Set `priorize_esc_or_arrow` to True or False.  
-            The parsing scheme of function keys is not researched.  
-            Please open an issue if you have the docs of Linux scan codes.  
-            '''
-            ch = getch.getch()
-            if ch == '\x1b':
-                if not self.priorize_esc_or_arrow:
-                    new = getch.getch()
-                    ch += new
-                    if new in '[O': 
-                        new = ''
-                        while new in ';' + string.digits:
-                            new = getch.getch()
-                            ch += new
-                        assert new in '~' + string.ascii_uppercase
-                    else:
-                        pass    # alt + regular
-            return ch.encode()
-    
-    def run(self):
-        while self.go_on:
-            self.produce()
-    
-    def stop(self):
-        self.go_on = False
-        self.produceLock.release()
-        if self.consumeLock.locked():
-            print(f'{self.__class__}: Program not terminating? '
-              + 'Press a key. ')
-        self.join()
+        ch = kbHit.getch()
+        if ch == b'\x1b':
+            if not self.priorize_esc_or_arrow:
+                new = kbHit.getch()
+                ch += new
+                if new in b'[O': 
+                    new = b''
+                    while new in b';' + string.digits.encode():
+                        new = kbHit.getch()
+                        ch += new
+                    assert new in b'~' + string.ascii_uppercase.encode()
+                else:
+                    pass    # alt + regular
+        return ch
+
+def tryGetch(timeout = None):
+    '''
+    `timeout`: 0 is nonblocking, None is wait forever.  
+    Return None if timeout.  
+    '''
+    if timeout is None:
+        return getFullCh()
+    if timeout < 0:
+        raise ValueError(f'timeout must > 0, got {timeout}')
+    try:
+        for i in range(timeout * FPS + 1):
+            if kbHit.kbhit():
+                return getFullCh()
+            sleep(1 / FPS)
+    except KeyboardInterrupt:
+        # If ^C arrives when we sleep,
+        return b'\x03'  # Just for consistency. 
+    return None
 
 class Universe:
     def __contains__(self, x):
         return True
 
-def listen(choice = {}, timeout = -1):
+def listen(choice = {}, timeout = None):
     '''
     `choice`:  
         can be an iterable of choices or a single choice.   
         Elements can be byte or string.  
         If empty, accepts anything.  
     `timeout`:  
-        in seconds. -1 is blocking. 
+        in seconds. None is blocking. 
     Supports non-windows.  
-    The function returns None if timeout.  
-    Problems:  
-        *There are several problems with this function that 
-        you need to know about!*  
-        Please see `help(CharGettor)`.  
+    The function returns bytes; None if timeout.  
     '''
     if choice:
         bChoice = set()
@@ -199,13 +110,15 @@ def listen(choice = {}, timeout = -1):
     
     stdout.flush()
     
-    if timeout != -1:
+    if timeout is not None:
         deadline = monoTime() + timeout
     while True:
-        op = charGettor.consume(-1 if timeout == -1 else deadline - monoTime())
-        if op and op in bChoice:
-            return op
-        if timeout != -1 and monoTime() > deadline:
+        full_ch = tryGetch(
+            timeout and max(0, deadline - monoTime())
+        )
+        if full_ch and full_ch in bChoice:
+            return full_ch
+        if timeout is not None and monoTime() > deadline:
             return None
 
 def strCommonStart(list_strs, known_len = 0):
@@ -456,5 +369,3 @@ def inputUntilValid(prompt, validator, case_sensitive = False, legalize = None):
                 continue
         if (is_iter and candidate in validator) or (not is_iter and validator(candidate)):
             return candidate
-
-charGettor = CharGettor()
