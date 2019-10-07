@@ -86,6 +86,7 @@ class CharGettor(Thread):
         Return None if timeout.  
         '''
         if self.consumeLock.acquire(timeout = timeout):
+            print('acquired')
             if self.char_got is not None:
                 self.consumeLock.release()
                 return self.popChar()
@@ -94,6 +95,7 @@ class CharGettor(Thread):
                 self.produceLock.release()
                 return self.consume(timeout)
         else:
+            print('acquire fail')
             return None
     
     def produce(self):
