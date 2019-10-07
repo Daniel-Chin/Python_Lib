@@ -1,8 +1,8 @@
-from threading import Thread
+import multiprocessing
 from getch import getch
 from time import sleep
 
-class t(Thread):
+class t(multiprocessing.Process):
     def run(self):
         getch()
 
