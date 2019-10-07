@@ -6,7 +6,7 @@ Connect, sendall(b'OK'), forward...
 import socket
 from threading import Thread, Condition, Lock
 from queue import Queue, Empty
-from listen import listen
+from interactive import listen
 
 def hub(port = 2333, size = 2):
     s = socket.socket()

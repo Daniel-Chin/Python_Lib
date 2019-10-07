@@ -105,6 +105,7 @@ def listen(choice = {}, timeout = None):
         in seconds. None is blocking. 
     Supports non-windows.  
     The function returns bytes; None if timeout.  
+    The user has to double press ESC, return b'\x1b' * 2  
     '''
     if choice:
         bChoice = set()

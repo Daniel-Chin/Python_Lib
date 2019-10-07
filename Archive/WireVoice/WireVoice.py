@@ -2,7 +2,7 @@ import sys
 from os import system as cmd
 import socket
 from threading import Thread, Condition
-from listen import listen
+from interactive import listen
 Daniel_IP = ('10.209.0.218', '10.209.23.186')
 
 def main():

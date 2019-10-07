@@ -1,5 +1,5 @@
 '''
-LiTouZhiBei(力透纸背).  
+LiTouZhiBei(Chinese: '\xe5\x8a\x9b\xe9\x80\x8f\xe7\xba\xb8\xe8\x83\x8c').  
 Converts pdf from [p1, p2...] to [p1, p1, p2, p2...]  
 '''
 from myfile import sysArgvOrInput
