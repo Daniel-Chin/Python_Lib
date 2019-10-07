@@ -186,23 +186,26 @@ Advantages over IPython:
     1. Lighter    
     2. Other threads can still print things when user is inputting commands    
     3. Tab auto-completes your phrase, even under Windows! (I'm proud.)    
-    4. Tired of having to `import` to test your module everytime you make an edit? `restart()` is what you need here.    
+    4. Tired of having to `import` to test your module everytime you make an edit? `restart()` is what you need here. Ctrl+R does the same!    
 Issues:    
     1. Reassigning module global variables will not be visible to module native codes. Sorry.    
     2. For unknown reasons, you cannot declare any name present in kernal.py that is invisible to the env.    
-    3. iniline generator cannot access namespace. I can't stably replicate this issue, and I don't know what this is about.    
+    3. Sometimes inline generator cannot access namespace. I can't stably replicate this issue, and I don't know what this is about.    
 Fixed Issues:    
     1. If you wanna scroll up, you don't need to input() anymore!    
     2. Multi-line code continuation is implemented!    
     3. If input command is longer than terminal width, camera rolls.    
 Future:    
     1. Consider adding a dynamic `return` feature.    
-    2. `traceback` is deleted every 
+    2. Study passing namespace into `exec` and `evel` and use them.  
 
 ## count.py
 For counting votes and ranking the counts.    
 Oh! I guess `from collections import Counter` does the same for you!    
 Although my thing is still more console friendly.  
+
+## dependencies.txt
+Dependencies of this repo.  
 
 ## dict_shape.py
 Compare the shape of two dicts.   
@@ -210,9 +213,6 @@ i.e. is the structure the same? are the keys the same?
 
 ## echo.py
 print(sys.argv)
-
-## examine_dependencies.py
-Examines a directory of .py files and find all imports.  
 
 ### Find Vera/Find_Vera V2.py
 A game by Daniel
@@ -258,10 +258,29 @@ with indentPrinter:
 ### interactive/console_explorer.py
 An android-friendly console file explorer. 
 
-### interactive/__init__.py
-Terminal interactivity utils.   
+### interactive/kbhit.py
+A Python class implementing KBHIT, the standard keyboard-interrupt poller.  
+Works transparently on Windows and Posix (Linux, Mac OS X).  Doesn't work  
+with IDLE.  
   
-One vulnerability in `listen`. Do help(listen) for details. 
+This program is free software: you can redistribute it and/or modify  
+it under the terms of the GNU Lesser General Public License as   
+published by the Free Software Foundation, either version 3 of the   
+License, or (at your option) any later version.  
+  
+This program is distributed in the hope that it will be useful,  
+but WITHOUT ANY WARRANTY; without even the implied warranty of  
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the  
+GNU General Public License for more details.
+
+### interactive/__init__.py
+Terminal interactivity utils.    
+Issues:    
+    * On Linux, Stopping the job and bringing it back to foreground   
+        messes the terminal setting up (?)    
+Future work:    
+    Stop telling lies in `help(getFullCh)` on Linux.    
+    https://stackoverflow.com/questions/48039759/how-to-distinguish-between-escape-and-escape-sequence  
 
 ## ipynb_to_py.py
 Converts ipynb to py.   
@@ -348,7 +367,7 @@ My laptop is weird. Running this script makes opening and terminating processes 
 Speculation: Taking CPU time away from Windows Defender? 
 
 ## pdf_litouzhibei.py
-LiTouZhiBei(????????????).    
+LiTouZhiBei(Chinese: '\xe5\x8a\x9b\xe9\x80\x8f\xe7\xba\xb8\xe8\x83\x8c').    
 Converts pdf from [p1, p2...] to [p1, p1, p2, p2...]  
 
 ## pdf_unspread.py
@@ -388,6 +407,9 @@ Expect unexpected behaviors.
 ## prime.py
 Get prime numbers
 
+## Push_Git.py
+Interactive git commit and push.  
+
 ### qrchat/__main__.py
 Sets up a server, displays a QR code. Scan it to go to a web page. Exchange raw texts!    
 Useful for sending a URL from the phone to the laptop.    
@@ -395,6 +417,9 @@ Warning: No authentication or encryption. Don't type in secrets. Don't assume wh
 
 ## qr_now.py
 Make a QR code instantly
+
+## questions.txt
+Questions I have about Python.  
 
 ## safeserver/
 A simple file server.  
@@ -419,6 +444,9 @@ and does nothing.
 
 ## stats.py
 What I learned from Statistics for Business and Finance. 
+
+## summarize_dependencies.py
+Examines a directory of .py files and find all imports.  
 
 ## terminalsize.py
 Contributors of this code: Alexander Belchenko, Harco Kuppens, Justin Riley.   

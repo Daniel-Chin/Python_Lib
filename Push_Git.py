@@ -1,3 +1,6 @@
+'''
+Interactive git commit and push.  
+'''
 from subprocess import Popen
 
 def main():

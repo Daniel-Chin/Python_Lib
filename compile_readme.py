@@ -31,10 +31,10 @@ SUPPRESS = [
     'To the Earth/Bin/Draft.txt', 
     'To the Earth/Bin/EditSave.py', 
     'To the Earth/Bin/Weapons.txt', 
-    'recvall.py', 
-    'recvfile.py', 
     'multi_term/another_term.py', 
     'multi_term/__main__.py', 
+    'interactive/legacy/charGettor_demo.py', 
+    'interactive/key_codes.py', 
 ]
 
 import sys
