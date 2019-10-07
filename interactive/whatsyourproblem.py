@@ -1,10 +1,10 @@
-from threading import Lock, Thread
-import atexit
-from time import sleep
 try:
     import msvcrt as getch
+    from time import sleep
 except:
     import getch
+    from threading import Lock, Thread
+    import atexit
 
 class CharGettor(Thread):
     '''

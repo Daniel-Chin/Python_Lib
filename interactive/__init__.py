@@ -13,15 +13,15 @@ init()
 from terminalsize import get_terminal_size
 from graphic_terminal import *
 import string
-from threading import Thread, Lock, Condition
 from time import monotonic as monoTime, sleep
-import atexit
 from sys import stdout
 try:
     import msvcrt
     is_windows = True
 except ImportError:
     import getch
+    import atexit
+    from threading import Thread, Lock
     is_windows = False
 
 FPS = 30
