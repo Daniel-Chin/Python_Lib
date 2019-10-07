@@ -171,6 +171,7 @@ def chooseFromEntries(matches):
             return None
 
 def printabilize(x):
+    print(x.encode())
     return x.replace(
         KEY_CODE.WIN_Z_LINUX_D.decode(), DISPLAY_WIN_Z_LINUX_D
     ).replace('\x12', '^R')
@@ -307,7 +308,7 @@ def inputChin(prompt = '', default = '', history = [], kernal = None, cursor = N
             cursor = 0
         elif op[0] in range(1, 18) \
             or op[0] in range(19, 26) \
-            or op[0] in (0, 224):
+            or op[0] in (0, 27, 224):
             pass    # invalid char
         else:   # typed char
             line = line[:cursor] + op.decode() + line[cursor:]
