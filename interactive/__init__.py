@@ -1,5 +1,8 @@
 '''
-Terminal interactivity utils. 
+Terminal interactivity utils.  
+Future work:  
+    Stop telling lies in `help(getFullCh)` on Linux.  
+    https://stackoverflow.com/questions/48039759/how-to-distinguish-between-escape-and-escape-sequence  
 '''
 __all__ = ['listen', 'strCommonStart', 'AbortionError', 
     'cls', 'askForFile', 'askSaveWhere', 'inputChin', 'multiLineInput', 
@@ -17,22 +20,27 @@ from time import monotonic as monoTime, sleep
 from sys import stdout
 from .kbhit import KBHit
 import platform
+from . import key_codes as KEY_CODE
 
 FPS = 30
 CURSOR_WRAP = Back.GREEN + Fore.WHITE + '%s' + Style.RESET_ALL
+if platform.system().lower() == 'windows':
+    DISPLAY_WIN_Z_LINUX_D = '^Z'
+else:
+    DISPLAY_WIN_Z_LINUX_D = '^D'
 
 kbHit = KBHit()
 
 if platform.system().lower() == 'windows':
     def getFullCh():
         first = kbHit.getch()
-        if first[0] in range(1, 128):
+        if first[0] in range(1, 128) and first != b'\x1b':
             full_ch = first
-        else:   # \x00 \xe0 multi bytes scan code
+        else:   # \x00 \xe0 multi bytes scan code, and double ESC
             full_ch = first + kbHit.getch()
         return full_ch
 else:
-    def getFullCh():
+    def getFullCh(priorize_esc_or_arrow = False):
         '''
         Problem: 
             on Linux, function keys and arrow keys  
@@ -43,12 +51,16 @@ else:
             whether the user is expected to press ESC or 
             arrow keys.  
             Set `priorize_esc_or_arrow` to True or False.  
+        Solution:  
+            Maybe let the user double press ESC!  
+            Set `priorize_esc_or_arrow` to False  
+            and check for b'\x1b\x1b'.  
         The parsing scheme of function keys is derived from testing.  
         Please open an issue if you have the spec of Linux scan codes.  
         '''
         ch = kbHit.getch()
         if ch == b'\x1b':
-            if not self.priorize_esc_or_arrow:
+            if not priorize_esc_or_arrow:
                 new = kbHit.getch()
                 ch += new
                 if new in b'[O': 
@@ -58,7 +70,7 @@ else:
                         ch += new
                     assert new in b'~' + string.ascii_uppercase.encode()
                 else:
-                    pass    # alt + regular
+                    pass    # alt + regular, and esc esc
         return ch
 
 def tryGetch(timeout = None):
@@ -77,7 +89,7 @@ def tryGetch(timeout = None):
             sleep(1 / FPS)
     except KeyboardInterrupt:
         # If ^C arrives when we sleep,
-        return b'\x03'  # Just for consistency. 
+        return KEY_CODE.CTRL_C  # Just for consistency. 
     return None
 
 class Universe:
@@ -159,7 +171,9 @@ def chooseFromEntries(matches):
             return None
 
 def printabilize(x):
-    return x.replace('\x1a', '^Z').replace('\x12', '^R')
+    return x.replace(
+        KEY_CODE.WIN_Z_LINUX_D.decode(), DISPLAY_WIN_Z_LINUX_D
+    ).replace('\x12', '^R')
 
 _abbr = '...'
 ABBR = [*'...']
@@ -189,7 +203,7 @@ def printWithCursor(prompt, line, cursor):
 
 def inputChin(prompt = '', default = '', history = [], kernal = None, cursor = None):
     '''
-    `kernal` for tab key auto complete. 
+    `kernal` for tab key auto complete.  
     '''
     default = str(default)
     line = default
@@ -203,51 +217,51 @@ def inputChin(prompt = '', default = '', history = [], kernal = None, cursor = N
         if op in b'\r\n':
             clearLine()
             print(prompt + printabilize(line))
-            if '\x1a' in line:  # ^Z
+            if KEY_CODE.WIN_Z_LINUX_D.decode() in line:  # ^Z ^D
                 raise EOFError(f'"{printabilize(line)}"')
             return line
-        elif op == b'\x08': # backspace
+        elif op == KEY_CODE.BACKSPACE:
             if cursor >= 1:
                 line = line[:cursor - 1] + line[cursor:]
                 cursor -= 1
-        elif op == b'\xe0S':    # del
+        elif op == KEY_CODE.DEL:
             if cursor <= len(line):
                 line = line[:cursor] + line[cursor + 1:]
-        elif op == b'\xe0H':    # up
+        elif op == KEY_CODE.UP:
             history_selection -= 1
             if history_selection in range(len(history)):
                 line = history[history_selection]
                 cursor = len(line)
             else:
                 history_selection += 1
-        elif op == b'\xe0P':    # down
+        elif op == KEY_CODE.DOWN:
             history_selection += 1
             if history_selection in range(len(history)):
                 line = history[history_selection]
                 cursor = len(line)
             else:
                 history_selection -= 1
-        elif op == b'\xe0K':    # left
+        elif op == KEY_CODE.LEFT:
             cursor -= 1
             if cursor not in range(len(line) + 1):
                 cursor += 1
-        elif op == b'\xe0M':    # right
+        elif op == KEY_CODE.RIGHT:
             cursor += 1
             if cursor not in range(len(line) + 1):
                 cursor -= 1
-        elif op == b'\xe0G':    # home
+        elif op == KEY_CODE.HOME:
             cursor = 0
-        elif op == b'\xe0O':    # end
+        elif op == KEY_CODE.END:
             cursor = len(line)
-        elif op == b'\xe0s': # Ctrl Left
+        elif op == KEY_CODE.CTRL_LEFT:
             cursor = wordStart(line, cursor)
-        elif op == b'\xe0t': # Ctrl Right
+        elif op == KEY_CODE.CTRL_RIGHT:
             cursor = wordEnd(line, cursor)
-        elif op == b'\x7f':  # Ctrl Backspace
+        elif op == KEY_CODE.CTRL_BACKSPACE:
             old_cursor = cursor
             cursor = wordStart(line, cursor)
             line = line[:cursor] + line[old_cursor:]
-        elif op == b'\xe0\x93': # Ctrl Del
+        elif op == KEY_CODE.CTRL_DELETE:
             old_cursor = cursor
             cursor = wordEnd(line, cursor)
             line = line[:old_cursor] + line[cursor:]
@@ -288,7 +302,7 @@ def inputChin(prompt = '', default = '', history = [], kernal = None, cursor = N
                     to_insert = to_become[len(keyword):]
                     line = line[:cursor] + to_insert + line[cursor:]
                     cursor += len(to_insert)
-        elif op == b'\x1b':  # ESC
+        elif op == KEY_CODE.ESC:
             line = ''
             cursor = 0
         elif op[0] in range(1, 18) or op[0] in range(19, 26) or op[0] in (0, 224):
