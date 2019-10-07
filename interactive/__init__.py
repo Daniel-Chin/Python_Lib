@@ -86,7 +86,9 @@ class CharGettor(Thread):
         Return None if timeout.  
         '''
         print('enter', timeout)
-        if self.consumeLock.acquire(timeout = timeout):
+        temp = self.consumeLock.acquire(timeout = timeout)
+        print('t', temp)
+        if temp:
             print('acquired')
             if self.char_got is not None:
                 self.consumeLock.release()
