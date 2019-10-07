@@ -115,7 +115,7 @@ class KBHit:
 if __name__ == "__main__":
 
     kb = KBHit()
-
+    from time import sleep
     print('Hit any key, or ESC to exit')
 
     while True:
@@ -125,5 +125,7 @@ if __name__ == "__main__":
             if ord(c) == 27: # ESC
                 break
             print(c)
+        sleep(1)
+        print('.')
 
     kb.set_normal_term()
