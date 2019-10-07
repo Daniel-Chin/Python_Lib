@@ -136,6 +136,7 @@ class CharGettor(Thread):
             Please open an issue if you have the docs of Linux scan codes.  
             '''
             ch = getch.getch()
+            print('first', ch)
             if ch == '\x1b':
                 if not self.priorize_esc_or_arrow:
                     new = getch.getch()
