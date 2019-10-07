@@ -86,6 +86,8 @@ class CharGettor(Thread):
         Return None if timeout.  
         '''
         print('enter', timeout)
+        import IPython
+        IPython.embed()
         temp = self.consumeLock.acquire(timeout = timeout)
         print('t', temp)
         if temp:
