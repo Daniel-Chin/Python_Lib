@@ -85,7 +85,7 @@ class CharGettor(Thread):
         `timeout`: 0 is nonblocking, -1 is wait forever.  
         Return None if timeout.  
         '''
-        print('enter')
+        print('enter', timeout)
         if self.consumeLock.acquire(timeout = timeout):
             print('acquired')
             if self.char_got is not None:
