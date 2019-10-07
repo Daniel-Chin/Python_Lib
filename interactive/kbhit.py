@@ -13,7 +13,11 @@ This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
-
+'''
+'''
+This scripted was written by SIMON D. LEVY.  
+See https://simondlevy.academic.wlu.edu/
+Script location: https://simondlevy.academic.wlu.edu/files/software/kbhit.py
 '''
 
 import os
@@ -115,7 +119,7 @@ class KBHit:
 if __name__ == "__main__":
 
     kb = KBHit()
-    from time import sleep
+
     print('Hit any key, or ESC to exit')
 
     while True:
@@ -125,7 +129,5 @@ if __name__ == "__main__":
             if ord(c) == 27: # ESC
                 break
             print(c)
-        sleep(1)
-        print('.')
 
     kb.set_normal_term()
