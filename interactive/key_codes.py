@@ -31,3 +31,13 @@ else:
     CTRL_RIGHT = b'\x1b[1;5C'
     CTRL_BACKSPACE = b'DOES NOT SUPPORT'
     CTRL_DELETE =  b'\x1b[3;5~'
+
+INVALIDS = set(range(1, 27))
+INVALIDS.update({0, 27, 224})
+INVALIDS.remove(18) # Ctrl + R
+if platform.system().lower() == 'windows':
+    INVALIDS.remove(26) # Ctrl + Z
+else:
+    INVALIDS.remove(4)  # Ctrl + D
+def isInvalidToInputChin(op):
+    return op[0] in INVALIDS

@@ -171,7 +171,6 @@ def chooseFromEntries(matches):
             return None
 
 def printabilize(x):
-    print(x.encode())
     return x.replace(
         KEY_CODE.WIN_Z_LINUX_D.decode(), DISPLAY_WIN_Z_LINUX_D
     ).replace('\x12', '^R')
@@ -306,10 +305,8 @@ def inputChin(prompt = '', default = '', history = [], kernal = None, cursor = N
         elif op == KEY_CODE.ESC:
             line = ''
             cursor = 0
-        elif op[0] in range(1, 18) \
-            or op[0] in range(19, 26) \
-            or op[0] in (0, 27, 224):
-            pass    # invalid char
+        elif KEY_CODE.isInvalidToInputChin(op):
+            pass
         else:   # typed char
             line = line[:cursor] + op.decode() + line[cursor:]
             # I used ANSI in a previous version. Still don't know why I did that  
