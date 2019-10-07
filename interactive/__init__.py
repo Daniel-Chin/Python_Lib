@@ -1,5 +1,8 @@
 '''
 Terminal interactivity utils.  
+Issues:  
+    * On Linux, Stopping the job and bringing it back to foreground 
+        messes the terminal setting up (?)  
 Future work:  
     Stop telling lies in `help(getFullCh)` on Linux.  
     https://stackoverflow.com/questions/48039759/how-to-distinguish-between-escape-and-escape-sequence  
@@ -79,7 +82,11 @@ def tryGetch(timeout = None):
     Return None if timeout.  
     '''
     if timeout is None:
-        return getFullCh()
+        try:
+            return getFullCh()
+        except KeyboardInterrupt:
+            # If ^C arrives when we stdin.read(1),
+            return KEY_CODE.CTRL_C  # Just for consistency. 
     if timeout < 0:
         raise ValueError(f'timeout must > 0, got {timeout}')
     try:
