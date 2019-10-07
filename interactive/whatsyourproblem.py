@@ -1,6 +1,10 @@
 from threading import Lock, Thread
 import atexit
 from time import sleep
+try:
+    import msvcrt as getch
+except:
+    import getch
 
 class CharGettor(Thread):
     '''
@@ -55,7 +59,7 @@ class CharGettor(Thread):
     def produce(self):
         self.produceLock.acquire()
         if self.go_on:
-            sleep(2)
+            self.char_got = self.getFullCh()
             self.consumeLock.release()
 
     def run(self):
