@@ -350,7 +350,7 @@ class Book:
             edited = []
             for line in self.dict[self.now].content.split('\n'):
                 print(line + "> ", end='', flush=True)
-                op = listen((b'm',b'i',b'd',b'\r'))
+                op = listen((b'm',b'i',b'd',b'\r',b'\n'))
                 if op == b'm':
                     print('\r', ' '*len(line), '\r', end='', flush = True)
                     edited.append(inputWithGen())
@@ -361,7 +361,7 @@ class Book:
                     print(line)
                 elif op==b'd':
                     print("\r---Line deleted---", ' '*len(line))
-                elif op==b'\r':
+                elif op in b'\r\n':
                     edited.append(line)
                     print()
             cls()
