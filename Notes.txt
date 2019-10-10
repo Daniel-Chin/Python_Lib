@@ -15,24 +15,6 @@ a(3,y=6)
 
 .py can be imported as modules! 
 
-Exception handling:
-	try:
-	    A
-	except:
-	    B
-	else:
-	    C
-	finally:
-	    D
-	=
-	try:
-	    A
-	    C
-	except:
-	    B
-	D
-	Never use else. 
-
 [a,b,c]*3
 
 list[-1:-9:-2]
@@ -66,19 +48,22 @@ To: compile exe or Mac exe
 f'1+1={1+1}'
 
 while else?
-	while next(iter(range(3))):
-		pass
-	else:
-		willDo()
+    while next(iter(range(3))):
+        pass
+    else:
+        willDo()
 
-	while next(iter(range(3))):
-		break
-	else:
-		willNotDo()
+    while next(iter(range(3))):
+        break
+    else:
+        willNotDo()
 
-	while False:
-		pass
-	else:
-		willDo()
+    while False:
+        pass
+    else:
+        willDo()
 
 'yes' if True else 'no'
+
+The purpose of try - else:
+    exceptions in else won't be catched. 
