@@ -85,7 +85,7 @@ def tryGetch(timeout = None):
         return getFullCh()
     if timeout < 0:
         raise ValueError(f'timeout must > 0, got {timeout}')
-    for i in range(timeout * FPS + 1):
+    for _ in range(int(timeout * FPS) + 1):
         if kbHit.kbhit():
             return getFullCh()
         sleep(1 / FPS)
