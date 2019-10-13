@@ -51,6 +51,8 @@ def main():
         numbers = [int(x.strip()) for x in op.strip().split(' ')]
         can_do, path = solve(numbers)
         if can_do:
+            print('There is solution. ')
+            input('Press ENTER to see it...')
             print(''.join([str(x) for x in path]).replace('*', '×').replace('/', '÷'))
         else:
             print('No solution.')
