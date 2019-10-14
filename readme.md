@@ -19,6 +19,9 @@ Find Vera/
 Beer on the Wall/  
 
 # Documentation
+## 24solver.py
+Do you know the 24 card game?  
+
 ## Archive/
 Meaningless Archive of random Python Scripts I wrote.
 
@@ -420,6 +423,9 @@ Make a QR code instantly
 
 ## questions.txt
 Questions I have about Python.  
+
+## reactNew.py
+Creates a react component file containing boilerplate code.  
 
 ## safeserver/
 A simple file server.  

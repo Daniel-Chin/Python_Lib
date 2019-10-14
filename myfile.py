@@ -84,12 +84,11 @@ def openAsciize(filename, verbose = False):
         print('done')
     return outIO
 
-def sysArgvOrInput():
+def sysArgvOrInput(prompt = '(Drag file here)\npath/file.ext='):
     if len(sys.argv) >= 2:
         return sys.argv[1]
     else:
-        print('(Drag file here)')
-        return input('path/file.ext=').strip('"')
+        return input(prompt).strip('"')
 
 if __name__ == '__main__':
     if len(sys.argv) >= 2:
