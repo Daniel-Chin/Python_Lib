@@ -18,7 +18,7 @@ export default %s;
 '''
 
 def create(name):
-  with open(name + '.js', 'w+') as f:
+  with open(name + '.js', 'w') as f:
     f.write(CODE % (name, name))
 
 def main():

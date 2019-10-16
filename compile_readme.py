@@ -44,7 +44,7 @@ from myfile import openAsciize
 
 def main():
     os.chdir(path.dirname(path.abspath(__file__)))
-    with open('readme.md', 'w+') as out:
+    with open('readme.md', 'w') as out:
         with open('readme_head.md', 'r') as f:
             out.write(f.read())
         documentate('', out, depth = 1)

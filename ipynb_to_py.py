@@ -35,7 +35,7 @@ def main():
             out_filename = path.splitext(in_filename)[0] + '.py'
             print('Will overwrite:', out_filename)
             if input('Ok? y/n ') == 'y':
-                with open(out_filename, 'w+') as outF:
+                with open(out_filename, 'w') as outF:
                     outF.write(convert(inF).read())
                 print('ok')
             else:

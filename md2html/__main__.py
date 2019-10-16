@@ -89,7 +89,7 @@ class Translator:
 
 def main():
     args = parseArgs()
-    with open(args.output, 'w+') as html:
+    with open(args.output, 'w') as html:
         def write(*args, **kw):
             print(*args, file = html, **kw)
         # write('<!DOCTYPE html>')

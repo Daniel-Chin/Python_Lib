@@ -18,7 +18,7 @@ if listen('fr') == b'f':
     with open(filename, 'r') as inFile:
         base, ext = splitext(filename)
         base += '_fix'
-        with open(base + ext, 'w+') as outFile:
+        with open(base + ext, 'w') as outFile:
             doIt(inFile, outFile)
     print('done')
 else:

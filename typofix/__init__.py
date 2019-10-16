@@ -192,7 +192,7 @@ if __name__ == '__main__':
     op = listen('iac')
     if op in b'ia':
         with open('example.txt', 'r') as inp:
-            with open('example.fix.txt', 'w+') as outp:
+            with open('example.fix.txt', 'w') as outp:
                 if op == b'i':
                     fixIO(inp, outp, interactive = True)
                 else:
