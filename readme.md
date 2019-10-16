@@ -134,6 +134,21 @@ Deprecated. Replaced by ../oneship
 #### Archive/OneFileFly/OneFileFly.py
 by Daniel
 
+### Archive/robust_persistent_data_solution.py
+There are two copies of the database.    
+We use a "which_file" to point to the valid one of the two.    
+Read operation:    
+    Read the valid database.    
+Write operation:    
+    Write to the invalid database. Close it.    
+    Change which_file to point to the database we wrote to.    
+This ensures:    
+* Whenever the user unplug their machine, the which_file always points to a non-corrupted database.    
+* Every write operation is atomic. Either we revert back to the state before the write, or the write is 100% complete. There is no middle state.    
+However, concurrent writing leads to undefined behavior.    
+  
+I don't know what this strategy is called. If you know what it's called, please open an issue and tell me.  
+
 ### Archive/SleepProber/
 Keeps beeping, until the computer sleeps.  
 Purpose: so you can tell if your computer is asleep.  
