@@ -187,6 +187,7 @@ class Book:
     
     def cls(self):
         cls()
+        print()
         self.isModified()
     
     def gen(self, *args):
