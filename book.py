@@ -187,7 +187,7 @@ class Book:
     
     def cls(self):
         cls()
-        print('isModified =', self.isModified)
+        self.isModified()
     
     def gen(self, *args):
         print(gen(*args))
@@ -200,7 +200,10 @@ class Book:
         cls()
     
     def isModified(self):
-        print('Book is', *[] if self.unsaved_change else ['NOT'], 'modified.')
+        if self.unsaved_change:
+            print('Book is MODIFIED! ')
+        else:
+            print('Book is not modified.')
     
     def _smartEntryCheck(self):
         if self.now is None:
