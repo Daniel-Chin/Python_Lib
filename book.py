@@ -24,6 +24,10 @@ import string
 import sys
 from subprocess import run
 
+if platform.system() == 'Windows':
+    CLS_COMMAND = 'cls'
+else:
+    CLS_COMMAND = 'reset'
 if platform.system() == 'Linux':
     PATH = '/sdcard/Daniel/book/'
 else:
@@ -65,6 +69,9 @@ def main():
     cls()
     print('Beepher book ends. ')
 
+def cls():
+    system(CLS_COMMAND)
+
 def loadFilename():
     if len(sys.argv) >= 2:
         return PATH + sys.argv[1]
@@ -80,13 +87,6 @@ def loadFilename():
             return PATH + filename
         else:
             return input('path\\filename.beeph: ')
-
-if platform.system() == 'Windows':
-    def cls():
-        system('cls')
-else:
-    def cls():
-        system('reset')
 
 class Entry:
     def __init__(self):
@@ -187,6 +187,7 @@ class Book:
     
     def cls(self):
         cls()
+        print('isModified =', self.isModified)
     
     def gen(self, *args):
         print(gen(*args))
