@@ -166,7 +166,7 @@ class Book:
             except KeyError:
                 pass
             if op == '':
-                cls()
+                self.cls()
             elif op == 'exit':
                 break
             else:
