@@ -255,6 +255,9 @@ PROTECTION: global hooked button to stop macro = Windows Key
 Translate markdown .md file to html file.    
 Note: to work on WordPress, avoid level one header (# Title).  
 
+## minecraft_afk.py
+AFK tool for Minecraft.  
+
 ## moretk.py
 More tkinter gadgets
 
@@ -451,6 +454,9 @@ My personal tool to fix typos.
 Assume you only do horizontal typos. No vertical typos. You may mistype E as R, but never as D.  
 Also you may hit "=" instead of Backspace.  
 Word data is from https://norvig.com/big.txt
+
+## voice_scroll.py
+Scroll whatever you are reading with voice.  
 
 ## wget.py
 Downloads a web resource.   
