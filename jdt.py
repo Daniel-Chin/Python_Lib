@@ -81,6 +81,13 @@ class Jdt:
         self.update(self.goal, symbol = '#', getSuffix = getSuffix, flush = True)
         self.active = False
         print()
+    
+    def __enter__(self):
+        return self
+    
+    def __exit__(self, e_type, e_value, e_trace):
+        if e_type is None:
+            self.complete()
 
 class CommJdt(Jdt):
     def __init__(self, *argv, **kw):
@@ -114,9 +121,9 @@ if __name__=='__main__':
         j.update(i)
         sleep(0.01)
     j.complete()
-    j=Jdt(500, 'launching game')
-    for i in range(500):
-        j.acc()
-        sleep(0.01)
-    j.complete()
+
+    with Jdt(500, 'launching game') as j:
+        for i in range(500):
+            j.acc()
+            sleep(0.01)
     input('Enter..')
