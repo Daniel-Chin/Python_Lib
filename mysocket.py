@@ -4,6 +4,8 @@ My socket utils. Provides `recvall`, `recvFile`, `sendFileJdt`, and `findAPort`.
 import jdt
 from socket import socket
 import os
+from pickle_socket import PickleSocket
+from interactive import inputUntilValid, inputChin
 
 PAGE = 4096
 RUSH = 128
@@ -82,3 +84,36 @@ def findAPort(hostname = 'localhost', search_range = range(3000, 4000)):
             return (serverSock, port)
         except OSError:
             serverSock.close()
+
+def pair(port, host_ip = 'localhost', handshake_msg = 'mysocket.pair'):
+    '''
+    Establish pickleSocket pair with minimum security (asks user to confirm IP)  
+    '''
+    role = inputUntilValid('Client or Server?', 'cs')
+    s = PickleSocket()
+    if role == 's':
+        s.bind((host_ip, port))
+        s.listen(1)
+        print(f'Waiting for connection @ {host_ip}:{port}...')
+        cs, addr = s.accept()
+        print('Connection from', addr)
+        if inputUntilValid('Accept?', 'yn') != 'y':
+            cs.close()
+            s.close()
+            print('Refused.')
+            return
+        cs.shakeHands(handshake_msg)
+        return cs
+    elif role == 'c':
+        ip = inputChin('IP = ', 'localhost')
+        s.connect((ip, port))
+        print('Waiting for server to accept...')
+        try:
+            s.shakeHands(handshake_msg)
+        except ConnectionResetError:
+            print('The server rejected.')
+            return
+        return s, ip
+
+if __name__ == '__main__':
+    pair(2333)
