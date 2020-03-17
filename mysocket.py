@@ -4,6 +4,7 @@ My socket utils. Provides `recvall`, `recvFile`, `sendFileJdt`, and `findAPort`.
 import jdt
 from socket import socket
 import os
+from os.path import getsize
 from pickle_socket import PickleSocket
 from interactive import inputUntilValid, inputChin
 
@@ -50,7 +51,7 @@ def recvall(s, size, use_list = True):
             recved += s.recv(left)
     return recved
 
-def sendFileJdt(s, file):
+def sendFileJdt(s, file, msg = 'send'):
     assert type(s) is socket
     save_pos = file.tell()
     total = file.seek(0, os.SEEK_END)
@@ -58,7 +59,7 @@ def sendFileJdt(s, file):
         print('mysocket Warning: file.seek did not return file size, using plan B. Daniel: change it to `seek() or tell()`')
         total = file.tell()
     file.seek(save_pos)
-    j = jdt.CommJdt(total, msg = 'send')
+    j = jdt.CommJdt(total, msg = msg)
     estimated_sent = 0
     read = None
     while read != b'':
@@ -100,9 +101,9 @@ def pair(port, host_ip = 'localhost', handshake_msg = 'mysocket.pair'):
         if inputUntilValid('Accept?', 'yn') != 'y':
             cs.close()
             s.close()
-            print('Refused.')
-            return
+            raise ConnectionRefusedError
         cs.shakeHands(handshake_msg)
+        s.close()
         return 's', cs, addr[0]
     elif role == 'c':
         ip = inputChin('IP = ', 'localhost')
@@ -111,9 +112,21 @@ def pair(port, host_ip = 'localhost', handshake_msg = 'mysocket.pair'):
         try:
             s.shakeHands(handshake_msg)
         except ConnectionResetError:
-            print('The server rejected.')
-            return
+            s.close()
+            raise ConnectionRefusedError
         return 'c', s, ip
+
+def shipFile(role, s:PickleSocket, filename):
+    assert role in 'sr'
+    if role == 's':
+        s.sendObj(filename)
+        s.sendObj(getsize(filename))
+        with open(filename, 'rb') as f:
+            sendFileJdt(s.socket, f, msg=filename)
+    elif role == 'r':
+        filename = s.recvObj()
+        size = s.recvObj()
+        recvFile(s.socket, size, filename)
 
 if __name__ == '__main__':
     pair(2333)
