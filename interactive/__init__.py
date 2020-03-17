@@ -377,6 +377,8 @@ def inputUntilValid(prompt, validator, case_sensitive = False, legalize = None):
         is_iter = False
     while True:
         candidate = input(prompt)
+        if platform.system().lower() != 'windows':
+            print() # Linux input() does not break line
         if not case_sensitive:
             candidate = candidate.lower()
         if legalize is not None:
