@@ -103,7 +103,7 @@ def pair(port, host_ip = 'localhost', handshake_msg = 'mysocket.pair'):
             print('Refused.')
             return
         cs.shakeHands(handshake_msg)
-        return cs
+        return 's', cs
     elif role == 'c':
         ip = inputChin('IP = ', 'localhost')
         s.connect((ip, port))
@@ -113,7 +113,7 @@ def pair(port, host_ip = 'localhost', handshake_msg = 'mysocket.pair'):
         except ConnectionResetError:
             print('The server rejected.')
             return
-        return s, ip
+        return 'c', s, ip
 
 if __name__ == '__main__':
     pair(2333)
