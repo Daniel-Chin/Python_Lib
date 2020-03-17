@@ -51,7 +51,10 @@ class Jdt:
             self.UPP_count += 1
             return
         self.UPP_count = 0
-        progress = new_done / self.goal
+        if self.goal == 0:
+            progress = 1
+        else:
+            progress = new_done / self.goal
         terminal_width = get_terminal_size()[0] - 4
         if getSuffix is None:
             getSuffix = self.getSuffix
