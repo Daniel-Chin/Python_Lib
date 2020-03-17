@@ -72,6 +72,10 @@ class IoSocket:
             read=self.read(1)
             buffer+=read
         return buffer
+    
+    def readinto(self, b):
+        b[0] = self.read()
+        return 1
 
 class RemoteClosedDuringPickle(BaseException):
     pass
