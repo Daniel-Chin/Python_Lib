@@ -15,6 +15,7 @@ from myfile import hashFile
 from time import sleep
 import traceback
 from interactive import inputChin
+from jdt import Jdt
 
 def session(role = None, ip = None):
   '''
@@ -67,23 +68,27 @@ def computeDirDiff(role, s:PickleSocket):
   print('Evaluating situation...')
   list_dir = [x for x in os.listdir() if isfile(x)]
   if role == 'c':
-    s.sendObj(len(list_dir))
-    for filename in list_dir:
-      s.sendObj(filename)
-      s.sendObj(hashFile(filename))
+    total = len(list_dir)
+    s.sendObj(total)
+    with Jdt(total, 'Compare Hash') as jdt:
+      for filename in list_dir:
+        jdt.acc()
+        s.sendObj(filename)
+        s.sendObj(hashFile(filename))
     return s.recvObj()
   elif role == 's':
     already_good = []
     total = s.recvObj()
-    for _ in range(total):
-      filename = s.recvObj()
-      my_hash = None
-      if isfile(filename):
-        my_hash = hashFile(filename)
-      their_hash = s.recvObj()
-      if my_hash is not None and their_hash == my_hash:
-        already_good.append(filename)
-        print('Already good:', filename)
+    with Jdt(total, 'Compare Hash') as jdt:
+      for _ in range(total):
+        jdt.acc()
+        filename = s.recvObj()
+        my_hash = None
+        if isfile(filename):
+          my_hash = hashFile(filename)
+        their_hash = s.recvObj()
+        if my_hash is not None and their_hash == my_hash:
+          already_good.append(filename)
     result = [x for x in list_dir if x not in already_good]
     s.sendObj(result)
     return result
