@@ -18,7 +18,7 @@ def recvFile(s, file_len, to_filename):
     with open(to_filename, 'wb+') as to_file:
         left = file_len
         while left:
-            for i in range(RUSH):
+            for _ in range(RUSH):
                 left -= to_file.write(s.recv(min(left, PAGE)))
             recved = s.recv(min(left, PAGE))
             if recved == b'':
