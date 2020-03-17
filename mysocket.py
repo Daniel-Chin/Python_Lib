@@ -103,7 +103,7 @@ def pair(port, host_ip = 'localhost', handshake_msg = 'mysocket.pair'):
             print('Refused.')
             return
         cs.shakeHands(handshake_msg)
-        return 's', cs
+        return 's', cs, host_ip
     elif role == 'c':
         ip = inputChin('IP = ', 'localhost')
         s.connect((ip, port))
