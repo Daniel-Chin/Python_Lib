@@ -33,6 +33,7 @@ def session(role = None, ip = None):
           break
         except OSError as e:
           print(e)
+          sleep(1)
       ss.listen(1)
       s, addr = ss.accept()
       if addr[0] == ip:
@@ -57,6 +58,7 @@ def session(role = None, ip = None):
     for i, filename in enumerate(dir_diff):
       print('File', i + 1, '/', len(dir_diff))
       shipFile(role.replace('c', 'r'), s, filename)
+    print('All is done.')
   except:
     print()
     traceback.print_exc()
