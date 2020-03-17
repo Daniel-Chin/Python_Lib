@@ -64,6 +64,7 @@ def session(role = None, ip = None):
     session(role, ip)
 
 def computeDirDiff(role, s:PickleSocket):
+  print('Evaluating situation...')
   list_dir = [x for x in os.listdir() if isfile(x)]
   if role == 'c':
     s.sendObj(len(list_dir))
@@ -82,6 +83,7 @@ def computeDirDiff(role, s:PickleSocket):
       their_hash = s.recvObj()
       if my_hash is not None and their_hash == my_hash:
         already_good.append(filename)
+        print('Already good:', filename)
     result = [x for x in list_dir if x not in already_good]
     s.sendObj(result)
     return result
