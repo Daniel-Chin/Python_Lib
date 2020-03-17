@@ -19,11 +19,11 @@ class PickleSocket():
             if name[:2] != '__' and name not in dir(__class__):
                 self.__setattr__(name, self.socket.__getattribute__(name))
     
-    def shakeHands(self,banner='This is a pickleSocket by Daniel Chin. ',echo=True):
+    def shakeHands(self,banner='This is a pickleSocket by Daniel Chin. ',verbose=True):
         self.sendObj(banner)
         recved=self.recvObj()
         if recved==banner:
-            if echo:
+            if verbose:
                 print('Shake hands success.')
         else:
             print('Error: Shake hands failure! ')
