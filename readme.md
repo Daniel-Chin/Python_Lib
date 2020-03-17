@@ -162,6 +162,11 @@ A game by Daniel
 ## flashplayer/
 Play swf files.
 
+## folder_go.py
+To transmit a folder over the internet.    
+Can continue on half-done job. Auto retry.    
+Does not include subfolders.  
+
 ## forcemap.py
 Like dummy.Pool.map, but no limit of number of threads.   
 Useful when IO-bound. 
