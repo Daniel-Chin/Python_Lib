@@ -14,7 +14,7 @@ from pickle_socket import PickleSocket
 from myfile import hashFile
 from time import sleep
 import traceback
-from interactive import inputUntilValid
+from interactive import inputChin
 
 def session(role = None, ip = None):
   '''
@@ -88,7 +88,7 @@ def computeDirDiff(role, s:PickleSocket):
 
 def main():
   print('Welcome to Folder Go.')
-  os.chdir(inputUntilValid('Path = ', os.getcwd()))
+  os.chdir(inputChin('Path = ', os.getcwd()))
   print('In here, there are', len(os.listdir()), 'items.')
   print('Warning: Some may be overwritten.')
   print()
