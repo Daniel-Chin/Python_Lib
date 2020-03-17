@@ -1,6 +1,6 @@
 '''
 To transmit a folder over the internet.  
-Can continue on half-done job. Auto retry.  
+Can continue on half-done job. Auto retry on connection failure. Skip files whose hash is the same.  
 Does not include subfolders.  
 '''
 
