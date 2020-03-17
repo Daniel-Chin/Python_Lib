@@ -7,6 +7,7 @@ from os.path import isfile, isdir
 from interactive import listen
 import sys
 from io import BytesIO
+import hashlib
 
 def copy(src_name = None, dest_name = None):
     '''
@@ -89,6 +90,16 @@ def sysArgvOrInput(prompt = '(Drag file here)\npath/file.ext='):
         return sys.argv[1]
     else:
         return input(prompt).strip('"')
+
+def hashFile(filename, chunk = 65536):
+    hasher = hashlib.md5()
+    with open(filename, 'rb') as f:
+        while True:
+            buffer = f.read(chunk)
+            if len(buffer) == 0:
+                break
+            hasher.update(buffer)
+    return hasher.hexdigest()
 
 if __name__ == '__main__':
     if len(sys.argv) >= 2:
