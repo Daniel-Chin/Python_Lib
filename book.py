@@ -448,7 +448,7 @@ def multilineInput():
         content = inputWithGen()
     return '\n'.join(buffer)
 
-def gen(length = 8, population = 'ascii'):
+def gen(length = 10, population = 'ascii'):
     length = int(length)
     if population == 'ascii':
         population = [*string.ascii_letters, *string.digits, '-']
