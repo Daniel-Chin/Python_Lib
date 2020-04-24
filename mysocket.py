@@ -17,8 +17,8 @@ def recvFile(s, file_len, to_filename, accept_double_dot = False):
     receive a file from a socket with known length. 
     '''
     assert type(s) is socket
-    if not accept_double_dot and '..' in to_filename:
-        raise ValueError('.. in filename. Is there a hacker?')
+    if not accept_double_dot and ('../' in to_filename or '..\\' in to_filename):
+        raise ValueError('../ in filename. Is there a hacker?')
     j = jdt.CommJdt(file_len, msg = to_filename)
     with open(to_filename, 'wb+') as to_file:
         left = file_len
