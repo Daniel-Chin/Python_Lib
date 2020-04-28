@@ -2,22 +2,22 @@
 For a clean namespace.  
 I later realized that this can be done with arguments to exec and eval.  
 '''
-def Kernal(namespace = {}):
+def Kernal(__namespace = {}):
     from os import system as cmd
     from pprint import pprint
     from interactive import cls
     
     __file__ = None
-    if namespace:
-        for name in namespace:
-            if not name.startswith('_'):
-                exec(f'{name}=namespace["{name}"]')
-        del name
+    if __namespace:
+        for __name in __namespace:
+            if not __name.startswith('_'):
+                exec(f'{__name}=__namespace["{__name}"]')
+        del __name
         try:
-            __file__ = namespace['__file__']
+            __file__ = __namespace['__file__']
         except KeyError:
             pass
-    del namespace
+    del __namespace
     def restart():
         '''
         runs __file__. This usually restarts the module. 
