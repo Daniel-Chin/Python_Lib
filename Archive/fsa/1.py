@@ -5,12 +5,13 @@ EXP = 9999
 N_X = 4
 
 k = [1, 2, -1, 1.9]
+d = [0, 2, 2, 2.5]
 
 def sample():
   data = []
   sums = []
   for t in range(N_X):
-    data.append([x * t + random.normal() for x in k])
+    data.append([x * t + random.normal() * y for x, y in zip(k, d)])
     sums.append(sum(data[-1]))
   return data, sums
 
