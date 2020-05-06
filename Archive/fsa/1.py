@@ -1,11 +1,12 @@
 from numpy import random
 from stats import mean
 
-EXP = 9999
+EXP = 99999
 N_X = 4
 
-k = [1, 2, -1, 1.9]
-d = [0, 2, 2, 2.5]
+# sales = 0 + t * k + \sigma
+k = [1, 2, -1, 1.9] # slope
+d = [0, 2, 2, 2.5]  # noise 
 
 def sample():
   data = []
@@ -14,6 +15,11 @@ def sample():
     data.append([x * t + random.normal() * y for x, y in zip(k, d)])
     sums.append(sum(data[-1]))
   return data, sums
+  # china japan italy korea sum
+  #1                           
+  #2                           
+  #3                           
+  #4                           
 
 def leastSquare(x, y):
   n = len(x)
