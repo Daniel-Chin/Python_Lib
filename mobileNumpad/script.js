@@ -80,7 +80,7 @@ const parseIntent = () => {
   x /= magnitude; // normalize
   y /= magnitude;
   return LOOKUP.filter(({ ref }) => (
-    ref[0] * x + ref[1] * y >= DOT_PRODUCT_THRESHOLD * .99
+    ref[0] * x - ref[1] * y >= DOT_PRODUCT_THRESHOLD * .99
   ))[0].num;
 };
 

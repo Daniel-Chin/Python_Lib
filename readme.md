@@ -263,6 +263,19 @@ Note: to work on WordPress, avoid level one header (# Title).
 ## minecraft_afk.py
 AFK tool for Minecraft.  
 
+## mobileNumpad/
+Your laptop has no numpad? Can't play Cataclysm:DDA? No worries. Use your phone as a numpad!  
+This script hosts a webpage on your computer. Open the webpage on your phone.  
+Issues: 
+* "0" is not currently supported.  
+* Digits may come out-of-order if the connection is poor.
+
+### mobileNumpad/__main__.py
+WARNING: Running this may open vulnerabilities for your computer.   
+Don't run this if you don't know what you are doing.   
+Only run this if you are in a safe network, or inside a firewall.   
+I am not responsible if someone attacks your computer through this server. 
+
 ## moretk.py
 More tkinter gadgets
 
