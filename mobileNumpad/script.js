@@ -50,9 +50,11 @@ const touchCancel = (_) => {
 };
 
 const onSwipe = () => {
+  const intent = parseIntent();
   const xhttp = new XMLHttpRequest();
-  xhttp.open("GET", parseIntent(), true);
+  xhttp.open("GET", intent, true);
   xhttp.send();
+  state.last_action = intent;
 };
 
 const sqr2 = .5 **.5;
