@@ -1,0 +1,14 @@
+body {
+  margin: 0;
+  background-color: black;
+  color: white;
+  font-size: 32;
+  box-sizing: border-box;
+}
+
+#main {
+  width: 100%;
+  text-align: center;
+  height: calc(100% - 1rem);
+  padding-top: 1rem;
+}

@@ -1,11 +1,11 @@
 '''
 Port specification for my applications.  
 '''
-2335    ASUS shipping
-2336    Lenovo shipping
-2337    One Ship
-2338    Clicker
-2339    QR Chat
+2335 TCP    ASUS shipping
+2336 TCP    Lenovo shipping
+2337 TCP    One Ship
+2338 TCP    Clicker
+2339 TCP    QR Chat
 2340 TCP    Local only port. Implemented thru firewall
 2341 TCP    Simplinstrument ableton-python-processing-arduino
 2342 TCP    multi_term portAllocator
@@ -13,3 +13,4 @@ Port specification for my applications.
 2344 TCP    Where Dit'Go Backend
 2345 TCP    Where Dit'Go proxy
 2346 TCP    Folder Go
+2347 TCP    Mobile Numpad
