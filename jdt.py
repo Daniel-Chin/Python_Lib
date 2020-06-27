@@ -117,6 +117,15 @@ class CommJdt(Jdt):
         kw['getSuffix'] = getSuffix
         super(__class__, self).update(new_done, *argv, **kw)
 
+def jdtIter(iterable, *args, **kw):
+    '''
+    `iterable` must provide `__len__()`. 
+    '''
+    with Jdt(len(iterable), *args, **kw) as j:
+        for x in iterable:
+            j.acc()
+            yield x
+
 if __name__=='__main__':
     from time import sleep
     j=CommJdt(10240000, '/sdcard/download/browser/file.jpg')
@@ -129,4 +138,7 @@ if __name__=='__main__':
         for i in range(500):
             j.acc()
             sleep(0.01)
+
+    for i in jdtIter(range(500), 'jdtIter test'):
+        sleep(0.01)
     input('Enter..')
