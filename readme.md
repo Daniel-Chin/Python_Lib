@@ -480,3 +480,7 @@ Scroll whatever you are reading with voice.
 Downloads a web resource.   
 Provide no argument to enter interactive mode. 
 
+## xls2csv.py
+Convert xls or xlsx to csv.    
+This loads the entire file content into RAM. Be careful with big files.  
+
