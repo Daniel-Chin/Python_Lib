@@ -35,6 +35,7 @@ SUPPRESS = [
     'multi_term/__main__.py', 
     'interactive/legacy/charGettor_demo.py', 
     'interactive/key_codes.py', 
+    'tkinter_async/__main__.py',
 ]
 
 import sys

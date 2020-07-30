@@ -5,8 +5,6 @@ This module schedules async callbacks for tkinter.
 
 __all__ = [ 'sched', 'tkAsync' ]
 
-from tkinter import TclError
-
 default_root = None
 
 def sched(*args, **kw):  # only use this when your app has only 1 window
@@ -16,19 +14,18 @@ class TkAsync:
   def __init__(self, root):
     self.root = root
     self.scheded = []
+    self.saved_mainloop = root.mainloop
     root.mainloop = self.mainloop
     root.sched = self.sched
   
-  def mainloop(self):
-    while True:
-      for func, args, kw in self.scheded:
-        func(*args, **kw)
-      try:
-        self.root.update()
-      except TclError as e:
-        if 'application has been destroyed' in e.args[0]:
-          break
-        raise e
+  def mainloop(self, n = 0):
+    self.root.after(1, self.handle)
+    self.saved_mainloop(n)
+  
+  def handle(self):
+    self.root.after(1, self.handle)
+    for func, args, kw in self.scheded:
+      func(*args, **kw)
   
   def sched(self, func, *args, **kw):
     self.scheded.append((func, args, kw))

@@ -433,6 +433,10 @@ Terraria bot.  Automated fishing.
 Vision: bait catching, and defending invasions.    
 Result: Failed! This macro does not work on Terraria!  
 
+### tkinter_async/__init__.py
+Worried that your async callbacks may fire in the middle of and `update()` and cause race condition?    
+This module schedules async callbacks for tkinter.  
+
 ### To the Earth/To the Earth V8.py
 A game by Daniel.   
   
