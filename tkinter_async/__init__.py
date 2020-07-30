@@ -1,4 +1,9 @@
+'DONT COMILE README'
+
 '''
+I realize that this module is useless after fixing all its bugs.  
+
+Original doc:
 Worried that your async callbacks may fire in the middle of and `update()` and cause race condition?  
 This module schedules async callbacks for tkinter.  
 '''
