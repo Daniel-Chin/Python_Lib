@@ -3,10 +3,11 @@ Tools to do graphics in the terminal.
 `clearLine`: fill the current line with ' ' (whitespace)  
 `eastAsianStrLen`: length of str as displayed on terminal (so chinese characters and other fullwidth chars count as 2 or more spaces)  
 `displayAllColors`: display all colors that your terminal supports.  
+`printTable`: print a table in the terminal.  
 '''
 __all__ = ['clearLine', 'eastAsianStrToWidths', 
     'eastAsianStrLen', 'eastAsianStrLeft', 'eastAsianStrRight', 
-    'displayAllColors', 'eastAsianStrSparse']
+    'displayAllColors', 'eastAsianStrSparse', 'printTable']
 from terminalsize import get_terminal_size
 from unicodedata import east_asian_width
 from colorama import init, Back, Fore, Style
@@ -71,7 +72,23 @@ def displayAllColors():
         print(Back.RESET, ' ', Fore.__getattribute__(color), color, end = '', flush = True, sep = '')
     print(Style.RESET_ALL)
 
+def printTable(table):
+    col_width = [0 for _ in table[0]]
+    for line in table:
+        for i, text in enumerate(line):
+            col_width[i] = max(col_width[i], len(text))
+    col_width = [str(x) for x in col_width]
+    for line in table:
+        for i, text in enumerate(line):
+            print(format(text, col_width[i]), end='|')
+        print()
+
 if __name__ == '__main__':
     from console import console
     displayAllColors()
+    printTable([
+        ['ID', 'Name', 'Thing'], 
+        ['32678941829045312', 'Daniel', 'This is a demo'], 
+        ['340286501983078', 'Person B', 'Thing 2'], 
+    ])
     console(globals())
