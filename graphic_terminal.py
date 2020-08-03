@@ -78,10 +78,11 @@ def printTable(table):
         for i, text in enumerate(line):
             col_width[i] = max(col_width[i], eastAsianStrLen(text))
     for line in table:
+        print(' | ', end = '')
         for i, text in enumerate(line):
             print(text + ' ' * (
                 col_width[i] - eastAsianStrLen(text)
-            ), end='|')
+            ), end=' | ')
         print()
 
 if __name__ == '__main__':
