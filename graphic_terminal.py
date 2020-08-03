@@ -76,11 +76,12 @@ def printTable(table):
     col_width = [0 for _ in table[0]]
     for line in table:
         for i, text in enumerate(line):
-            col_width[i] = max(col_width[i], len(text))
-    col_width = [str(x) for x in col_width]
+            col_width[i] = max(col_width[i], eastAsianStrLen(text))
     for line in table:
         for i, text in enumerate(line):
-            print(format(text, col_width[i]), end='|')
+            print(text + ' ' * (
+                col_width[i] - eastAsianStrLen(text)
+            ), end='|')
         print()
 
 if __name__ == '__main__':
