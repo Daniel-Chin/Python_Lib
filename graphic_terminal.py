@@ -7,7 +7,8 @@ Tools to do graphics in the terminal.
 '''
 __all__ = ['clearLine', 'eastAsianStrToWidths', 
     'eastAsianStrLen', 'eastAsianStrLeft', 'eastAsianStrRight', 
-    'displayAllColors', 'eastAsianStrSparse', 'printTable']
+    'displayAllColors', 'eastAsianStrSparse', 'printTable', 
+    'eastAsianStrPad']
 from terminalsize import get_terminal_size
 from unicodedata import east_asian_width
 from colorama import init, Back, Fore, Style
@@ -65,6 +66,9 @@ def eastAsianStrRight(s, n):
             return s[i:]
     return s
 
+def eastAsianStrPad(s, padding, pad_char = ' '):
+    return s + pad_char * (padding - eastAsianStrLen(s))
+
 def displayAllColors():
     all_colors = [x for x in dir(Back) if x[0] != '_']
     for color in all_colors:
@@ -80,9 +84,7 @@ def printTable(table):
     for line in table:
         print(' | ', end = '')
         for i, text in enumerate(line):
-            print(text + ' ' * (
-                col_width[i] - eastAsianStrLen(text)
-            ), end=' | ')
+            print(eastAsianStrPad(text, col_width[i]), end=' | ')
         print()
 
 if __name__ == '__main__':
