@@ -16,8 +16,8 @@ from .console_explorer import *
 from .cls import cls
 from colorama import init, Back, Fore, Style
 init()
-from terminalsize import get_terminal_size
-from graphic_terminal import *
+from terminalsiz import get_terminal_size
+from graphic_termina import *
 import string
 from time import monotonic as monoTime, sleep
 from sys import stdout
@@ -32,15 +32,15 @@ if platform.system().lower() == 'windows':
 else:
     DISPLAY_WIN_Z_LINUX_D = '^D'
 
-kbHit = KBHit()
-
 if platform.system().lower() == 'windows':
     def getFullCh():
+        kbHit = KBHit()
         first = kbHit.getch()
         if first[0] in range(1, 128) and first != b'\x1b':
             full_ch = first
         else:   # \x00 \xe0 multi bytes scan code, and double ESC
             full_ch = first + kbHit.getch()
+        kbHit.set_normal_term()
         return full_ch
 else:
     def getFullCh(priorize_esc_or_arrow = False):
@@ -61,6 +61,7 @@ else:
         The parsing scheme of function keys is derived from testing.  
         Please open an issue if you have the spec of Linux scan codes.  
         '''
+        kbHit = KBHit()
         ch = kbHit.getch()
         if ch == b'\x1b':
             if not priorize_esc_or_arrow:
@@ -74,6 +75,7 @@ else:
                     assert new in b'~' + string.ascii_uppercase.encode()
                 else:
                     pass    # alt + regular, and esc esc
+        kbHit.set_normal_term()
         return ch
 
 def tryGetch(timeout = None):
@@ -85,10 +87,14 @@ def tryGetch(timeout = None):
         return getFullCh()
     if timeout < 0:
         raise ValueError(f'timeout must > 0, got {timeout}')
-    for _ in range(int(timeout * FPS) + 1):
-        if kbHit.kbhit():
-            return getFullCh()
-        sleep(1 / FPS)
+    kbHit = KBHit()
+    try:
+        for _ in range(int(timeout * FPS) + 1):
+            if kbHit.kbhit():
+                return getFullCh()
+            sleep(1 / FPS)
+    finally:
+        kbHit.set_normal_term()
     return None
 
 class Universe:
@@ -310,7 +316,11 @@ def inputChin(prompt = '', default = '', history = [], kernal = None, cursor = N
         elif KEY_CODE.isInvalidToInputChin(op):
             pass
         else:   # typed char
-            line = line[:cursor] + op.decode() + line[cursor:]
+            try:
+                op_decode = op.decode('utf-8')
+            except:
+                op_decode = op.decode('gbk')
+            line = line[:cursor] + op_decode + line[cursor:]
             # I used ANSI in a previous version. Still don't know why I did that  
             cursor += 1
         clearLine()
