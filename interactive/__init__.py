@@ -16,8 +16,8 @@ from .console_explorer import *
 from .cls import cls
 from colorama import init, Back, Fore, Style
 init()
-from terminalsiz import get_terminal_size
-from graphic_termina import *
+from terminalsize import get_terminal_size
+from graphic_terminal import *
 import string
 from time import monotonic as monoTime, sleep
 from sys import stdout
