@@ -14,3 +14,4 @@ Port specification for my applications.
 2345 TCP    Where Dit'Go proxy
 2346 TCP    Folder Go
 2347 TCP    Mobile Numpad
+2348 TCP    Nozomi.la AI
