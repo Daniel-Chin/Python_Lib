@@ -79,8 +79,9 @@ def displayAllColors():
 def printTable(table):
     col_width = [0 for _ in table[0]]
     for line in table:
-        for i, text in enumerate(line):
-            col_width[i] = max(col_width[i], eastAsianStrLen(text))
+        for i, x in enumerate(line):
+            line[i] = str(x)
+            col_width[i] = max(col_width[i], eastAsianStrLen(line[i]))
     for line in table:
         print(' | ', end = '')
         for i, text in enumerate(line):
