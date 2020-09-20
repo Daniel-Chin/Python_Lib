@@ -47,6 +47,9 @@ Tried to implement SSH when I was young.
 #### Archive/mim/mim.py
 To test the security of getpass.  
 
+### Archive/mindustryKeyRemap.py
+Too bad. It does not work. Mindustry 6.0 is anti-python?  
+
 ### Archive/OneFileFly/
 Transmit one file.  
 Deprecated. Replaced by ../oneship
