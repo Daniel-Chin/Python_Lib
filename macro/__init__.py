@@ -173,8 +173,11 @@ def record(start = 'Ctrl + F3'):
                     mouse.unhook(macro.appendMouse)
                     print('End')
                     try:
-                        while macro[0].key.name in start.lower() and macro[0].key.event_type == 'up':
-                            macro.pop(0)
+                        try:
+                            while macro[0].key.name in start.lower() and macro[0].key.event_type == 'up':
+                                macro.pop(0)
+                        except AttributeError:
+                            pass
                     except IndexError:
                         pass
                     record.last = macro
