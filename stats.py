@@ -64,6 +64,24 @@ def marginError(deviation, confidence = .95, distribution = Z, two_tail = True):
         half_alpha = (1 - confidence)
     return deviation * distribution(half_alpha)
 
+def regression(x, y):
+    x_ = mean(x)
+    y_ = mean(y)
+    ssxx = sum([(i - x_) ** 2 for i in x])
+    ssxy = sum([(i - x_) * (j - y_) for i, j in zip(x, y)])
+    # ssyy = sum([(j - y_) ** 2 for j in y])
+    beta_1 = ssxy / ssxx
+    beta_0 = y_ - beta_1 * x_
+    return beta_0, beta_1
+
+def coefficient(x, y):
+    x_ = mean(x)
+    y_ = mean(y)
+    ssxx = sum([(i - x_) ** 2 for i in x])
+    ssxy = sum([(i - x_) * (j - y_) for i, j in zip(x, y)])
+    ssyy = sum([(j - y_) ** 2 for j in y])
+    return ssxy / (ssxx * ssyy) ** .5
+
 if __name__ == '__main__':
     from console import console
     global a
