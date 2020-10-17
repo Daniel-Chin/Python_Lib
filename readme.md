@@ -34,6 +34,15 @@ Try figuring out what it does.
 ### Archive/archive_rrrr.py
 To archive http://rrrrthats5rs.com
 
+### Archive/beta.py
+experiment regarding covariance, coefficient, regression  
+  
+F: future price / market portfolio price  
+S: spot price / stock price  
+h: hedge ratio / beta  
+  
+Both F and S refers to per period return.
+
 ### Archive/LAN_scan/
 Scans LAN
 
