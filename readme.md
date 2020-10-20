@@ -22,6 +22,9 @@ Beer on the Wall/
 ## 24solver.py
 Do you know the 24 card game?  
 
+## alarm.py
+An alarm clock because the Win10 Alarm App HCI is trash.  
+
 ## Archive/
 Meaningless Archive of random Python Scripts I wrote.
 
