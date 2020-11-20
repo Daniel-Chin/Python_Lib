@@ -1,22 +1,19 @@
+# How to run
+**To run anything here, you need to add this repo to your `%PYTHONPATH%`!**  
+*Otherwise nothing will work!*
+
+A lot of the scripts include tests and demos.  
+You can find them after `if __name__ == '__main__':` or in file `__main__.py`.  
+
 # This repo is...
 All the wheels I re-invented. 
 
 # Wait, what?
-This repo has various useful python tools and utils. 
+This repo has various useful python tools and utils...  
+and some projects that don't deserve a full repo.  
 
-I kinda documented them. 
-
-If you have questions or suggestions, please send an email to daniel_chin@yahoo.com  
-or open an issue.  
+If you have questions or suggestions, please open an issue.  
 (My repo doesn't have an issue yet... I figure it would be cool to have one...)
-
-The following folders are not python utils, but some demos dependant on the other utils. 
-Mostly games. 
-
-Color_Tiles/  
-To the Earth/  
-Find Vera/  
-Beer on the Wall/  
 
 # Documentation
 ## 24solver.py
