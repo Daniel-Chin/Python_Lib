@@ -43,6 +43,7 @@ import sys
 import os
 from os import path
 from myfile import openAsciize
+import urllib.parse
 
 def main():
     os.chdir(path.dirname(path.abspath(__file__)))
@@ -61,6 +62,8 @@ def documentate(cd, out, depth, folder_documented = False):
                 if len(doc) < 3:
                     print('EMPTY README', cd)
                 out.write(doc)
+                out.write('\n\n')
+                out.write(f'[source code folder](https://github.com/Daniel-Chin/Python_Lib/blob/master/{urllib.parse.quote(cd)})')
                 out.write('\n\n')
             folder_documented = True
         except:
@@ -88,6 +91,8 @@ def documentate(cd, out, depth, folder_documented = False):
                                 break
                             buffer.append(line)
                         print(*buffer, file = out, end = '\n\n', sep = '  \n')
+                        out.write(f'[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/{urllib.parse.quote(cd + node)})')
+                        out.write('\n\n')
                     else:
                         identifier = cd + node
                         if identifier not in SUPPRESS and not folder_documented:

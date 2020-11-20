@@ -22,11 +22,17 @@ Beer on the Wall/
 ## 24solver.py
 Do you know the 24 card game?  
 
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/24solver.py)
+
 ## alarm.py
 An alarm clock because the Win10 Alarm App HCI is trash.  
 
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/alarm.py)
+
 ## Archive/
 Meaningless Archive of random Python Scripts I wrote.
+
+[source code folder](https://github.com/Daniel-Chin/Python_Lib/blob/master/Archive/)
 
 ### Archive/'Response Generator'/
 A prank.  
@@ -34,8 +40,12 @@ It was freshman year. I was introduced to Python by NYUSH.
 I made this for Zane.  
 Try figuring out what it does.
 
+[source code folder](https://github.com/Daniel-Chin/Python_Lib/blob/master/Archive/%27Response%20Generator%27/)
+
 ### Archive/archive_rrrr.py
 To archive http://rrrrthats5rs.com
+
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/Archive/archive_rrrr.py)
 
 ### Archive/beta.py
 experiment regarding covariance, coefficient, regression  
@@ -46,28 +56,44 @@ h: hedge ratio / beta
   
 Both F and S refers to per period return.
 
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/Archive/beta.py)
+
 ### Archive/LAN_scan/
 Scans LAN
+
+[source code folder](https://github.com/Daniel-Chin/Python_Lib/blob/master/Archive/LAN_scan/)
 
 ### Archive/legacy_archive/
 This was before I started to use Github, and I didn't do documentation.  
 Consider this the pre-historical era.
 
+[source code folder](https://github.com/Daniel-Chin/Python_Lib/blob/master/Archive/legacy_archive/)
+
 ### Archive/LenovoShipping/
 Tried to implement SSH when I was young.
+
+[source code folder](https://github.com/Daniel-Chin/Python_Lib/blob/master/Archive/LenovoShipping/)
 
 #### Archive/mim/mim.py
 To test the security of getpass.  
 
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/Archive/mim/mim.py)
+
 ### Archive/mindustryKeyRemap.py
 Too bad. It does not work. Mindustry 6.0 is anti-python?  
+
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/Archive/mindustryKeyRemap.py)
 
 ### Archive/OneFileFly/
 Transmit one file.  
 Deprecated. Replaced by ../oneship
 
+[source code folder](https://github.com/Daniel-Chin/Python_Lib/blob/master/Archive/OneFileFly/)
+
 #### Archive/OneFileFly/OneFileFly.py
 by Daniel
+
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/Archive/OneFileFly/OneFileFly.py)
 
 ### Archive/robust_persistent_data_solution.py
 There are two copies of the database.    
@@ -84,33 +110,51 @@ However, concurrent writing leads to undefined behavior.
   
 I don't know what this strategy is called. If you know what it's called, please open an issue and tell me.  
 
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/Archive/robust_persistent_data_solution.py)
+
 ### Archive/SleepProber/
 Keeps beeping, until the computer sleeps.  
 Purpose: so you can tell if your computer is asleep.  
 Useful in rare occasions.
 
+[source code folder](https://github.com/Daniel-Chin/Python_Lib/blob/master/Archive/SleepProber/)
+
 ### Archive/WireVoice/
 Simple experiment of dealing with sound data in real time.
+
+[source code folder](https://github.com/Daniel-Chin/Python_Lib/blob/master/Archive/WireVoice/)
 
 ## ascii_table.py
 A beautiful script to print the ascii table. 
 
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/ascii_table.py)
+
 ## babble.py
 Repeatedly prints 'wobo wabble' indefinitely. 
 
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/babble.py)
+
 ## Beer on the Wall/
 Bamboozling lyric-rolling music-playing windows-only python script
+
+[source code folder](https://github.com/Daniel-Chin/Python_Lib/blob/master/Beer%20on%20the%20Wall/)
 
 ## book.py
 A file system.    
 Encrypts the file system with Fernet.  
 
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/book.py)
+
 ## cache_no_hash.py
 Inefficiently cache and lookup function returns. 
+
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/cache_no_hash.py)
 
 ## chdir_context.py
 A context to temporarily cd to another directory.    
 Frequently useful: Chdir2(__file__)  
+
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/chdir_context.py)
 
 ### clicker/__main__.py
 Windows only.   
@@ -122,19 +166,29 @@ Don't run this if you don't know what you are doing.
 Only run this if you are in a safe network, or inside a firewall.   
 I am not responsible if someone attacks your computer through this server. 
 
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/clicker/__main__.py)
+
 ## Color_Tiles/
 A game
+
+[source code folder](https://github.com/Daniel-Chin/Python_Lib/blob/master/Color_Tiles/)
 
 ## compile_readme.py
 Iterate through all files in this repo  
 build a readme.md for Github. 
 
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/compile_readme.py)
+
 ## console/
 A lighter IPython that launches very quickly. Supports runtime embed.
+
+[source code folder](https://github.com/Daniel-Chin/Python_Lib/blob/master/console/)
 
 ### console/kernal.py
 For a clean namespace.    
 I later realized that this can be done with arguments to exec and eval.  
+
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/console/kernal.py)
 
 ### console/__init__.py
 Windows only. If not windows, `console()` calls `IPython.embed()`.   
@@ -156,42 +210,64 @@ Future:
     1. Consider adding a dynamic `return` feature.    
     2. Study passing namespace into `exec` and `evel` and use them.  
 
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/console/__init__.py)
+
 ## count.py
 For counting votes and ranking the counts.    
 Oh! I guess `from collections import Counter` does the same for you!    
 Although my thing is still more console friendly.  
 
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/count.py)
+
 ## dependencies.txt
 Dependencies of this repo.  
+
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/dependencies.txt)
 
 ## dict_shape.py
 Compare the shape of two dicts.   
 i.e. is the structure the same? are the keys the same? 
 
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/dict_shape.py)
+
 ## echo.py
 print(sys.argv)
+
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/echo.py)
 
 ### Find Vera/Find_Vera V2.py
 A game by Daniel
 
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/Find%20Vera/Find_Vera%20V2.py)
+
 ## flashplayer/
 Play swf files.
+
+[source code folder](https://github.com/Daniel-Chin/Python_Lib/blob/master/flashplayer/)
 
 ## folder_go.py
 To transmit a folder over the internet.    
 Can continue on half-done job. Auto retry on connection failure. Skip files whose hash is the same.    
 Does not include subfolders.  
 
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/folder_go.py)
+
 ## forcemap.py
 Like dummy.Pool.map, but no limit of number of threads.   
 Useful when IO-bound. 
+
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/forcemap.py)
 
 ## formula.py
 Evaluate beautiful formulas like ???(2??3??4)  
 (Those non-ascii math symbols)
 
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/formula.py)
+
 ## friendly_time.py
 Formatting time data in a friendly manner. 
+
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/friendly_time.py)
 
 ## graphic_terminal.py
 Tools to do graphics in the terminal.    
@@ -200,12 +276,18 @@ Tools to do graphics in the terminal.
 `displayAllColors`: display all colors that your terminal supports.    
 `printTable`: print a table in the terminal.  
 
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/graphic_terminal.py)
+
 ## httpmim.py
 HTTP man in middle. Prints all traffic. Useful for investigating how http works. Although Chrome Dev Tools prolly have something like this already.  
+
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/httpmim.py)
 
 ## hub.py
 Hub: forward all socket messages.   
 Connect, sendall(b'OK'), forward...
+
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/hub.py)
 
 ## indentprinter.py
 Indent log output in a logical way.    
@@ -218,8 +300,12 @@ with indentPrinter:
     [print(x) for x in bois]  
 ```
 
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/indentprinter.py)
+
 ### interactive/console_explorer.py
 An android-friendly console file explorer. 
+
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/interactive/console_explorer.py)
 
 ### interactive/kbhit.py
 A Python class implementing KBHIT, the standard keyboard-interrupt poller.  
@@ -236,6 +322,8 @@ but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the  
 GNU General Public License for more details.
 
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/interactive/kbhit.py)
+
 ### interactive/__init__.py
 Terminal interactivity utils.    
 Issues:    
@@ -245,17 +333,25 @@ Future work:
     Stop telling lies in `help(getFullCh)` on Linux.    
     https://stackoverflow.com/questions/48039759/how-to-distinguish-between-escape-and-escape-sequence  
 
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/interactive/__init__.py)
+
 ## ipynb_to_py.py
 Converts ipynb to py.   
 Works even when Jupyter is not installed. 
 
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/ipynb_to_py.py)
+
 ## jdt.py
 Progress bar. 
+
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/jdt.py)
 
 ## lab.py
 This is for me only.   
 You won't get why this code is here.   
 Give up. 
+
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/lab.py)
 
 ## linked_file_list.py
 A double linked file list.    
@@ -264,20 +360,30 @@ Each entry has a timestamp, and the list is sorted by time.
 Features:    
 * Dynamic filename length, grows as the database grows.  
 
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/linked_file_list.py)
+
 ## local_ip.py
 Find out local IP addr on Windows
+
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/local_ip.py)
 
 ## macro/
 Record, play, save, and load macros.  
 Windows only.  
 PROTECTION: global hooked button to stop macro = Windows Key
 
+[source code folder](https://github.com/Daniel-Chin/Python_Lib/blob/master/macro/)
+
 ### md2html/__main__.py
 Translate markdown .md file to html file.    
 Note: to work on WordPress, avoid level one header (# Title).  
 
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/md2html/__main__.py)
+
 ## minecraft_afk.py
 AFK tool for Minecraft.  
+
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/minecraft_afk.py)
 
 ## mobileNumpad/
 Your laptop has no numpad? Can't play Cataclysm:DDA? No worries. Use your phone as a numpad!  
@@ -286,14 +392,20 @@ Issues:
 * "0" is not currently supported.  
 * Digits may come out-of-order if the connection is poor.
 
+[source code folder](https://github.com/Daniel-Chin/Python_Lib/blob/master/mobileNumpad/)
+
 ### mobileNumpad/__main__.py
 WARNING: Running this may open vulnerabilities for your computer.   
 Don't run this if you don't know what you are doing.   
 Only run this if you are in a safe network, or inside a firewall.   
 I am not responsible if someone attacks your computer through this server. 
 
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/mobileNumpad/__main__.py)
+
 ## moretk.py
 More tkinter gadgets
+
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/moretk.py)
 
 ### multi_term/__init__.py
 Provides multiple terminal windows for output.    
@@ -305,56 +417,88 @@ Future work:
 * Replace lock for semaphore to launch terminals in parallel.    
 * Remote terminal?  
 
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/multi_term/__init__.py)
+
 ## my.py
 My misc little tools.  
 
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/my.py)
+
 ## myfile.py
 Unreliable file utils
+
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/myfile.py)
 
 ## myhttp.py
 Serves through a (super) simplified version of http protocol.   
 Warning: Running this may expose your computer to attacks.   
 Don't run this. 
 
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/myhttp.py)
+
 ## mymath.py
 More math utils than just `import math`
+
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/mymath.py)
 
 ## myqr.py
 Prints QR code to terminal. Ascii only: black whitespace and white whitespace
 
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/myqr.py)
+
 ## mysocket.py
 My socket utils. Provides `recvall`, `recvFile`, `sendFileJdt`, and `findAPort`.  
+
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/mysocket.py)
 
 ## mythread.py
 My threading utils
 
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/mythread.py)
+
 ## myxml.py
 XML parser
+
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/myxml.py)
 
 ## netid2profile.py
 For an NYU person, convert their netID to profile.  
 
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/netid2profile.py)
+
 ## Notes.txt
 My personal notebook for learning Python. 
+
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/Notes.txt)
 
 ## nothing.py
 
 
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/nothing.py)
+
 ## nyu_ip/
 Just to see how often NYU LAN re-allocates IP.
+
+[source code folder](https://github.com/Daniel-Chin/Python_Lib/blob/master/nyu_ip/)
 
 ## oneship.py
 ?????????  
 Transmit files over the internet / LAN  
 No encryption! Consider everything you transmit broadcast to the entire network. 
 
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/oneship.py)
+
 ## os_stimulate.py
 My laptop is weird. Running this script makes opening and terminating processes faster.   
 Speculation: Taking CPU time away from Windows Defender? 
 
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/os_stimulate.py)
+
 ## pdf_litouzhibei.py
 LiTouZhiBei(Chinese: '\xe5\x8a\x9b\xe9\x80\x8f\xe7\xba\xb8\xe8\x83\x8c').    
 Converts pdf from [p1, p2...] to [p1, p1, p2, p2...]  
+
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/pdf_litouzhibei.py)
 
 ## pdf_unspread.py
 Original author: pmaupin  
@@ -369,20 +513,32 @@ Chops each page in half, e.g. if a source were
 created in booklet form, you could extract individual  
 pages.
 
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/pdf_unspread.py)
+
 ### pickle_preview/__main__.py
 Preview a pickle file
+
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/pickle_preview/__main__.py)
 
 ## pickle_socket.py
 A socket that supports object transmission. 
 
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/pickle_socket.py)
+
 ## pimport.py
 pip install, and imports
+
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/pimport.py)
 
 ## playwav.py
 Light-weight wav player. 
 
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/playwav.py)
+
 ## Ports.txt
 Port specification for my applications.  
+
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/Ports.txt)
 
 ## port_forward.py
 Provides fake p2p, port forwarding.   
@@ -390,25 +546,39 @@ Provides fake p2p, port forwarding.
 Ignored the thread-danger of sockets.   
 Expect unexpected behaviors. 
 
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/port_forward.py)
+
 ## prime.py
 Get prime numbers
 
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/prime.py)
+
 ## Push_Git.py
 Interactive git commit and push.  
+
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/Push_Git.py)
 
 ### qrchat/__main__.py
 Sets up a server, displays a QR code. Scan it to go to a web page. Exchange raw texts!    
 Useful for sending a URL from the phone to the laptop.    
 Warning: No authentication or encryption. Don't type in secrets. Don't assume who the remote is.  
 
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/qrchat/__main__.py)
+
 ## qr_now.py
 Make a QR code instantly
+
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/qr_now.py)
 
 ## questions.txt
 Questions I have about Python.  
 
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/questions.txt)
+
 ## reactNew.py
 Creates a react component file containing boilerplate code.  
+
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/reactNew.py)
 
 ## safeserver/
 A simple file server.  
@@ -417,6 +587,8 @@ Has a simple html page interface.
 Built upon safe_http.py. Please see its documentation.  
 Problems:  
 * Does not sanitize html. But Don't panic! This is a file server and the threat only originates from local file names. Plus, "<>" is not allowed in filename.
+
+[source code folder](https://github.com/Daniel-Chin/Python_Lib/blob/master/safeserver/)
 
 ## safe_http.py
 An HTTP backend server.    
@@ -427,15 +599,23 @@ Does not defend against DoS.
 Problems:    
 * socket.send without timeout. Could block the entire scheduling.  
 
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/safe_http.py)
+
 ## serve_now.py
 Immediately open a port, accept connection  
 and does nothing. 
 
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/serve_now.py)
+
 ## stats.py
 What I learned from Statistics for Business and Finance. 
 
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/stats.py)
+
 ## summarize_dependencies.py
 Examines a directory of .py files and find all imports.  
+
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/summarize_dependencies.py)
 
 ## terminalsize.py
 Contributors of this code: Alexander Belchenko, Harco Kuppens, Justin Riley.   
@@ -444,10 +624,14 @@ https://stackoverflow.com/questions/566746/how-to-get-linux-console-window-width
 https://gist.github.com/jtriley/1108174   
 I changed python2 to python3, and added crediting printing. 
 
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/terminalsize.py)
+
 ## terraria.py
 Terraria bot.  Automated fishing.    
 Vision: bait catching, and defending invasions.    
 Result: Failed! This macro does not work on Terraria!  
+
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/terraria.py)
 
 ### To the Earth/To the Earth V8.py
 A game by Daniel.   
@@ -480,8 +664,12 @@ Updates description:
     V8:  
         Changed the abbr of Space Corgi to " Corgi"
 
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/To%20the%20Earth/To%20the%20Earth%20V8.py)
+
 ## tree.py
 Data type that stores file directory structure. 
+
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/tree.py)
 
 ## typofix/
 My personal tool to fix typos.  
@@ -489,14 +677,22 @@ Assume you only do horizontal typos. No vertical typos. You may mistype E as R, 
 Also you may hit "=" instead of Backspace.  
 Word data is from https://norvig.com/big.txt
 
+[source code folder](https://github.com/Daniel-Chin/Python_Lib/blob/master/typofix/)
+
 ## voice_scroll.py
 Scroll whatever you are reading with voice.  
+
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/voice_scroll.py)
 
 ## wget.py
 Downloads a web resource.   
 Provide no argument to enter interactive mode. 
 
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/wget.py)
+
 ## xls2csv.py
 Convert xls or xlsx to csv.    
 This loads the entire file content into RAM. Be careful with big files.  
+
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/xls2csv.py)
 
