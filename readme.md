@@ -389,7 +389,8 @@ PROTECTION: global hooked button to stop macro = Windows Key
 
 ### md2html/__main__.py
 Translate markdown .md file to html file.    
-Note: to work on WordPress, avoid level one header (# Title).  
+Note: to work on WordPress, avoid level one header (# Title).    
+A lot of markdown features are not implemented!  
 
 [source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/md2html/__main__.py)
 

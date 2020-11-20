@@ -1,6 +1,7 @@
 '''
 Translate markdown .md file to html file.  
 Note: to work on WordPress, avoid level one header (# Title).  
+A lot of markdown features are not implemented!  
 '''
 import argparse
 import re
