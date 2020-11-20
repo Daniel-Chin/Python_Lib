@@ -1,5 +1,6 @@
 '''
 AFK tool for Minecraft.  
+Punch the air every 5 seconds so you don't get kicked for inactivity.  
 '''
 import mouse
 from time import sleep

@@ -395,7 +395,8 @@ A lot of markdown features are not implemented!
 [source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/md2html/__main__.py)
 
 ## minecraft_afk.py
-AFK tool for Minecraft.  
+AFK tool for Minecraft.    
+Punch the air every 5 seconds so you don't get kicked for inactivity.  
 
 [source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/minecraft_afk.py)
 
