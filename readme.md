@@ -90,11 +90,6 @@ Deprecated. Replaced by ../oneship
 
 [source code folder](https://github.com/Daniel-Chin/Python_Lib/blob/master/Archive/OneFileFly/)
 
-#### Archive/OneFileFly/OneFileFly.py
-by Daniel
-
-[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/Archive/OneFileFly/OneFileFly.py)
-
 ### Archive/robust_persistent_data_solution.py
 There are two copies of the database.    
 We use a "which_file" to point to the valid one of the two.    

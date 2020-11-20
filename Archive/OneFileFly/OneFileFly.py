@@ -1,6 +1,3 @@
-'''
-by Daniel
-'''
 print('Loading...')
 from Daniel import jdt
 from tkinter import Tk,filedialog
