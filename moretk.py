@@ -1,7 +1,6 @@
 '''
 tkinter gadgets and some util functions.  
-`Msgbox`, `inputbox`, `screenCenter`, `StretchMessage`, 
-`StretchPicture`, `ToughText`, `bilingualStringLen`.  
+`Msgbox`, `inputbox`, `screenCenter`, `StretchMessage`, `StretchPicture`, `ToughText`, `bilingualStringLen`.  
 Run this file to see demo.  
 '''
 import tkinter as tk

@@ -419,8 +419,7 @@ I am not responsible if someone attacks your computer through this server.
 
 ## moretk.py
 tkinter gadgets and some util functions.    
-`Msgbox`, `inputbox`, `screenCenter`, `StretchMessage`,   
-`StretchPicture`, `ToughText`, `bilingualStringLen`.    
+`Msgbox`, `inputbox`, `screenCenter`, `StretchMessage`, `StretchPicture`, `ToughText`, `bilingualStringLen`.    
 Run this file to see demo.  
 
 [source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/moretk.py)
