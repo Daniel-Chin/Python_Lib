@@ -1,8 +1,15 @@
 '''
 Terminal interactivity utils.  
+
+`listen`: waits for key press.  
+`inputChin`: It does everything. There are too many features to describe. Reading the source code is the only way.  
+`Universe`: `x in Universe()` always returns `True` no matter what `x` is.  
+`inputUntilValid`: re-asks if not valid.  
+`multiLineInput`: user may input multi lines. Terminate with ^Z.  
+
 Issues:  
-    * On Linux, Stopping the job and bringing it back to foreground 
-        messes the terminal setting up (?)  
+* On Linux, Stopping the job and bringing it back to foreground messes up the terminal setting up (?)  
+
 Future work:  
     Stop telling lies in `help(getFullCh)` on Linux.  
     https://stackoverflow.com/questions/48039759/how-to-distinguish-between-escape-and-escape-sequence  
@@ -355,6 +362,9 @@ def wordEnd(line, cursor):
     return i
 
 def multiLineInput(toIO = None):
+    '''
+    Terminate input with ^Z (on Windows)
+    '''
     if toIO is None:
         buffer = []
         def append(s):
