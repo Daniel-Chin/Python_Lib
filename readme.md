@@ -657,6 +657,8 @@ Result: Failed! This macro does not work on Terraria!
 ### To the Earth/To the Earth V8.py
 A game by Daniel.   
   
+My personal second / third python project. You can see a lot of bad coding styles.   
+  
 Updates description:  
     V3:  
         + Added: new weapon = Holy Sickle  

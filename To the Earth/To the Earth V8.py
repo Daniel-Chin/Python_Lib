@@ -1,6 +1,8 @@
 '''
 A game by Daniel. 
 
+My personal second / third python project. You can see a lot of bad coding styles. 
+
 Updates description:
     V3:
         + Added: new weapon = Holy Sickle
