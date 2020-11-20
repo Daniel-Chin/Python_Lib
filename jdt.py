@@ -1,5 +1,15 @@
 '''
-Progress bar. 
+Progress bar.  
+
+Usage:  
+```python
+with Jdt(500, 'loading...') as j:
+    for i in range(500):
+        j.acc()
+        doJob(i)
+```
+
+Run this file to see demo.  
 '''
 from time import time
 from math import log

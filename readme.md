@@ -345,7 +345,17 @@ Works even when Jupyter is not installed.
 [source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/ipynb_to_py.py)
 
 ## jdt.py
-Progress bar. 
+Progress bar.    
+  
+Usage:    
+```python  
+with Jdt(500, 'loading...') as j:  
+    for i in range(500):  
+        j.acc()  
+        doJob(i)  
+```  
+  
+Run this file to see demo.  
 
 [source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/jdt.py)
 
