@@ -326,6 +326,9 @@ Terminal interactivity utils.
 `inputUntilValid`: re-asks if not valid.    
 `multiLineInput`: user may input multi lines. Terminate with ^Z.    
   
+Demo:    
+Define in `__main__.py`. Run it, or run the module.    
+  
 Issues:    
 * On Linux, Stopping the job and bringing it back to foreground messes up the terminal setting up (?)    
   
