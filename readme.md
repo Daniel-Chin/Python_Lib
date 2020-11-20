@@ -424,17 +424,21 @@ Run this file to see demo.
 
 [source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/moretk.py)
 
-### multi_term/__init__.py
-Provides multiple terminal windows for output.    
-Supports Windows OS.    
-Uses sockets to inter-process communication.    
-Future work:    
-* Support more OSes.    
-* Allow input from other terminals.    
-* Replace lock for semaphore to launch terminals in parallel.    
-* Remote terminal?  
+## multi_term/
+Provides multiple terminal windows for output.  
+Supports Windows OS.  
 
-[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/multi_term/__init__.py)
+For demo, run file `__main__.py` or run this module via `py -m multi_term`.  
+In the demo, there are multiple levels of output (info, debug, warning, error), redirected to each terminal.  
+
+Uses sockets for inter-process communication.  
+Future work:  
+* Support more OSes.  
+* Allow input from other terminals.  
+* Replace lock for semaphore to launch terminals in parallel.  
+* Remote terminal?
+
+[source code folder](https://github.com/Daniel-Chin/Python_Lib/blob/master/multi_term/)
 
 ## my.py
 My misc little tools.  

@@ -1,14 +1,3 @@
-'''
-Provides multiple terminal windows for output.  
-Supports Windows OS.  
-Uses sockets to inter-process communication.  
-Future work:  
-* Support more OSes.  
-* Allow input from other terminals.  
-* Replace lock for semaphore to launch terminals in parallel.  
-* Remote terminal?  
-'''
-
 from subprocess import Popen
 from mysocket import findAPort
 from os import path
