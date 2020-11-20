@@ -246,7 +246,7 @@ class BaseHandler:
         '''
         Override this method
         '''
-        self.response_content.write(b"What a shame! The programmer didn't override do().")
+        self.response_content.write(b"What a shame! The programmer didn't override `prepareResponse()`.")
         self.content_length = self.response_content.tell()
         self.response_content.seek(0)
         return 'done'
