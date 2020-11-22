@@ -2,14 +2,14 @@
 Indent log output in a logical way.  
 Try this:  
 ```python
-from indentprinter import *
+from indentprinter import indentPrinter
 bois = ['Collie', 'Husky', 'Shoob', 'Shibe']
 print('All bois:')
-with indentPrinter:
+with indentPrinter as print:
     [print(x) for x in bois]
 ```
 '''
-__all__ = ['print', 'indentPrinter']
+__all__ = ['indentPrinter']
 
 class IndentPrinter:
     def __init__(self, saved_print, indent_str = '  '):
@@ -20,6 +20,7 @@ class IndentPrinter:
     
     def __enter__(self):
         self.depth += 1
+        return self.print
     
     def __exit__(self, a, b, c):
         self.depth -= 1
@@ -32,4 +33,3 @@ class IndentPrinter:
             self.new_line = True
 
 indentPrinter = IndentPrinter(print)
-print = indentPrinter.print
