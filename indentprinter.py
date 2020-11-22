@@ -9,7 +9,7 @@ with indentPrinter as print:
     [print(x) for x in bois]
 ```
 '''
-__all__ = ['indentPrinter']
+__all__ = ['indentPrinter', 'IndentPrinter']
 
 class IndentPrinter:
     def __init__(self, saved_print, indent_str = '  '):
