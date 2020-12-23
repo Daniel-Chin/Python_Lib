@@ -1,6 +1,10 @@
 '''
 Find local minima of a 1D function without gradient.  
 Minimizes the number of calls to the function.  
+Run this script to test it.  
+Implementation:  
+* A 3-point recursion of shifting and zooming  
+* Cacheing with input as Fractions  
 '''
 from functools import lru_cache
 from fractions import Fraction

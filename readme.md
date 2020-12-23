@@ -133,7 +133,11 @@ Bamboozling lyric-rolling music-playing windows-only python script
 
 ## blindDescend.py
 Find local minima of a 1D function without gradient.    
-Minimizes the number of calls to the function.  
+Minimizes the number of calls to the function.    
+Run this script to test it.    
+Implementation:    
+* A 3-point recursion of shifting and zooming    
+* Cacheing with input as Fractions  
 
 [source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/blindDescend.py)
 
