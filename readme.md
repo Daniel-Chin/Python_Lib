@@ -131,6 +131,12 @@ Bamboozling lyric-rolling music-playing windows-only python script
 
 [source code folder](https://github.com/Daniel-Chin/Python_Lib/blob/master/Beer%20on%20the%20Wall/)
 
+## blindDescend.py
+Find local minima of a 1D function without gradient.    
+Minimizes the number of calls to the function.  
+
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/blindDescend.py)
+
 ## book.py
 A file system.    
 Encrypts the file system with Fernet.  
@@ -286,10 +292,10 @@ Connect, sendall(b'OK'), forward...
 Indent log output in a logical way.    
 Try this:    
 ```python  
-from indentprinter import *  
+from indentprinter import indentPrinter  
 bois = ['Collie', 'Husky', 'Shoob', 'Shibe']  
 print('All bois:')  
-with indentPrinter:  
+with indentPrinter as print:  
     [print(x) for x in bois]  
 ```
 
