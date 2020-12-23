@@ -1,30 +1,33 @@
 '''
 Scroll whatever you are reading with voice.  
+C3 to scroll down. E3 to scroll up.  
+Assumes you have perfect pitch.  
 '''
 import pyaudio
 from scipy import signal
 import numpy as np
 from time import sleep
 import keyboard
+from yin import yin
+
+FRAME_LEN = 2048
+SR = 22050
 
 DECAY = 10
-CAP = 70
-THRESHOLD = 50
+CAP = 2.3
+THRESHOLD = 2
 SCROLL_COOLDOWN = .15
 
-CHUNK = 1024
 SAMPLE_FORMAT = pyaudio.paFloat32
-CHANNELS = 2
-FS = 44100  # Record at 44100 samples per second
+NP_DTYPE = np.float32
+CHANNELS = 1
 
-SECOND_PER_CHUNK = CHUNK / FS
-DECAY_PER_CHUNK = DECAY * SECOND_PER_CHUNK
+SECOND_PER_FRAME = FRAME_LEN / SR
+DECAY_PER_FRAME = DECAY * SECOND_PER_FRAME
 
-def getPower(stream):
-  data = stream.read(CHUNK)
-  x = np.frombuffer(data)
-  _, power = signal.periodogram(x, FS)
-  return np.log(sum(power))
+def getPower(frame):
+  _, power = signal.periodogram(frame, SR)
+  return np.log(np.sum(power))
 
 class Stream:
   def __init__(self, p):
@@ -33,8 +36,8 @@ class Stream:
   def __enter__(self):
     self.s = self.p.open(format=SAMPLE_FORMAT,
       channels=CHANNELS,
-      rate=FS,
-      frames_per_buffer=CHUNK,
+      rate=SR,
+      frames_per_buffer=FRAME_LEN,
       input=True,
     )
     print('Recording...')
@@ -57,14 +60,30 @@ def main():
   cooldown = 0
   with Stream(p) as stream:
     while True:
-      cooldown -= SECOND_PER_CHUNK
-      acc += getPower(stream) - room_power
-      acc -= DECAY_PER_CHUNK
-      acc = min(CAP, acc)
-      acc = max(0, acc)
-      if acc > THRESHOLD:
-        if cooldown <= 0:
-          scroll()
+      cooldown -= SECOND_PER_FRAME
+      frame = np.frombuffer(stream.read(FRAME_LEN), NP_DTYPE)
+      power = max(0, getPower(frame) - room_power)
+      direction = 0
+      f0 = yin(frame, SR, FRAME_LEN)
+      if abs(f0 - 130.81) < 5:
+        # C3
+        direction = 1
+      if abs(f0 - 161.82) < 5:
+        # E3
+        direction = -1
+      print(acc)
+      acc += power * direction
+      if acc > 0:
+        acc -= DECAY_PER_FRAME
+        acc = max(0, acc)
+      else:
+        acc += DECAY_PER_FRAME
+        acc = min(0, acc)
+      acc = min( CAP, acc)
+      acc = max(-CAP, acc)
+      if cooldown <= 0:
+        if abs(acc) > THRESHOLD:
+          scroll(acc > 0)
           cooldown = SCROLL_COOLDOWN
 
 def getRoomPower():
@@ -75,16 +94,20 @@ def getRoomPower():
   WAIT = .5
   print(f'Wait {WAIT} seconds...')
   sleep(WAIT)
-  n_chunks = int(TIME * FS / CHUNK)
+  n_frames = int(TIME * SR / FRAME_LEN)
   acc = 0
   with Stream(p) as stream:
-    for i in range(n_chunks):
-      acc += getPower(stream)
-      print(f'{i} / {n_chunks}', end = '\r', flush = True)
-  return acc / n_chunks
+    for i in range(n_frames):
+      acc += getPower(np.frombuffer(
+        stream.read(FRAME_LEN), NP_DTYPE, 
+      ))
+      print(f'{i} / {n_frames}', end = '\r', flush = True)
+  return acc / n_frames
 
-def scroll():
-  keyboard.send('DOWN')
+def scroll(down_or_up):
+  text = 'DOWN' if down_or_up else 'UP'
+  print('scroll', text)
+  keyboard.send(text)
 
 p = pyaudio.PyAudio()
 try:

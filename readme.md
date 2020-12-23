@@ -713,7 +713,9 @@ Word data is from https://norvig.com/big.txt
 [source code folder](https://github.com/Daniel-Chin/Python_Lib/blob/master/typofix/)
 
 ## voice_scroll.py
-Scroll whatever you are reading with voice.  
+Scroll whatever you are reading with voice.    
+C3 to scroll down. E3 to scroll up.    
+Assumes you have perfect pitch.  
 
 [source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/voice_scroll.py)
 
@@ -728,4 +730,10 @@ Convert xls or xlsx to csv.
 This loads the entire file content into RAM. Be careful with big files.  
 
 [source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/xls2csv.py)
+
+## yin.py
+Modified from librosa.    
+YIN pitch detection.  
+
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/yin.py)
 
