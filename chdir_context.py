@@ -1,28 +1,43 @@
 '''
 A context to temporarily cd to another directory.  
-Frequently useful: Chdir2(__file__)  
+Frequently useful: ChdirAlongside(__file__)  
 '''
 import os
 
-class ChdirStack:
+class ChdirContext:
     def __init__(self, to):
         self.stack = []
-        self.to = to
+        self(to)
     
+    def __call__(self, to):
+        self.to = to
+        return self
+
     def __enter__(self):
         self.stack.append(os.getcwd())
         os.chdir(self.to)
+        return self
     
     def __exit__(self, type, value, traceback):
         os.chdir(self.stack.pop(-1))
 
-def Chdir2(_file_):
-    return ChdirStack(os.path.dirname(_file_))
+def ChdirAlongside(filename):
+    return ChdirContext(os.path.dirname(filename))
 
 if __name__ == '__main__':
     print('demo')
+
     print('Going from', os.getcwd())
-    with Chdir2(__file__):
+    with ChdirAlongside(__file__):
         print('to', os.getcwd())
     print('and back to', os.getcwd())
+
+    print('Stacking')
+    print(os.getcwd())
+    with ChdirContext('d:/') as cdc:
+        print(os.getcwd())
+        with cdc('d:/temp'):
+            print(os.getcwd())
+        print(os.getcwd())
+    print(os.getcwd())
     input('enter...')
