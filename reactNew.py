@@ -3,6 +3,7 @@ Creates a react component file containing boilerplate code.
 '''
 
 from myfile import sysArgvOrInput
+import os
 
 CODE = '''import React from 'react';
 
@@ -28,7 +29,8 @@ def main():
     create(op)
     names.append(op)
     op = input('Component name: ')
-  print(*["import %s from './container/%s';" % (x, x) for x in names], sep = '\n')
+  folder = os.getcwd().replace('\\', '/').split('/')[-1].strip('/')
+  print(*["import %s from '../%s/%s';" % (x, folder, x) for x in names], sep = '\n')
 
 if __name__ == '__main__':
   main()
