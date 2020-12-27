@@ -92,6 +92,9 @@ def sysArgvOrInput(prompt = '(Drag file here)\npath/file.ext='):
         return input(prompt).strip('"')
 
 def hashFile(filename, chunk = 65536):
+    '''
+    Uses MD5. Not secure! 
+    '''
     hasher = hashlib.md5()
     with open(filename, 'rb') as f:
         while True:
