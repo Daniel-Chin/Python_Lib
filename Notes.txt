@@ -67,3 +67,7 @@ while else?
 
 The purpose of try - else:
     exceptions in else won't be catched. 
+
+Source code location
+    from os import path
+    path.dirname(__file__)
