@@ -1,6 +1,6 @@
 '''
 A double linked file list.  
-A simple database solution, but highly scalable.  
+A simple database solution, but highly scalable on systems that use hash map to store files.  
 Each entry has a timestamp, and the list is sorted by time.  
 Features:  
 * Dynamic filename length, grows as the database grows.  

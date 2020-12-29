@@ -154,7 +154,7 @@ Inefficiently cache and lookup function returns.
 
 ## chdir_context.py
 A context to temporarily cd to another directory.    
-Frequently useful: Chdir2(__file__)  
+Frequently useful: ChdirAlongside(__file__)  
 
 [source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/chdir_context.py)
 
@@ -378,7 +378,7 @@ Give up.
 
 ## linked_file_list.py
 A double linked file list.    
-A simple database solution, but highly scalable.    
+A simple database solution, but highly scalable on systems that use hash map to store files.    
 Each entry has a timestamp, and the list is sorted by time.    
 Features:    
 * Dynamic filename length, grows as the database grows.  
