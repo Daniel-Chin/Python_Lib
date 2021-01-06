@@ -21,12 +21,12 @@ def main():
                     MSO_9_START
                 ):
                     during_mso_9 = True
-                    print(1)
+                    # print(1)
                 if during_mso_9 and line.rstrip().endswith(
                     MSO_9_END
                 ):
                     during_mso_9 = False
-                    print(0)
+                    # print(0)
                     continue
                 if during_mso_9:
                     continue
@@ -34,7 +34,7 @@ def main():
                     print(line)
                     raise Exception('Error q3490626')
                 line = line.replace('gb2312', 'utf-8')
-                line = line.replace('“', '"').replace('”', '"')
+                line = line.replace('“', '&quot;').replace('”', '&quot;')
                 tmp.write(line.encode('utf-8'))
         tmp.seek(0)
         with open(filename, 'wb') as f:
