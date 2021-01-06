@@ -31,7 +31,7 @@ Meaningless Archive of random Python Scripts I wrote.
 
 [source code folder](https://github.com/Daniel-Chin/Python_Lib/blob/master/Archive/)
 
-### Archive/'Response Generator'/
+## Archive/'Response Generator'/
 A prank.  
 It was freshman year. I was introduced to Python by NYUSH.  
 I made this for Zane.  
@@ -39,12 +39,12 @@ Try figuring out what it does.
 
 [source code folder](https://github.com/Daniel-Chin/Python_Lib/blob/master/Archive/%27Response%20Generator%27/)
 
-### Archive/archive_rrrr.py
+## Archive/archive_rrrr.py
 To archive http://rrrrthats5rs.com
 
 [source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/Archive/archive_rrrr.py)
 
-### Archive/beta.py
+## Archive/beta.py
 experiment regarding covariance, coefficient, regression  
   
 F: future price / market portfolio price  
@@ -55,39 +55,39 @@ Both F and S refers to per period return.
 
 [source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/Archive/beta.py)
 
-### Archive/LAN_scan/
+## Archive/LAN_scan/
 Scans LAN
 
 [source code folder](https://github.com/Daniel-Chin/Python_Lib/blob/master/Archive/LAN_scan/)
 
-### Archive/legacy_archive/
+## Archive/legacy_archive/
 This was before I started to use Github, and I didn't do documentation.  
 Consider this the pre-historical era.
 
 [source code folder](https://github.com/Daniel-Chin/Python_Lib/blob/master/Archive/legacy_archive/)
 
-### Archive/LenovoShipping/
+## Archive/LenovoShipping/
 Tried to implement SSH when I was young.
 
 [source code folder](https://github.com/Daniel-Chin/Python_Lib/blob/master/Archive/LenovoShipping/)
 
-#### Archive/mim/mim.py
+## Archive/mim/mim.py
 To test the security of getpass.  
 
 [source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/Archive/mim/mim.py)
 
-### Archive/mindustryKeyRemap.py
+## Archive/mindustryKeyRemap.py
 Too bad. It does not work. Mindustry 6.0 is anti-python?  
 
 [source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/Archive/mindustryKeyRemap.py)
 
-### Archive/OneFileFly/
+## Archive/OneFileFly/
 Transmit one file.  
 Deprecated. Replaced by ../oneship
 
 [source code folder](https://github.com/Daniel-Chin/Python_Lib/blob/master/Archive/OneFileFly/)
 
-### Archive/robust_persistent_data_solution.py
+## Archive/robust_persistent_data_solution.py
 There are two copies of the database.    
 We use a "which_file" to point to the valid one of the two.    
 Read operation:    
@@ -104,14 +104,14 @@ I don't know what this strategy is called. If you know what it's called, please 
 
 [source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/Archive/robust_persistent_data_solution.py)
 
-### Archive/SleepProber/
+## Archive/SleepProber/
 Keeps beeping, until the computer sleeps.  
 Purpose: so you can tell if your computer is asleep.  
 Useful in rare occasions.
 
 [source code folder](https://github.com/Daniel-Chin/Python_Lib/blob/master/Archive/SleepProber/)
 
-### Archive/WireVoice/
+## Archive/WireVoice/
 Simple experiment of dealing with sound data in real time.
 
 [source code folder](https://github.com/Daniel-Chin/Python_Lib/blob/master/Archive/WireVoice/)
@@ -164,7 +164,7 @@ What it does: change encoding to utf-8, remove style info specific to Microsoft 
 
 [source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/cleanWordHtml.py)
 
-### clicker/__main__.py
+## clicker/__main__.py
 Windows only.   
 Use your phone to send UP and DOWN to your computer!   
 Useful for reading in Kindle.   
@@ -215,7 +215,7 @@ Future:
 
 [source code folder](https://github.com/Daniel-Chin/Python_Lib/blob/master/console/)
 
-### console/kernal.py
+## console/kernal.py
 For a clean namespace.    
 I later realized that this can be done with arguments to exec and eval.  
 
@@ -244,7 +244,7 @@ print(sys.argv)
 
 [source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/echo.py)
 
-### Find Vera/Find_Vera V2.py
+## Find Vera/Find_Vera V2.py
 A game by Daniel
 
 [source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/Find%20Vera/Find_Vera%20V2.py)
@@ -311,12 +311,12 @@ with indentPrinter as print:
 
 [source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/indentprinter.py)
 
-### interactive/console_explorer.py
+## interactive/console_explorer.py
 An android-friendly console file explorer. 
 
 [source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/interactive/console_explorer.py)
 
-### interactive/kbhit.py
+## interactive/kbhit.py
 A Python class implementing KBHIT, the standard keyboard-interrupt poller.  
 Works transparently on Windows and Posix (Linux, Mac OS X).  Doesn't work  
 with IDLE.  
@@ -333,7 +333,7 @@ GNU General Public License for more details.
 
 [source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/interactive/kbhit.py)
 
-### interactive/__init__.py
+## interactive/__init__.py
 Terminal interactivity utils.    
   
 `listen`: waits for key press.    
@@ -403,7 +403,7 @@ PROTECTION: global hooked button to stop macro = Windows Key
 
 [source code folder](https://github.com/Daniel-Chin/Python_Lib/blob/master/macro/)
 
-### md2html/__main__.py
+## md2html/__main__.py
 Translate markdown .md file to html file.    
 Note: to work on WordPress, avoid level one header (# Title).    
 A lot of markdown features are not implemented!  
@@ -425,7 +425,7 @@ Issues:
 
 [source code folder](https://github.com/Daniel-Chin/Python_Lib/blob/master/mobileNumpad/)
 
-### mobileNumpad/__main__.py
+## mobileNumpad/__main__.py
 WARNING: Running this may open vulnerabilities for your computer.   
 Don't run this if you don't know what you are doing.   
 Only run this if you are in a safe network, or inside a firewall.   
@@ -552,7 +552,7 @@ pages.
 
 [source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/pdf_unspread.py)
 
-### pickle_preview/__main__.py
+## pickle_preview/__main__.py
 Preview a pickle file
 
 [source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/pickle_preview/__main__.py)
@@ -595,7 +595,7 @@ Interactive git commit and push.
 
 [source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/Push_Git.py)
 
-### qrchat/__main__.py
+## qrchat/__main__.py
 Sets up a server, displays a QR code. Scan it to go to a web page. Exchange raw texts!    
 Useful for sending a URL from the phone to the laptop.    
 Warning: No authentication or encryption. Don't type in secrets. Don't assume who the remote is.  
@@ -675,7 +675,7 @@ Result: Failed! This macro does not work on Terraria!
 
 [source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/terraria.py)
 
-### To the Earth/To the Earth V8.py
+## To the Earth/To the Earth V8.py
 A game by Daniel.   
   
 My personal second / third python project. You can see a lot of bad coding styles.   

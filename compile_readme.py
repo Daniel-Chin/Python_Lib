@@ -57,7 +57,7 @@ def documentate(cd, out, depth, folder_documented = False):
     if depth >= 2:
         try:
             with open('readme.md', 'r') as f:
-                print('#' * depth, cd, file = out)
+                print('##', cd, file = out)
                 doc = f.read().strip()
                 if len(doc) < 3:
                     print('EMPTY README', cd)
@@ -83,7 +83,7 @@ def documentate(cd, out, depth, folder_documented = False):
                             continue
                         break
                     if documented:
-                        print('#' * (depth+1), cd+node, file = out)
+                        print('##', cd+node, file = out)
                         buffer = []
                         for line in f:
                             line = line.decode().strip('\r\n')
