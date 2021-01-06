@@ -158,6 +158,12 @@ Frequently useful: ChdirAlongside(__file__)
 
 [source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/chdir_context.py)
 
+## cleanWordHtml.py
+Input: MS Word generated html file.    
+What it does: change encoding to utf-8, remove style info specific to Microsoft Outlook, replace curly double quotes (???) with straights (").  
+
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/cleanWordHtml.py)
+
 ### clicker/__main__.py
 Windows only.   
 Use your phone to send UP and DOWN to your computer!   
@@ -610,6 +616,11 @@ Questions I have about Python.
 Creates a react component file containing boilerplate code.  
 
 [source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/reactNew.py)
+
+## runamod.py
+Run a python module but it waits at the end as if you called it in command line.  
+
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/runamod.py)
 
 ## safeserver/
 A simple file server.  
