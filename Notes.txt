@@ -71,3 +71,5 @@ The purpose of try - else:
 Source code location
     from os import path
     path.dirname(__file__)
+
+IT HAS BEEN SO MANY TIMES I REDISCOVERED I HAVE BEEN USING open(..., 'w+') WRONG!
