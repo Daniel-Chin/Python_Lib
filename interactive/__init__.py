@@ -43,12 +43,17 @@ else:
     DISPLAY_WIN_Z_LINUX_D = '^D'
 
 if platform.system().lower() == 'windows':
-    def getFullCh():
+    def getFullCh(priorize_esc_or_arrow = False):
         kbHit = KBHit()
         first = kbHit.getch()
-        if first[0] in range(1, 128) and first != b'\x1b':
+        if first == b'\x1b':   # ESC
+            if priorize_esc_or_arrow:
+                full_ch = first
+            else:
+                full_ch = first + kbHit.getch()
+        elif first[0] in range(1, 128): # regular
             full_ch = first
-        else:   # \x00 \xe0 multi bytes scan code, and double ESC
+        else:   # \x00 \xe0 multi bytes scan code
             full_ch = first + kbHit.getch()
         kbHit.set_normal_term()
         return full_ch
@@ -88,20 +93,20 @@ else:
         kbHit.set_normal_term()
         return ch
 
-def tryGetch(timeout = None):
+def tryGetch(timeout = None, priorize_esc_or_arrow = False):
     '''
     `timeout`: 0 is nonblocking, None is wait forever.  
     Return None if timeout.  
     '''
     if timeout is None:
-        return getFullCh()
+        return getFullCh(priorize_esc_or_arrow)
     if timeout < 0:
         raise ValueError(f'timeout must > 0, got {timeout}')
     kbHit = KBHit()
     try:
         for _ in range(int(timeout * FPS) + 1):
             if kbHit.kbhit():
-                return getFullCh()
+                return getFullCh(priorize_esc_or_arrow)
             sleep(1 / FPS)
     finally:
         kbHit.set_normal_term()
@@ -111,7 +116,7 @@ class Universe:
     def __contains__(self, x):
         return True
 
-def listen(choice = {}, timeout = None):
+def listen(choice = {}, timeout = None, priorize_esc_or_arrow = False):
     '''
     `choice`:  
         can be an iterable of choices or a single choice.   
@@ -142,7 +147,8 @@ def listen(choice = {}, timeout = None):
         deadline = monoTime() + timeout
     while True:
         full_ch = tryGetch(
-            timeout and max(0, deadline - monoTime())
+            timeout and max(0, deadline - monoTime()), 
+            priorize_esc_or_arrow = priorize_esc_or_arrow, 
         )
         if full_ch == KEY_CODE.CTRL_C:
             raise KeyboardInterrupt
