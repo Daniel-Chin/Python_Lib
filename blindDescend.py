@@ -54,3 +54,4 @@ if __name__ == '__main__':
   print(blindDescend(f, .01, -1, 3))
   print(blindDescend(f, -.01, -1, 3))
   print(blindDescend(f, -.01, 1, 3))
+  print(blindDescend(f, -.01, 1, -3))
