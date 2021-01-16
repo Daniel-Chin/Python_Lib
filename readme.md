@@ -287,6 +287,12 @@ Tools to do graphics in the terminal.
 
 [source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/graphic_terminal.py)
 
+## harmonicSynth.py
+Synthesize sound with harmonics.    
+Interpolate between frames smartly.  
+
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/harmonicSynth.py)
+
 ## httpmim.py
 HTTP man in middle. Prints all traffic. Useful for investigating how http works. Although Chrome Dev Tools prolly have something like this already.  
 
