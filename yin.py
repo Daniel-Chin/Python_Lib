@@ -6,12 +6,12 @@ import numpy as np
 from librosa import util
 
 def _cumulative_mean_normalized_difference(
-  y, frame_length, win_length, min_period, max_period
+  y, page_length, win_length, min_period, max_period
 ):
   # Autocorrelation.
-  a = np.fft.rfft(y, frame_length)
-  b = np.fft.rfft(y[win_length::-1], frame_length)
-  acf = np.fft.irfft(a * b, frame_length)[win_length:]
+  a = np.fft.rfft(y, page_length)
+  b = np.fft.rfft(y[win_length::-1], page_length)
+  acf = np.fft.irfft(a * b, page_length)[win_length:]
   acf[np.abs(acf) < 1e-6] = 0
 
   # Energy terms.
@@ -20,15 +20,15 @@ def _cumulative_mean_normalized_difference(
   energy[np.abs(energy) < 1e-6] = 0
 
   # Difference function.
-  yin_frame = energy[0] + energy - 2 * acf
+  yin_page = energy[0] + energy - 2 * acf
 
   # Cumulative mean normalized difference function.
-  yin_numerator = yin_frame[min_period : max_period + 1]
+  yin_numerator = yin_page[min_period : max_period + 1]
   tau_range = np.arange(1, max_period + 1)
-  cumulative_mean = np.cumsum(yin_frame[1 : max_period + 1]) / tau_range
+  cumulative_mean = np.cumsum(yin_page[1 : max_period + 1]) / tau_range
   yin_denominator = cumulative_mean[min_period - 1 : max_period]
-  yin_frame = yin_numerator / (yin_denominator + util.tiny(yin_denominator))
-  return yin_frame
+  yin_page = yin_numerator / (yin_denominator + util.tiny(yin_denominator))
+  return yin_page
 
 def _parabolic_interpolation(y):
   parabolic_shifts = np.zeros_like(y)
@@ -40,27 +40,27 @@ def _parabolic_interpolation(y):
   return parabolic_shifts
 
 def yin(
-  y, sr, frame_length, fmin = 65, fmax = 1600, trough_threshold = 0.1, 
+  y, sr, page_length, fmin = 65, fmax = 1600, trough_threshold = 0.1, 
   win_length = None,
 ):
   if win_length is None:
-      win_length = frame_length // 2
+      win_length = page_length // 2
   min_period = max(int(np.floor(sr / fmax)), 1)
-  max_period = min(int(np.ceil(sr / fmin)), frame_length - win_length - 1)
+  max_period = min(int(np.ceil(sr / fmin)), page_length - win_length - 1)
   
-  yin_frame = _cumulative_mean_normalized_difference(
-      y, frame_length, win_length, min_period, max_period
+  yin_page = _cumulative_mean_normalized_difference(
+      y, page_length, win_length, min_period, max_period
   )
 
   # Parabolic interpolation.
-  parabolic_shifts = _parabolic_interpolation(yin_frame)
+  parabolic_shifts = _parabolic_interpolation(yin_page)
 
   # Find local minima.
-  is_trough = util.localmin(yin_frame)
-  is_trough[0] = yin_frame[0] < yin_frame[1]
+  is_trough = util.localmin(yin_page)
+  is_trough[0] = yin_page[0] < yin_page[1]
 
   # Find minima below peak threshold.
-  is_threshold_trough = np.logical_and(is_trough, yin_frame < trough_threshold)
+  is_threshold_trough = np.logical_and(is_trough, yin_page < trough_threshold)
 
   # Absolute threshold.
   # "The solution we propose is to set an absolute threshold and choose the
@@ -68,7 +68,7 @@ def yin(
   # this threshold. If none is found, the global minimum is chosen instead."
   yin_period = np.argmax(is_threshold_trough)
   if np.all(~is_threshold_trough):
-      yin_period = np.argmin(yin_frame)  # global_min
+      yin_period = np.argmin(yin_page)  # global_min
 
   # Refine peak by parabolic interpolation.
   yin_period = (
