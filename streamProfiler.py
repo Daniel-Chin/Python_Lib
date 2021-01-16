@@ -39,6 +39,7 @@ class StreamProfiler:
     def done(self):
         if self.now_task is not None:
             self.tasks[self.now_task] = time() - self.last_gonna
+            self.now_task = None
 
 if __name__ == '__main__':
     from time import sleep
