@@ -6,7 +6,9 @@ import simpleaudio as sa
 from os import path
 
 try:
-    if path.isfile(sys.argv[1]):
+    filename = sys.argv[1]
+    if path.isfile(filename):
+        print(path.abspath(filename))
         sa.WaveObject.from_wave_read(sa.wave.open(sys.argv[1])).play()
     else:
         input('File doesn\'t exist. ')
