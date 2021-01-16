@@ -11,17 +11,17 @@ Harmonic = namedtuple('Harmonic', ['freq', 'mag'])
 
 class HarmonicSynth:
     def __init__(
-        self, n_harmonics, SR, FRAME_LEN, DTYPE, 
+        self, n_harmonics, SR, PAGE_LEN, DTYPE, 
         STUPID_MATCH, DO_SWIPE, CROSSFADE_RATIO, 
     ):
-        self.FRAME_LEN = FRAME_LEN
+        self.PAGE_LEN = PAGE_LEN
         self.STUPID_MATCH = STUPID_MATCH
         self.DO_SWIPE = DO_SWIPE
         self.SR = SR
-        self.CROSSFADE_LEN = round(CROSSFADE_RATIO * FRAME_LEN)
-        self.SUSTAIN_ONES = np.ones((FRAME_LEN - self.CROSSFADE_LEN, ))
+        self.CROSSFADE_LEN = round(CROSSFADE_RATIO * PAGE_LEN)
+        self.SUSTAIN_ONES = np.ones((PAGE_LEN - self.CROSSFADE_LEN, ))
 
-        self.signal_2d = np.zeros((n_harmonics, FRAME_LEN), DTYPE)
+        self.signal_2d = np.zeros((n_harmonics, PAGE_LEN), DTYPE)
         self.harmonics = [
             Harmonic(261.63, 0) for i in range(n_harmonics)
         ]
@@ -66,7 +66,7 @@ class HarmonicSynth:
 
 class Osc():
     def __init__(self, i, synth, harmonic):
-        self.LINEAR = np.arange(synth.FRAME_LEN + 1) * TWO_PI / synth.SR
+        self.LINEAR = np.arange(synth.PAGE_LEN + 1) * TWO_PI / synth.SR
         self.freq = harmonic.freq
         self.mag = harmonic.mag
         self.phase = 0
@@ -77,9 +77,9 @@ class Osc():
         if swipe:
             # print('swipe', end='')
             tau = self.LINEAR * np.linspace(
-                self.freq, (new_freq + self.freq) * .5, self.synth.FRAME_LEN + 1
+                self.freq, (new_freq + self.freq) * .5, self.synth.PAGE_LEN + 1
             )
-            # mask = np.exp(np.linspace(np.log(self.mag + .0001), np.log(new_mag + .0001), self.synth.FRAME_LEN))
+            # mask = np.exp(np.linspace(np.log(self.mag + .0001), np.log(new_mag + .0001), self.synth.PAGE_LEN))
             if new_mag > self.mag:
                 mask = np.concatenate((
                     self.synth.SUSTAIN_ONES * self.mag, 
