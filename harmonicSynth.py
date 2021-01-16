@@ -59,7 +59,7 @@ class HarmonicSynth:
                 swipe_this = loss < .006
                 # swipe_this = True
                 # swipe_this = i_max < 3
-                print(format(loss, '6.3f'), end = '')
+                # print(format(loss, '6.3f'), end = '')
                 harmonics.append(unmatched.pop(i_max))
                 osc.eat(
                     *harmonics[-1], 
