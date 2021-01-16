@@ -660,6 +660,13 @@ What I learned from Statistics for Business and Finance.
 
 [source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/stats.py)
 
+## streamProfiler.py
+Profiles the computation time of a series of actions in a   
+real-time stream-base application.    
+Run the script to see a demo.  
+
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/streamProfiler.py)
+
 ## summarize_dependencies.py
 Examines a directory of .py files and find all imports.  
 

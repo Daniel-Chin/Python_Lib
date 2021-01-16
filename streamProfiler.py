@@ -1,6 +1,7 @@
 '''
 Profiles the computation time of a series of actions in a 
 real-time stream-base application.  
+Run the script to see a demo.  
 '''
 
 from time import time
