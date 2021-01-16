@@ -39,13 +39,13 @@ class HarmonicSynth:
 
     def eat(self, harmonics):
         assert len(harmonics) >= self.n_harmonics
-        harmonics.sort(key=self.getMag)
         # print(*[
         #     format(x, '4.0f') for x, _ in harmonics
         # ])
         if self.STUPID_MATCH:
             [osc.eat(*h, self.DO_SWIPE) for osc, h in zip(self.osc, harmonics)]
         else:
+            harmonics.sort(key=self.getMag)
             unmatched_log_f = [
                 np.log(freq)
                 for freq, _ in harmonics
