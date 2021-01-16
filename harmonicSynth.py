@@ -20,6 +20,7 @@ class HarmonicSynth:
         self.SR = SR
         self.CROSSFADE_LEN = round(CROSSFADE_RATIO * PAGE_LEN)
         self.SUSTAIN_ONES = np.ones((PAGE_LEN - self.CROSSFADE_LEN, ))
+        self.n_harmonics = n_harmonics
 
         self.signal_2d = np.zeros((n_harmonics, PAGE_LEN), DTYPE)
         self.harmonics = [
@@ -36,6 +37,7 @@ class HarmonicSynth:
         return harmonic.mag
 
     def eat(self, harmonics):
+        assert len(harmonics) >= self.n_harmonics
         harmonics.sort(key=self.getMag)
         # print(*[
         #     format(x, '4.0f') for x, _ in harmonics
