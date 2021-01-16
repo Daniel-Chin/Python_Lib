@@ -31,7 +31,8 @@ class HarmonicSynth:
         ) for i, h in enumerate(self.harmonics)]
     
     def mix(self):
-        return np.sum(self.signal_2d, 0)
+        return np.sum(self.signal_2d, 0) * 2
+        # I don't really know why *2 is needed here
     
     def getMag(self, harmonic):
         return harmonic.mag
@@ -65,7 +66,7 @@ class HarmonicSynth:
                     *harmonics[-1], 
                     swipe = self.DO_SWIPE and swipe_this, 
                 )
-            print()
+            # print()
         self.harmonics = harmonics
 
 class Osc():
