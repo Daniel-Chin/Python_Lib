@@ -6,6 +6,7 @@ import numpy as np
 from collections import namedtuple
 
 TWO_PI = np.pi * 2
+LOG_SMOOTH = .0001
 
 Harmonic = namedtuple('Harmonic', ['freq', 'mag'])
 
@@ -31,8 +32,9 @@ class HarmonicSynth:
         ) for i, h in enumerate(self.harmonics)]
     
     def mix(self):
-        return np.sum(self.signal_2d, 0) * 2
+        return np.sum(self.signal_2d, 0) * 4
         # I don't really know why *2 is needed here
+        # Another *2 for the hann window
     
     def getMag(self, harmonic):
         return harmonic.mag
@@ -84,21 +86,21 @@ class Osc():
             tau = self.LINEAR * np.linspace(
                 self.freq, (new_freq + self.freq) * .5, self.synth.PAGE_LEN + 1
             )
-            # mask = np.exp(np.linspace(np.log(self.mag + .0001), np.log(new_mag + .0001), self.synth.PAGE_LEN))
+            # mask = np.exp(np.linspace(np.log(self.mag + LOG_SMOOTH), np.log(new_mag + LOG_SMOOTH), self.synth.PAGE_LEN)) - LOG_SMOOTH
             if new_mag > self.mag:
                 mask = np.concatenate((
                     self.synth.SUSTAIN_ONES * self.mag, 
-                    np.exp(np.linspace(np.log(self.mag + .0001), np.log(new_mag + .0001), self.synth.CROSSFADE_LEN)), 
+                    np.exp(np.linspace(np.log(self.mag + LOG_SMOOTH), np.log(new_mag + LOG_SMOOTH), self.synth.CROSSFADE_LEN)) - LOG_SMOOTH, 
                 ))
             else:
                 mask = np.concatenate((
-                    np.exp(np.linspace(np.log(self.mag + .0001), np.log(new_mag + .0001), self.synth.CROSSFADE_LEN)), 
+                    np.exp(np.linspace(np.log(self.mag + LOG_SMOOTH), np.log(new_mag + LOG_SMOOTH), self.synth.CROSSFADE_LEN)) - LOG_SMOOTH, 
                     self.synth.SUSTAIN_ONES * new_mag, 
                 ))
         else:
             tau = self.LINEAR * new_freq
             mask = np.concatenate((
-                np.exp(np.linspace(np.log(self.mag + .0001), np.log(new_mag + .0001), self.synth.CROSSFADE_LEN)), 
+                np.exp(np.linspace(np.log(self.mag + LOG_SMOOTH), np.log(new_mag + LOG_SMOOTH), self.synth.CROSSFADE_LEN)) - LOG_SMOOTH, 
                 self.synth.SUSTAIN_ONES * new_mag, 
             ))
         self.synth.signal_2d[self.i] = np.sin(
