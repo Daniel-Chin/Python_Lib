@@ -7,14 +7,17 @@ from time import time
 from terminalsize import get_terminal_size
 
 class StreamProfiler:
-    def __init__(self, as_percentage_of = None):
+    def __init__(self, as_percentage_of = None, DO_PROFILE = True):
         self.as_percentage_of = as_percentage_of
+        self.DO_PROFILE = DO_PROFILE
 
         self.tasks = {}
         self.now_task = None
         self.last_gonna = None
     
     def display(self, same_line = False):
+        if not self.DO_PROFILE:
+            return
         self.gonna('display')
         buffer = []
         for task_name, task_time in self.tasks.items():
@@ -30,13 +33,21 @@ class StreamProfiler:
             print('', line, end = '\r', flush = True)
         else:
             print('', line)
+        self.done()
+        for i in self.tasks:
+            if i != 'display':
+                self.tasks[i] = 0
     
     def gonna(self, task_name):
+        if not self.DO_PROFILE:
+            return
         self.done()
         self.now_task = task_name
         self.last_gonna = time()
     
     def done(self):
+        if not self.DO_PROFILE:
+            return
         if self.now_task is not None:
             self.tasks[self.now_task] = time() - self.last_gonna
             self.now_task = None
