@@ -1,6 +1,3 @@
-'''
-Voice transformer for SCP:SL  
-'''
 print('importing...')
 import pyaudio
 from time import time, sleep
@@ -18,11 +15,18 @@ except ImportError:
 from interactive import inputChin
 
 print('Preparing constants...')
-CHORD = (0, -3, +4)
-CHORD = (0, -4, +3)
+# CHORD = (0, -3, +4)
+# CHORD = (0, -4, +3)
+CHORD = (0, -3.863137138648348, +3.1564128700055285)
+# CHORD = (0, +3.863137138648348, -3.1564128700055285)
 # CHORD = (0, )
+# CHORD = (0, -3)
+# CHORD = (0, -7.019550008653873)
+# CHORD = (0, -7.019550008653873, +7.019550008653873)
+# CHORD = (0, -3.863137138648348, -7.019550008653873)
+QUANTIZE = False
 HYSTERESIS = .2
-FRAME_LEN = 1024
+FRAME_LEN = 512
 CROSS_FADE = 0.04
 DO_ECHO = False
 
@@ -136,15 +140,21 @@ def onAudioIn(in_data, frame_count, time_info, status):
     frame = np.frombuffer(
         in_data, dtype = DTYPE[0]
     )
-    f0 = yin(frame, SR, FRAME_LEN)
-    pitch = np.log(f0) * 17.312340490667562 - 36.37631656229591
+    if QUANTIZE or len(CHORD) == 0:
+        f0 = yin(frame, SR, FRAME_LEN)
+        pitch = np.log(f0) * 17.312340490667562 - 36.37631656229591
 
     if len(CHORD):
-        classification = round(pitch / 7.9) * 7.9
-        p2b = classification - pitch
+        if QUANTIZE:
+            classification = round(pitch / 7.9) * 7.9
+            p2b = classification - pitch
+        else:
+            p2b = 0
+        
+        weight = 1 / (len(CHORD) - .99) * .5
         for i, c in enumerate(CHORD):
-            mixer[i] = pitchBend(frame, p2b + c)
-        frame = np.sum(mixer, 0) / len(CHORD)
+            mixer[i] = pitchBend(frame, p2b + c) * (.5 if i == 0 else weight)
+        frame = np.sum(mixer, 0)
     else:
         loss = abs(pitch - classification) - .5
         if loss < 0:
