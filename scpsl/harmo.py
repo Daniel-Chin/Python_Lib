@@ -103,6 +103,7 @@ def main():
         f.setsampwidth(4)
         f.setframerate(SR)
     streamIn.start_stream()
+    print('go!')
     try:
         while streamIn.is_active():
             op = listen(b'\x1b', priorize_esc_or_arrow=True)
