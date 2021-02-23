@@ -13,6 +13,7 @@ try:
     from yin import yin
     from streamProfiler import StreamProfiler
     from harmonicSynth import HarmonicSynth, Harmonic
+    from interactive import inputChin
 except ImportError as e:
     module_name = str(e).split('No module named ', 1)[1].strip().strip('"\'')
     print(f'Missing module {module_name}. Please download at')
@@ -21,12 +22,14 @@ except ImportError as e:
     raise e
 
 print('Preparing...')
-PAGE_LEN = 1024
-N_HARMONICS = 20
-DO_SWIPE = True
-DO_PROFILE = True
-# WRITE_FILE = None
-WRITE_FILE = f'demo_{random.randint(0, 99999)}.wav'
+PAGE_LEN = 512
+N_HARMONICS = 60
+DO_SWIPE = False
+DO_PROFILE = False
+AUTOTUNE = True
+QUAN = 1
+WRITE_FILE = None
+# WRITE_FILE = f'demo_{random.randint(0, 99999)}.wav'
 
 MASTER_VOLUME = 1
 SR = 22050
@@ -53,20 +56,52 @@ def main():
     terminateLock.acquire()
     synth = HarmonicSynth(N_HARMONICS, SR, PAGE_LEN, DTYPE[0], True, DO_SWIPE, .3)
     pa = pyaudio.PyAudio()
+    info = pa.get_host_api_info_by_index(0)
+    n_devices = info.get('deviceCount')
+    devices = []
+    in_devices = []
+    out_devices = []
+    for i in range(n_devices):
+        info = pa.get_device_info_by_host_api_device_index(0, i)
+        devices.append(info['name'])
+        if info['maxInputChannels'] > 0:
+            in_devices.append([i, info['name']])
+        elif info['maxOutputChannels'] > 0:
+            out_devices.append([i, info['name']])
+    print()
+    print('Input Devices:')
+    for i, name in in_devices:
+        print(i, name)
+    default_in = guess(in_devices, ['Headset', 'Microphone Array'])
+    in_i = int(inputChin('select input device: ', default_in))
+    print()
+    print('Input device:', devices[in_i])
+
+    print()
+    print('Output Devices:')
+    for i, name in out_devices:
+        print(i, name)
+    default_out = guess(out_devices, ['VoiceMeeter Input'])
+    out_i = int(inputChin('select output device: ', default_out))
+    print()
+    print('Output device:', devices[out_i])
+
     streamOutContainer.append(pa.open(
         format = DTYPE[1], channels = 1, rate = SR, 
         output = True, frames_per_buffer = PAGE_LEN,
+        output_device_index = out_i, 
     ))
+    streamIn = pa.open(
+        format = DTYPE[1], channels = 1, rate = SR, 
+        input = True, frames_per_buffer = PAGE_LEN,
+        stream_callback = onAudioIn, 
+        input_device_index = in_i, 
+    )
     if WRITE_FILE is not None:
         f = wave.open(WRITE_FILE, 'wb')
         f.setnchannels(1)
         f.setsampwidth(4)
         f.setframerate(SR)
-    streamIn = pa.open(
-        format = DTYPE[1], channels = 1, rate = SR, 
-        input = True, frames_per_buffer = PAGE_LEN,
-        stream_callback = onAudioIn, 
-    )
     streamIn.start_stream()
     try:
         while streamIn.is_active():
@@ -118,14 +153,14 @@ def onAudioIn(in_data, sample_count, *_):
 
         profiler.gonna('yin')
         f0 = yin(page * HANN, SR, PAGE_LEN)
-        # pitch = np.log(f0) * 17.312340490667562
+        f0_ = autotune(f0, 0)[0]
 
         profiler.gonna('sft')
         harmonics = []
         for i in range(1, N_HARMONICS + 1):
             freq = f0 * i
             harmonics.append(Harmonic(
-                freq, 
+                f0_ * i, 
                 sft(page * HANN, freq * PAGE_LEN / SR)
             ))
         
@@ -146,5 +181,18 @@ def onAudioIn(in_data, sample_count, *_):
         import traceback
         traceback.print_exc()
         return (None, pyaudio.paAbort)
+
+def autotune(freq, mag):
+    if not AUTOTUNE:
+        return freq, mag
+    pitch = np.log(freq) * 17.312340490667562 - 36.37631656229591
+    return np.exp((round(pitch / QUAN) * QUAN + 36.37631656229591) * 0.05776226504666211), mag
+
+def guess(devices, targets):
+    for t in targets:
+        for i, name in devices:
+            if t in name:
+                return i
+    return ''
 
 main()
