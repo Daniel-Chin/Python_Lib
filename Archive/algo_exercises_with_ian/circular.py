@@ -1,25 +1,25 @@
 def doesContain(circle, target, start, end):
     end = end % len(circle)
-    if start == end:
-        return False
     if circle[start] < circle[end]:
         return circle[start] <= target < circle[end]
     else:
         return target < circle[end] or circle[start] <= target
 
 def circularBS(circle, target):
+    if circle[0] == target:
+        return 0
     return helper(circle, target, 0, len(circle))
 
 def helper(circle, target, start, end):
-    cursor = round(0.618 * start + 0.382 * end)
+    if end - start <= 1:
+        raise ValueError('Fail')
+    cursor = round(0.382 * start + 0.618 * end)
     if circle[cursor] == target:
         return cursor
     if doesContain(circle, target, start, cursor):
         return helper(circle, target, start, cursor)
-    elif doesContain(circle, target, cursor, end):
-        return helper(circle, target, cursor, end)
     else:
-        raise ValueError('Fail')
+        return helper(circle, target, cursor, end)
 
 def test():
     TOP = 20
@@ -35,6 +35,18 @@ def test():
                     print('Mismatch!', truth, found)
                     input('Enter...')
                 print(found, '==', truth)
+    try:
+        circularBS([3,4,5,6,0,1,2], 4.5)
+    except ValueError:
+        print('Fail, which is good.')
+    else:
+        print('did not fail. bad')
+    try:
+        circularBS([3,4,5,6,0,1,2], 99)
+    except ValueError:
+        print('Fail, which is good.')
+    else:
+        print('did not fail. bad')
 
 if __name__ == '__main__':
     test()
