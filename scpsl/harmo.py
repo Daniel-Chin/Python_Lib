@@ -29,8 +29,8 @@ DO_PROFILE = False
 AUTOTUNE = True
 QUAN = 1
 DO_ECHO = True
-ECHO_DELAY = 1
-ECHO_DECAY = .6
+ECHO_DELAY = .25
+ECHO_DECAY = .4
 WRITE_FILE = None
 # WRITE_FILE = f'demo_{random.randint(0, 99999)}.wav'
 
@@ -46,7 +46,7 @@ streamOutContainer = []
 terminate_flag = 0
 terminateLock = Lock()
 profiler = StreamProfiler(PAGE_LEN / SR, DO_PROFILE)
-echo = [np.zeros(PAGE_LEN, 1) for _ in range(
+echo = [np.zeros(PAGE_LEN, DTYPE[0]) for _ in range(
     round(ECHO_DELAY * SR / PAGE_LEN)
 )]
 
@@ -180,7 +180,7 @@ def onAudioIn(in_data, sample_count, *_):
         if DO_ECHO:
             profiler.gonna('echo')
             mixed += echo.pop(0)
-            echo.append(mixed * ECHO_DECAY)
+            echo.append(np.rint(mixed * ECHO_DECAY).astype(DTYPE[0]))
         
         streamOutContainer[0].write(mixed, PAGE_LEN)
         if WRITE_FILE is not None:

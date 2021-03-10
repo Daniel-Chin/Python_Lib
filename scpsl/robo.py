@@ -17,8 +17,8 @@ from interactive import inputChin
 print('Preparing constants...')
 # CHORD = (0, -3, +4)
 # CHORD = (0, -4, +3)
-CHORD = (0, -3.863137138648348, +3.1564128700055285)
-# CHORD = (0, +3.863137138648348, -3.1564128700055285)
+# CHORD = (0, -3.863137138648348, +3.1564128700055285)
+CHORD = (0, +3.863137138648348, -3.1564128700055285)
 # CHORD = (0, )
 # CHORD = (0, -3)
 # CHORD = (0, -7.019550008653873)
@@ -26,28 +26,26 @@ CHORD = (0, -3.863137138648348, +3.1564128700055285)
 # CHORD = (0, -3.863137138648348, -7.019550008653873)
 QUANTIZE = False
 HYSTERESIS = .2
-FRAME_LEN = 512
+PAGE_LEN = 512
 CROSS_FADE = 0.04
-DO_ECHO = False
+DO_ECHO = True
+ECHO_DELAY = .25
+ECHO_DECAY = .4
 
 SR = 44100
 DTYPE = (np.float32, pyaudio.paFloat32)
 # FILTER = 'kaiser_fast'
 FILTER = 'kaiser_best'
-ECHO_TIMES = 6
-ECHO_DECAY = -1.5
-ECHO_PERIOD = .15
 
-FRAME_TIME = 1 / SR * FRAME_LEN
-CROSS_FADE_TAILS = round(FRAME_LEN * (1 - CROSS_FADE) / 2)
-CROSS_FADE_OVERLAP = FRAME_LEN - 2 * CROSS_FADE_TAILS
-assert CROSS_FADE_OVERLAP + 2 * CROSS_FADE_TAILS == FRAME_LEN
+FRAME_TIME = 1 / SR * PAGE_LEN
+CROSS_FADE_TAILS = round(PAGE_LEN * (1 - CROSS_FADE) / 2)
+CROSS_FADE_OVERLAP = PAGE_LEN - 2 * CROSS_FADE_TAILS
+assert CROSS_FADE_OVERLAP + 2 * CROSS_FADE_TAILS == PAGE_LEN
 # Linear cross fade
 FADE_IN_WINDOW = np.array([
     x / CROSS_FADE_OVERLAP for x in range(CROSS_FADE_OVERLAP)
 ], DTYPE[0])
 FADE_OUT_WINDOW = np.flip(FADE_IN_WINDOW)
-ECHO_FPP = round(ECHO_PERIOD / FRAME_TIME)
 
 streamOutContainer = []
 display_time = 0
@@ -55,17 +53,16 @@ classification = 0
 confidence = 0
 tolerance = HYSTERESIS
 time_start = 0
-echoBuffer = [
-    np.zeros((FRAME_LEN, ), DTYPE[0]) 
-    for _ in range(ECHO_TIMES * ECHO_FPP)
-]
+echo = [np.zeros(PAGE_LEN, DTYPE[0]) for _ in range(
+    round(ECHO_DELAY * SR / PAGE_LEN)
+)]
 release_state = 0
 lock = Lock()
 
 def main():
     global release_state, mixer
     pa = pyaudio.PyAudio()
-    mixer = np.zeros((len(CHORD), FRAME_LEN), DTYPE[0])
+    mixer = np.zeros((len(CHORD), PAGE_LEN), DTYPE[0])
     info = pa.get_host_api_info_by_index(0)
     n_devices = info.get('deviceCount')
     devices = []
@@ -98,17 +95,18 @@ def main():
 
     streamOutContainer.append(pa.open(
         format = DTYPE[1], channels = 1, rate = SR, 
-        output = True, frames_per_buffer = FRAME_LEN,
+        output = True, frames_per_buffer = PAGE_LEN,
         output_device_index = out_i, 
     ))
     streamIn = pa.open(
         format = DTYPE[1], channels = 1, rate = SR, 
-        input = True, frames_per_buffer = FRAME_LEN,
+        input = True, frames_per_buffer = PAGE_LEN,
         stream_callback = onAudioIn, 
         input_device_index = in_i, 
     )
     streamIn.start_stream()
     kb.hook(onKey)
+    print('go...')
     try:
         while streamIn.is_active():
             sleep(1)
@@ -141,7 +139,7 @@ def onAudioIn(in_data, frame_count, time_info, status):
         in_data, dtype = DTYPE[0]
     )
     if QUANTIZE or len(CHORD) == 0:
-        f0 = yin(frame, SR, FRAME_LEN)
+        f0 = yin(frame, SR, PAGE_LEN)
         pitch = np.log(f0) * 17.312340490667562 - 36.37631656229591
 
     if len(CHORD):
@@ -170,14 +168,10 @@ def onAudioIn(in_data, frame_count, time_info, status):
         frame = pitchBend(frame, confident_correction)
 
     if DO_ECHO:
-        echoBuffer.append(frame)
-        frame = sum([
-            x * np.exp(ECHO_DECAY * (ECHO_TIMES - i)) 
-            for i, x in enumerate(echoBuffer[0::ECHO_FPP])
-        ])
-        echoBuffer.pop(0)
+        frame += echo.pop(0)
+        echo.append((frame * ECHO_DECAY).astype(DTYPE[0]))
 
-    streamOutContainer[0].write(frame, FRAME_LEN)
+    streamOutContainer[0].write(frame, PAGE_LEN)
 
     return (None, pyaudio.paContinue)
 
