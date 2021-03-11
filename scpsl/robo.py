@@ -24,13 +24,14 @@ CHORD = (0, +3.863137138648348, -3.1564128700055285)
 # CHORD = (0, -7.019550008653873)
 # CHORD = (0, -7.019550008653873, +7.019550008653873)
 # CHORD = (0, -3.863137138648348, -7.019550008653873)
+# CHORD = (0, -3.1564128700055285, )
 QUANTIZE = False
 HYSTERESIS = .2
 PAGE_LEN = 512
 CROSS_FADE = 0.04
 DO_ECHO = True
 ECHO_DELAY = .25
-ECHO_DECAY = .4
+ECHO_DECAY = .3
 
 SR = 44100
 DTYPE = (np.float32, pyaudio.paFloat32)
@@ -149,7 +150,7 @@ def onAudioIn(in_data, frame_count, time_info, status):
         else:
             p2b = 0
         
-        weight = 1 / (len(CHORD) - .99) * .5
+        weight = (1 / (len(CHORD) - .99)) * .5
         for i, c in enumerate(CHORD):
             mixer[i] = pitchBend(frame, p2b + c) * (.5 if i == 0 else weight)
         frame = np.sum(mixer, 0)
@@ -169,7 +170,8 @@ def onAudioIn(in_data, frame_count, time_info, status):
 
     if DO_ECHO:
         frame += echo.pop(0)
-        echo.append((frame * ECHO_DECAY).astype(DTYPE[0]))
+        # echo.append((frame * ECHO_DECAY).astype(DTYPE[0]))
+        echo.append(pitchBend((frame * ECHO_DECAY).astype(DTYPE[0]), 2))
 
     streamOutContainer[0].write(frame, PAGE_LEN)
 

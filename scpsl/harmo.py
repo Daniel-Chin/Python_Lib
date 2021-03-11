@@ -8,6 +8,7 @@ from threading import Lock
 from collections import namedtuple
 import wave
 import random
+from resampy import resample
 try:
     from interactive import listen
     from yin import yin
@@ -30,17 +31,27 @@ AUTOTUNE = True
 QUAN = 1
 DO_ECHO = True
 ECHO_DELAY = .25
-ECHO_DECAY = .4
+ECHO_DECAY = .3
 WRITE_FILE = None
 # WRITE_FILE = f'demo_{random.randint(0, 99999)}.wav'
+CROSS_FADE = 0.04
 
 MASTER_VOLUME = 1
 SR = 22050
 DTYPE = (np.int32, pyaudio.paInt32)
+FILTER = 'kaiser_best'
 TWO_PI = np.pi * 2
 HANN = scipy.signal.get_window('hann', PAGE_LEN, True)
 PAGE_TIME = 1 / SR * PAGE_LEN
 IMAGINARY_LADDER = np.linspace(0, TWO_PI * 1j, PAGE_LEN)
+CROSS_FADE_TAILS = round(PAGE_LEN * (1 - CROSS_FADE) / 2)
+CROSS_FADE_OVERLAP = PAGE_LEN - 2 * CROSS_FADE_TAILS
+assert CROSS_FADE_OVERLAP + 2 * CROSS_FADE_TAILS == PAGE_LEN
+# Linear cross fade
+FADE_IN_WINDOW = np.array([
+    x / CROSS_FADE_OVERLAP for x in range(CROSS_FADE_OVERLAP)
+], DTYPE[0])
+FADE_OUT_WINDOW = np.flip(FADE_IN_WINDOW)
 
 streamOutContainer = []
 terminate_flag = 0
@@ -180,7 +191,8 @@ def onAudioIn(in_data, sample_count, *_):
         if DO_ECHO:
             profiler.gonna('echo')
             mixed += echo.pop(0)
-            echo.append(np.rint(mixed * ECHO_DECAY).astype(DTYPE[0]))
+            # echo.append(np.rint(mixed * ECHO_DECAY).astype(DTYPE[0]))
+            echo.append(pitchBend(np.rint(mixed * ECHO_DECAY).astype(DTYPE[0]), 2))
         
         streamOutContainer[0].write(mixed, PAGE_LEN)
         if WRITE_FILE is not None:
@@ -207,5 +219,23 @@ def guess(devices, targets):
             if t in name:
                 return i
     return ''
+
+def pitchBend(frame, pitch_to_bend):
+    if pitch_to_bend == 0:
+        return frame
+    freq_oitar = np.exp(- pitch_to_bend * 0.057762265046662105)
+    # The inverse of 'ratio'
+    frame = resample(frame, SR, SR * freq_oitar, filter=FILTER)
+    left      = frame[:CROSS_FADE_TAILS]
+    left_mid  = frame[CROSS_FADE_TAILS:CROSS_FADE_TAILS + CROSS_FADE_OVERLAP]
+    right_mid = frame[-CROSS_FADE_TAILS - CROSS_FADE_OVERLAP:-CROSS_FADE_TAILS]
+    right     = frame[-CROSS_FADE_TAILS:]
+    frame = np.concatenate((
+        left, 
+        np.multiply(left_mid, FADE_OUT_WINDOW) 
+        + np.multiply(right_mid, FADE_IN_WINDOW), 
+        right,
+    ))
+    return frame
 
 main()
