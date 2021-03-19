@@ -65,6 +65,9 @@ def marginError(deviation, confidence = .95, distribution = Z, two_tail = True):
     return deviation * distribution(half_alpha)
 
 def regression(x, y):
+    '''
+    beta_0 is intercept, beta_1 is slope. 
+    '''
     x_ = mean(x)
     y_ = mean(y)
     ssxx = sum([(i - x_) ** 2 for i in x])
