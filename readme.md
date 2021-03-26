@@ -665,6 +665,12 @@ What I learned from Statistics for Business and Finance.
 
 [source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/stats.py)
 
+## stellaris/__main__.py
+Stellaris game assistant.    
+Assignes hotkey to planet prev/next button.  
+
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/stellaris/__main__.py)
+
 ## streamProfiler.py
 Profiles the computation time of a series of actions in a real-time stream-base application.    
 Run the script to see a demo.  
