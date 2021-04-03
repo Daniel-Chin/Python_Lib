@@ -273,6 +273,11 @@ Evaluate beautiful formulas like ???(2??3??4)
 
 [source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/formula.py)
 
+## fractionToResistor.py
+Given a fraction, find the resistor connection to achieve it.  
+
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/fractionToResistor.py)
+
 ## friendly_time.py
 Formatting time data in a friendly manner. 
 

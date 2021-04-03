@@ -1,3 +1,6 @@
+'''
+Given a fraction, find the resistor connection to achieve it.  
+'''
 SHOW_DIAGRAM = True
 PARALLEL_PADDING = 1    # better be an odd number
 IN_TUNE_THRESHOLD = .11
