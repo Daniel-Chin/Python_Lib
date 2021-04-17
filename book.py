@@ -448,7 +448,7 @@ def multilineInput():
         content = inputWithGen()
     return '\n'.join(buffer)
 
-def gen(length = 10, population = 'ascii'):
+def genLegacy(length = 10, population = 'ascii'):
     length = int(length)
     if population == 'ascii':
         population = [*string.ascii_letters, *string.digits, '-']
@@ -480,8 +480,50 @@ def gen(length = 10, population = 'ascii'):
         print('Failed to generate. Maybe length not long enough. ')
     return candidate
 
+INITIALS = [*{
+    *'BDPTGKMNZCSJQXFHLRYW', 'Zh', 'Ch', 'Sh', 
+}]
+FINALS = [*{
+    'i', 'e', 'a', 'ei', 'ai', 'ou', 'ao', 'en', 'an', 'ong', 
+    'eng', 'ang', 'ie', 'ia', 'iu', 'iao', 'in', 'ian', 
+    'iong', 'ing', 'iang', 'u', 'uo', 'ua', 'ui', 'uai', 
+    'un', 'uan', 'uang', 'v', 've', 'vn', 'vuan', 
+}]
+FINALS_JQXY = [
+    x for x in FINALS if 
+    not x.startswith('e') and 
+    not x.startswith('a') and 
+    not x.startswith('o') and 
+    not x.startswith('v')
+]
+FINALS_W = [
+    x for x in FINALS if 
+    not x.startswith('i') and 
+    (not x.startswith('u') or x == 'u')
+]
+def gen(n_char = 5):
+    # the new gen, based on PinYin
+    buffer = []
+    ton = None
+    for i in range(n_char):
+        if i == 2:
+            buffer.append('-')
+        ini = random.sample(INITIALS, k=1)[0]
+        if ini in 'JQXY':
+            fin = random.sample(FINALS_JQXY, k=1)[0]
+        elif ini == 'W':
+            fin = random.sample(FINALS_W, k=1)[0]
+        else:
+            fin = random.sample(FINALS, k=1)[0]
+        if ton == '3':
+            ton = random.sample('124', k=1)[0]
+        else:
+            ton = random.sample('1234', k=1)[0]
+        buffer.append(ini + fin + ton)
+    return ''.join(buffer)
+
 def gendigit(length = 6):
-    return gen(length, 'digit')
+    return genLegacy(length, 'digit')
 
 def inputWithGen(prompt = ''):
     op = input(prompt)
