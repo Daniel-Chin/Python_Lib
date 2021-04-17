@@ -16,7 +16,7 @@ def main():
     keyboard.add_hotkey('p', clickPrev)
     keyboard.add_hotkey('[', clickNext)
     keyboard.add_hotkey('shift+p', setPrev)
-    keyboard.block_key('m')
+    # keyboard.block_key('m')
     print('go...')
     try:
         while True:
