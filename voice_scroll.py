@@ -1,7 +1,6 @@
 '''
 Scroll whatever you are reading with voice.  
-C3 to scroll down. E3 to scroll up.  
-Assumes you have perfect pitch.  
+low hum to scroll down. high hum to scroll up.  
 '''
 import pyaudio
 from scipy import signal
@@ -65,12 +64,16 @@ def main():
       power = max(0, getPower(frame) - room_power)
       direction = 0
       f0 = yin(frame, SR, FRAME_LEN)
-      if abs(f0 - 130.81) < 5:
-        # C3
+      if f0 < 220:
         direction = 1
-      if abs(f0 - 161.82) < 5:
-        # E3
+      else:
         direction = -1
+      # if abs(f0 - 130.81) < 5:
+      #   # C3
+      #   direction = 1
+      # if abs(f0 - 161.82) < 5:
+      #   # E3
+      #   direction = -1
       print(acc)
       acc += power * direction
       if acc > 0:
