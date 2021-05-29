@@ -13,15 +13,17 @@ Harmonic = namedtuple('Harmonic', ['freq', 'mag'])
 class HarmonicSynth:
     def __init__(
         self, n_harmonics, SR, PAGE_LEN, DTYPE, 
-        STUPID_MATCH, DO_SWIPE, CROSSFADE_RATIO = .3, 
+        STUPID_MATCH, DO_SWIPE, CROSSFADE_RATIO = None, 
     ):
         self.PAGE_LEN = PAGE_LEN
         self.STUPID_MATCH = STUPID_MATCH
         self.DO_SWIPE = DO_SWIPE
         self.SR = SR
-        self.CROSSFADE_LEN = round(CROSSFADE_RATIO * PAGE_LEN)
-        self.SUSTAIN_ONES = np.ones((PAGE_LEN - self.CROSSFADE_LEN, ))
         self.n_harmonics = n_harmonics
+        if CROSSFADE_RATIO is not None:
+            print()
+            print('harmonicSynth Warning! CROSSFADE_RATIO is deprecated.')
+            print()
 
         self.signal_2d = np.zeros((n_harmonics, PAGE_LEN), DTYPE)
         self.harmonics = [
@@ -86,23 +88,10 @@ class Osc():
             tau = self.LINEAR * np.linspace(
                 self.freq, (new_freq + self.freq) * .5, self.synth.PAGE_LEN + 1
             )
-            # mask = np.exp(np.linspace(np.log(self.mag + LOG_SMOOTH), np.log(new_mag + LOG_SMOOTH), self.synth.PAGE_LEN)) - LOG_SMOOTH
-            if new_mag > self.mag:
-                mask = np.concatenate((
-                    self.synth.SUSTAIN_ONES * self.mag, 
-                    np.exp(np.linspace(np.log(self.mag + LOG_SMOOTH), np.log(new_mag + LOG_SMOOTH), self.synth.CROSSFADE_LEN)) - LOG_SMOOTH, 
-                ))
-            else:
-                mask = np.concatenate((
-                    np.exp(np.linspace(np.log(self.mag + LOG_SMOOTH), np.log(new_mag + LOG_SMOOTH), self.synth.CROSSFADE_LEN)) - LOG_SMOOTH, 
-                    self.synth.SUSTAIN_ONES * new_mag, 
-                ))
+            mask = np.exp(np.linspace(np.log(self.mag + LOG_SMOOTH), np.log(new_mag + LOG_SMOOTH), self.synth.PAGE_LEN)) - LOG_SMOOTH
         else:
             tau = self.LINEAR * new_freq
-            mask = np.concatenate((
-                np.exp(np.linspace(np.log(self.mag + LOG_SMOOTH), np.log(new_mag + LOG_SMOOTH), self.synth.CROSSFADE_LEN)) - LOG_SMOOTH, 
-                self.synth.SUSTAIN_ONES * new_mag, 
-            ))
+            mask = np.exp(np.linspace(np.log(self.mag + LOG_SMOOTH), np.log(new_mag + LOG_SMOOTH), self.synth.PAGE_LEN)) - LOG_SMOOTH
         self.synth.signal_2d[self.i] = np.sin(
             tau[:-1] + self.phase
         ) * mask
