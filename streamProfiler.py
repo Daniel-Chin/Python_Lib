@@ -4,6 +4,7 @@ Run the script to see a demo.
 '''
 
 from time import time
+from graphic_terminal import clearLine
 from terminalsize import get_terminal_size
 
 class StreamProfiler:
@@ -30,7 +31,8 @@ class StreamProfiler:
         margin = space // (len(buffer) - 1)
         line = (' ' * margin).join(buffer)
         if same_line:
-            print('', line, end = '\r', flush = True)
+            clearLine()
+            print('', line, end = '', flush = True)
         else:
             print('', line)
         self.done()
