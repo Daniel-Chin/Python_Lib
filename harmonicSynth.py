@@ -13,7 +13,7 @@ Harmonic = namedtuple('Harmonic', ['freq', 'mag'])
 class HarmonicSynth:
     def __init__(
         self, n_harmonics, SR, PAGE_LEN, DTYPE, 
-        STUPID_MATCH, DO_SWIPE, CROSSFADE_RATIO, 
+        STUPID_MATCH, DO_SWIPE, CROSSFADE_RATIO = .3, 
     ):
         self.PAGE_LEN = PAGE_LEN
         self.STUPID_MATCH = STUPID_MATCH
