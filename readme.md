@@ -674,6 +674,12 @@ Voice transformer for SCP:SL
 
 [source code folder](https://github.com/Daniel-Chin/Python_Lib/blob/master/scpsl/)
 
+## selectAudioDevice.py
+A terminal interface that lets the user select   
+the audio input/output device.  
+
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/selectAudioDevice.py)
+
 ## serve_now.py
 Immediately open a port, accept connection  
 and does nothing. 

@@ -1,3 +1,7 @@
+'''
+A terminal interface that lets the user select 
+the audio input/output device.  
+'''
 try:
     from interactive import inputChin
 except ImportError as e:
