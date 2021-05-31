@@ -1,6 +1,10 @@
 '''
 Synthesize sound with harmonics.  
 Interpolate between frames smartly.  
+
+commit 490dd5810f39fc322a61cd444c581374323d8803 removed 
+accelerated approach to correct mag. So now it only works 
+if harmonic list input is stable in sequence. 
 '''
 import numpy as np
 from collections import namedtuple
@@ -98,3 +102,33 @@ class Osc():
         self.freq = new_freq
         self.mag = new_mag
         self.phase = (tau[-1] + self.phase) % TWO_PI
+
+def test():
+    import pyaudio
+    import time
+    SR = 22050
+    PAGE_LEN = 1024
+    hSynth = HarmonicSynth(
+        6, SR, PAGE_LEN, np.float32, True, False, 
+    )
+    pa = pyaudio.PyAudio()
+    stream = pa.open(
+        format = pyaudio.paFloat32, channels = 1, rate = SR, 
+        output = True, frames_per_buffer = PAGE_LEN,
+    )
+    while True:
+        h = [
+            Harmonic(220 * 1, .05), 
+            Harmonic(220 * 2, .03), 
+            Harmonic(220 * 3, .04), 
+            Harmonic(220 * 4, .005), 
+            Harmonic(220 * 5, .007), 
+            Harmonic(220 * 6, .01), 
+        ]
+        hSynth.eat(h)
+        mixed = hSynth.mix()
+        stream.write(mixed, PAGE_LEN)
+        # time.sleep(PAGE_LEN / SR * .9)
+
+if __name__ == '__main__':
+    test()
