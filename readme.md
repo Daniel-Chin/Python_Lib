@@ -294,7 +294,11 @@ Tools to do graphics in the terminal.
 
 ## harmonicSynth.py
 Synthesize sound with harmonics.    
-Interpolate between frames smartly.  
+Interpolate between frames smartly.    
+  
+commit 490dd5810f39fc322a61cd444c581374323d8803 removed   
+accelerated approach to correct mag. So now it only works   
+if harmonic list input is stable in sequence. 
 
 [source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/harmonicSynth.py)
 
@@ -308,6 +312,17 @@ Hub: forward all socket messages.
 Connect, sendall(b'OK'), forward...
 
 [source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/hub.py)
+
+## hybridSynth.py
+Uses HarmonicSynth (precise) for the lower register   
+and IfftSynth (fast) for the higher register.  
+
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/hybridSynth.py)
+
+## ifftSynth.py
+Synthesizes an audio page from a spectrum.  
+
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/ifftSynth.py)
 
 ## indentprinter.py
 Indent log output in a logical way.    
@@ -753,8 +768,7 @@ Word data is from https://norvig.com/big.txt
 
 ## voice_scroll.py
 Scroll whatever you are reading with voice.    
-C3 to scroll down. E3 to scroll up.    
-Assumes you have perfect pitch.  
+low hum to scroll down. high hum to scroll up.  
 
 [source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/voice_scroll.py)
 
