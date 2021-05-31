@@ -4,7 +4,6 @@ Run the script to see a demo.
 '''
 
 from time import time
-from graphic_terminal import clearLine
 from terminalsize import get_terminal_size
 
 class StreamProfiler:
@@ -27,12 +26,11 @@ class StreamProfiler:
             else:
                 str_time = format(task_time * 1000, '3.0f') + ' ms'
             buffer.append(task_name + ' ' + str_time + '.')
-        space = get_terminal_size()[0] - sum([len(x) for x in buffer]) - 2
+        space = get_terminal_size()[0] - sum([len(x) for x in buffer]) - 3
         margin = space // (len(buffer) - 1)
-        line = (' ' * margin).join(buffer)
+        line = (' ' * margin).join(buffer) + ' ' * 2
         if same_line:
-            clearLine()
-            print('', line, end = '', flush = True)
+            print('', line, end = '\r', flush = True)
         else:
             print('', line)
         self.done()
