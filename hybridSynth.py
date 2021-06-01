@@ -39,11 +39,11 @@ class HybridSynth:
         low_harmonics = harmonics[:self.n_harmonics]
         high_harmonics = harmonics[self.n_harmonics:]
         if verbose and high_harmonics:
-                print(
-                    'ifft error', 
-                    self.errorRange(high_harmonics[0].freq), 
-                    'semitones. '
-                )
+            print(
+                'ifft error', 
+                self.errorRange(high_harmonics[0].freq), 
+                'semitones. '
+            )
         n_blank_harmonics = self.n_harmonics - len(low_harmonics)
         for _ in range(n_blank_harmonics):
             low_harmonics.append(BLANK)
