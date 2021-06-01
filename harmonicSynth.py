@@ -13,6 +13,9 @@ TWO_PI = np.pi * 2
 LOG_SMOOTH = .0001
 
 Harmonic = namedtuple('Harmonic', ['freq', 'mag'])
+def harmonicRepr(self):
+    return f'Harmonic({self.freq}, {self.mag})'
+Harmonic.__repr__ = harmonicRepr
 
 class HarmonicSynth:
     def __init__(
