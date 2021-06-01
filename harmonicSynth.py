@@ -7,15 +7,28 @@ accelerated approach to correct mag. So now it only works
 if harmonic list input is stable in sequence. 
 '''
 import numpy as np
-from collections import namedtuple
 
 TWO_PI = np.pi * 2
 LOG_SMOOTH = .0001
 
-Harmonic = namedtuple('Harmonic', ['freq', 'mag'])
-def harmonicRepr(self):
-    return f'Harmonic({self.freq}, {self.mag})'
-Harmonic.__repr__ = harmonicRepr
+class Harmonic:
+    __slot__ = ['freq', 'mag']
+
+    def __init__(self, freq, mag):
+        self.freq = freq
+        self.mag = mag
+    
+    def getMag(self):
+        return self.mag
+    
+    def getFreq(self):
+        return self.freq
+    
+    def __repr__(self):
+        return f'Harmonic({self.freq}, {self.mag})'
+    
+    def __iter__(self):
+        return iter((self.freq, self.mag))
 
 class HarmonicSynth:
     def __init__(
@@ -45,9 +58,6 @@ class HarmonicSynth:
         # I don't really know why *2 is needed here
         # Another *2 for the hann window
     
-    def getMag(self, harmonic):
-        return harmonic.mag
-
     def eat(self, harmonics):
         assert len(harmonics) >= self.n_harmonics
         # print(*[
@@ -56,7 +66,7 @@ class HarmonicSynth:
         if self.STUPID_MATCH:
             [osc.eat(*h, self.DO_SWIPE) for osc, h in zip(self.osc, harmonics)]
         else:
-            harmonics.sort(key=self.getMag)
+            harmonics.sort(key=Harmonic.getMag)
             unmatched_log_f = [
                 np.log(freq)
                 for freq, _ in harmonics
