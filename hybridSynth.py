@@ -61,24 +61,32 @@ def test():
     import pyaudio
     SR = 22050
     PAGE_LEN = 1024
-    hySynth = HybridSynth(3, SR, PAGE_LEN, np.float32)
+    HYBRID_QUALITY = 12
+    hySynth = HybridSynth(HYBRID_QUALITY, SR, PAGE_LEN, np.float32)
     pa = pyaudio.PyAudio()
     stream = pa.open(
         format = pyaudio.paFloat32, channels = 1, rate = SR, 
         output = True, frames_per_buffer = PAGE_LEN,
     )
+    def pitch2freq(pitch):
+        return np.exp((pitch + 36.37631656229591) * 0.0577622650466621)
+    h = []
+    # for p in [48, 53, 57]:
+    for p in [53, 48, 57]:
+        f0 = pitch2freq(p)
+        h.append(Harmonic(f0 * 1, .05))
+        h.append(Harmonic(f0 * 2, .03))
+        h.append(Harmonic(f0 * 3, .04))
+        h.append(Harmonic(f0 * 4, .005))
+        h.append(Harmonic(f0 * 5, .007))
+        h.append(Harmonic(f0 * 6, .01))
+        h.append(Harmonic(f0 * 7, .01))
+        h.append(Harmonic(f0 * 8, .005))
+        h.append(Harmonic(f0 * 9, .002))
     while True:
-        # h = [Harmonic(f, 0) for f in range(220, SR, 220)]
-        h = [Harmonic(f, .0005) for f in range(220, round(SR/4), 220)]
-        h[0] = Harmonic(220 * 1, .05)
-        h[1] = Harmonic(220 * 2, .03)
-        h[2] = Harmonic(220 * 3, .04)
-        h[3] = Harmonic(220 * 4, .005)
-        h[4] = Harmonic(220 * 5, .007)
-        h[5] = Harmonic(220 * 6, .01)
         hySynth.eat(h)
         mixed = hySynth.mix()
-        stream.write(mixed, PAGE_LEN)
+        stream.write(mixed * .2, PAGE_LEN)
 
 if __name__ == '__main__':
     test()
