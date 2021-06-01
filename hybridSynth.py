@@ -34,8 +34,9 @@ class HybridSynth:
             (freq + self.bin_freq) / freq
         ) / 2 * 17.312340490667562
     
-    def eat(self, harmonics, verbose=True):
-        harmonics.sort(key=lambda h:h.freq)
+    def eat(self, harmonics, verbose=True, skipSort=False):
+        if not skipSort:
+            harmonics.sort(key=Harmonic.getFreq)
         low_harmonics = harmonics[:self.n_harmonics]
         high_harmonics = harmonics[self.n_harmonics:]
         if verbose and high_harmonics:
