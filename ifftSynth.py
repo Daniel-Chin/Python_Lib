@@ -12,11 +12,12 @@ class IfftSynth:
         self.PAGE_LEN = PAGE_LEN
         self.SPECTRUM_SIZE = (PAGE_LEN // 2 + 1, )
         self.last_power = 0
+        self.last_signal = None
 
     def getPower(self, harmonics):
         return sum([h.mag for h in harmonics])
 
-    def eat(self, harmonics):
+    def _eat(self, harmonics):
         spectrum = np.zeros(self.SPECTRUM_SIZE)
         for freq, mag in harmonics:
             try:
@@ -25,9 +26,25 @@ class IfftSynth:
                 )] += mag
             except IndexError:
                 continue
-        signal = np.fft.irfft(spectrum) * self.PAGE_LEN
-        power = self.getPower(harmonics)
-        mask = np.linspace(self.last_power / power, 1, self.PAGE_LEN)
-        self.last_power = power
-        return signal * mask * 2
+        signal = np.fft.irfft(spectrum) * self.PAGE_LEN * 2
         # For some reason you need a "* 2" 
+        power = self.getPower(harmonics)
+        if power == 0:
+            if self.last_power == 0:
+                return signal, power, signal
+            else:
+                mask = np.linspace(
+                    1, 0, self.PAGE_LEN, 
+                )
+                return self.last_signal * mask, power, signal
+        else:
+            mask = np.linspace(
+                self.last_power / power, 1, self.PAGE_LEN, 
+            )
+            return signal * mask, power, signal
+    
+    def eat(self, harmonics):
+        output, power, signal = self._eat(harmonics)
+        self.last_power = power
+        self.last_signal = signal
+        return output
