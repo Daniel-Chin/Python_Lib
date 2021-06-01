@@ -34,7 +34,7 @@ class HybridSynth:
             (freq + self.bin_freq) / freq
         ) / 2 * 17.312340490667562
     
-    def eat(self, harmonics, verbose=True, skipSort=False):
+    def eat(self, harmonics, base_spectrum=None, verbose=True, skipSort=False):
         if not skipSort:
             harmonics.sort(key=Harmonic.getFreq)
         low_harmonics = harmonics[:self.n_harmonics]
@@ -50,7 +50,7 @@ class HybridSynth:
             low_harmonics.append(BLANK)
         self.hSynth.eat(low_harmonics)
         self.ifft_signal = self.iSynth.eat(
-            high_harmonics
+            high_harmonics, base_spectrum, 
         ).astype(self.DTYPE)
     
     def mix(self):

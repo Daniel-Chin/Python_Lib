@@ -2,9 +2,7 @@
 Synthesizes an audio page from a spectrum.  
 '''
 import numpy as np
-from collections import namedtuple
-
-Harmonic = namedtuple('Harmonic', ['freq', 'mag'])
+from harmonicSynth import Harmonic
 
 class IfftSynth:
     def __init__(self, SR, PAGE_LEN):
@@ -14,11 +12,11 @@ class IfftSynth:
         self.last_power = 0
         self.last_signal = None
 
-    def getPower(self, harmonics):
-        return sum([h.mag for h in harmonics])
-
-    def _eat(self, harmonics):
-        spectrum = np.zeros(self.SPECTRUM_SIZE)
+    def _eat(self, harmonics, base_spectrum):
+        if base_spectrum is None:
+            spectrum = np.zeros(self.SPECTRUM_SIZE)
+        else:
+            spectrum = base_spectrum
         for freq, mag in harmonics:
             try:
                 spectrum[round(
@@ -28,7 +26,8 @@ class IfftSynth:
                 continue
         signal = np.fft.irfft(spectrum) * self.PAGE_LEN * 2
         # For some reason you need a "* 2" 
-        power = self.getPower(harmonics)
+        # power = np.sum(spectrum)
+        power = signal[0]
         if power == 0:
             if self.last_power == 0:
                 return signal, power, signal
@@ -43,8 +42,10 @@ class IfftSynth:
             )
             return signal * mask, power, signal
     
-    def eat(self, harmonics):
-        output, power, signal = self._eat(harmonics)
+    def eat(self, harmonics, base_spectrum = None):
+        output, power, signal = self._eat(
+            harmonics, base_spectrum, 
+        )
         self.last_power = power
         self.last_signal = signal
         return output
