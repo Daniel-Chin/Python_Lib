@@ -43,7 +43,7 @@ class Jdt:
             print('jdt Warning: argument `width` is deprecated. ')
         self.done = 0
         self.UPP = UPP
-        self.UPP_count = 999
+        self.UPP_count = 0
         # updates per print
 
     def getSuffix(self, done, progress):
@@ -57,10 +57,10 @@ class Jdt:
         if not self.active:
             raise JdtAlreadyClosedError
         self.done = new_done
-        if not flush and self.UPP_count < self.UPP:
-            self.UPP_count += 1
+        if not flush and self.UPP_count > 0:
+            self.UPP_count -= 1
             return
-        self.UPP_count = 0
+        self.UPP_count = self.UPP
         if self.goal == 0:
             progress = 1
         else:
