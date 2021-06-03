@@ -26,8 +26,8 @@ class IfftSynth:
                 continue
         signal = np.fft.irfft(spectrum) * self.PAGE_LEN * 2
         # For some reason you need a "* 2" 
-        # power = np.sum(spectrum)
-        power = signal[0]
+        power = np.sum(spectrum)
+        # power = signal[0]
         if power == 0:
             if self.last_power == 0:
                 return signal, power, signal
