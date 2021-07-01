@@ -674,6 +674,12 @@ Voice transformer for SCP:SL
 
 [source code folder](https://github.com/Daniel-Chin/Python_Lib/blob/master/scpsl/)
 
+## screenCable/__main__.py
+Playback a section of your screen.    
+Useful for sharing PPT (with speaker notes on) over Tencent (VooV) Meeting.  
+
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/screenCable/__main__.py)
+
 ## selectAudioDevice.py
 A terminal interface that lets the user select   
 the audio input/output device.  

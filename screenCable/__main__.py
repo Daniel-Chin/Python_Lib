@@ -1,3 +1,7 @@
+'''
+Playback a section of your screen.  
+Useful for sharing PPT (with speaker notes on) over Tencent (VooV) Meeting.  
+'''
 import numpy as np
 import cv2
 from mss import mss
