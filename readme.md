@@ -676,7 +676,10 @@ Voice transformer for SCP:SL
 
 ## screenCable/__main__.py
 Playback a section of your screen.    
-Useful for sharing PPT (with speaker notes on) over Tencent (VooV) Meeting.  
+Useful for sharing PPT (with speaker notes on) over Tencent (VooV) Meeting.    
+Hit `ESC` or `q` to quit.    
+Hit `Spacebar` to refresh view.    
+Click and drag to resize the window.  
 
 [source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/screenCable/__main__.py)
 
@@ -699,7 +702,8 @@ What I learned from Statistics for Business and Finance.
 
 ## stellaris/__main__.py
 Stellaris game assistant.    
-Assignes hotkey to planet prev/next button.  
+Assignes hotkey to planet prev/next buttons and   
+pop growth specification buttons.  
 
 [source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/stellaris/__main__.py)
 

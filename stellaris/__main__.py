@@ -1,6 +1,7 @@
 '''
 Stellaris game assistant.  
-Assignes hotkey to planet prev/next button.  
+Assignes hotkey to planet prev/next buttons and 
+pop growth specification buttons.  
 '''
 
 DEFAULT_POS = [750, 100]
