@@ -38,6 +38,7 @@ try:
             key_press = cv2.waitKey(
                 200 if just_refreshed else 33
             ) & 0xFF
+            just_refreshed = False
             if key_press in (
                 ord('q'), 
                 27, 
