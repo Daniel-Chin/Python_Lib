@@ -17,15 +17,18 @@ def mouseEvent(event, x, y, flags, param):
         rect['width'] = x
         rect['height'] = y
 
+def initWindow():
+    cv2.namedWindow(WINDOW)
+    cv2.setMouseCallback(WINDOW, mouseEvent)
+    cv2.moveWindow(WINDOW, rect['left'], rect['top'])
+
 rect = {
     'left': 585, 'top': 200, 
     'width': 1195, 'height': 675, 
 }
 just_refreshed = False
 try:
-    cv2.namedWindow(WINDOW)
-    cv2.setMouseCallback(WINDOW, mouseEvent)
-    cv2.moveWindow(WINDOW, rect['left'], rect['top'])
+    initWindow()
     with mss() as sct:
         while True:
             cv2.imshow(
@@ -47,6 +50,7 @@ try:
             elif key_press == ord(' '):
                 cv2.destroyWindow(WINDOW)
                 sleep(.2)
+                initWindow()
                 just_refreshed = True
 except KeyboardInterrupt:
     print('exiting...')
