@@ -55,6 +55,11 @@ Both F and S refers to per period return.
 
 [source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/Archive/beta.py)
 
+## Archive/bianQue.py
+?????????????????????????????????????????????????????????
+
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/Archive/bianQue.py)
+
 ## Archive/LAN_scan/
 Scans LAN
 
@@ -610,6 +615,11 @@ Ignored the thread-danger of sockets.
 Expect unexpected behaviors. 
 
 [source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/port_forward.py)
+
+## previewAudio.py
+Plays an array of audio signal. Blocking.  
+
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/previewAudio.py)
 
 ## prime.py
 Get prime numbers
