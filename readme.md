@@ -598,6 +598,11 @@ pip install, and imports
 
 [source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/pimport.py)
 
+## playMidi.py
+Uses mido to play a midi file.  
+
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/playMidi.py)
+
 ## playwav.py
 Light-weight wav player. 
 
