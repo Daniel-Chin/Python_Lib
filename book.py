@@ -195,8 +195,13 @@ class Book:
         input('Enter... ')
         cls()
     
-    def gendigit(self, *args):
-        print(gendigit(*args))
+    def genDigit(self, *args):
+        print(genDigit(*args))
+        input('Enter... ')
+        cls()
+    
+    def genLegacy(self, *args):
+        print(genLegacy(*args))
         input('Enter... ')
         cls()
     
@@ -465,10 +470,13 @@ def genLegacy(length = 10, population = 'ascii'):
             return has_lower and has_upper and has_num and has_sym
     elif population == 'digit':
         population = [*string.digits]
-        isValid = lambda x: True
+        isValid = lambda _: True
+    elif population == 'alphanumeric':
+        population = [*string.ascii_letters, *string.digits]
+        isValid = lambda _: True
     else:
         population = [*population]
-        isValid = lambda x: True
+        isValid = lambda _: True
     [population.remove(x) for x in '0O1Il' if x in population]
     for _ in range(64):
         candidate = ''.join([random.choices(population)[0] for _ in range(length)])
@@ -503,6 +511,7 @@ FINALS_W = [
 ]
 def gen(n_char = 5):
     # the new gen, based on PinYin
+    n_char = int(n_char)
     buffer = []
     ton = None
     for i in range(n_char):
@@ -522,15 +531,18 @@ def gen(n_char = 5):
         buffer.append(ini + fin + ton)
     return ''.join(buffer)
 
-def gendigit(length = 6):
+def genDigit(length = 6):
+    length = int(length)
     return genLegacy(length, 'digit')
 
 def inputWithGen(prompt = ''):
     op = input(prompt)
     if op.split(' ')[0] == 'gen':
         return gen(*op.split(' ')[1:])
-    elif op.split(' ')[0] == 'gendigit':
-        return gendigit(*op.split(' ')[1:])
+    elif op.split(' ')[0] == 'genDigit':
+        return genDigit(*op.split(' ')[1:])
+    elif op.split(' ')[0] == 'genLegacy':
+        return genLegacy(*op.split(' ')[1:])
     else:
         return op
 
