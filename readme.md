@@ -249,6 +249,12 @@ print(sys.argv)
 
 [source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/echo.py)
 
+## editDistance.py
+Uses dynamic programming (DP) to calculate the minimum editing distance.    
+DP is implemented via a breadth-first search with function caching.  
+
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/editDistance.py)
+
 ## Find Vera/Find_Vera V2.py
 A game by Daniel
 
