@@ -14,6 +14,7 @@ Run this file to see demo.
 from time import time
 from math import log
 from terminalsize import get_terminal_size
+from graphic_terminal import clearLine
 
 class JdtAlreadyClosedError(BaseException):
     '''Cannot update Jdt after complete. '''
@@ -45,6 +46,7 @@ class Jdt:
         self.UPP = UPP
         self.UPP_count = 0
         # updates per print
+        self.print_mode = False
 
     def getSuffix(self, done, progress):
         return '%s Total: %d Done: %d' % (
@@ -84,6 +86,7 @@ class Jdt:
               '[', symbol * bar_fill_width, '_'*bar_empty_width, ']', 
               ' ', suffix, 
               sep = '', end='',flush=True)
+        self.print_mode = False
 
     def acc(self):
         self.update(self.done + 1)
@@ -94,6 +97,14 @@ class Jdt:
         self.update(self.goal, symbol = '#', getSuffix = getSuffix, flush = True)
         self.active = False
         print()
+    
+    def print(self, *args, **kw):
+        if not self.print_mode:
+            self.print_mode = True
+            clearLine()
+            print()
+            print(f'jdt {self.done} / {self.goal}')
+        print(*args, **kw)
     
     def __enter__(self):
         return self
@@ -133,8 +144,8 @@ def jdtIter(iterable, *args, **kw):
     '''
     with Jdt(len(iterable), *args, **kw) as j:
         for x in iterable:
-            j.acc()
             yield x
+            j.acc()
 
 if __name__=='__main__':
     from time import sleep
@@ -146,8 +157,15 @@ if __name__=='__main__':
 
     with Jdt(500, 'launching game') as j:
         for i in range(500):
-            j.acc()
+            if i == 200:
+                j.print('Something happens!')
+                j.print('Logging information')
+                j.print('more information haha')
+            if i == 300:
+                j.print('Something else happens!')
+                j.print('Logging information')
             sleep(0.01)
+            j.acc()
 
     for i in jdtIter(range(500), 'jdtIter test'):
         sleep(0.01)
