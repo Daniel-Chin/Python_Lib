@@ -250,8 +250,7 @@ print(sys.argv)
 [source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/echo.py)
 
 ## editDistance.py
-Uses dynamic programming (DP) to calculate the minimum editing distance.    
-DP is implemented via a breadth-first search with function caching.  
+Uses dynamic programming (DP) to calculate the minimum editing distance.  
 
 [source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/editDistance.py)
 
