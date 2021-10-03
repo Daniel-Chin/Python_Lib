@@ -26,3 +26,14 @@ c = Tree()
 c.append(d)
 c.append(Leaf(5))
 print(c)
+
+print(Tree([
+    Tree([
+        Leaf(0), 
+        Leaf(1), 
+    ]), 
+    Tree([
+        Leaf(2), 
+        Leaf(3),
+    ]), 
+]))
