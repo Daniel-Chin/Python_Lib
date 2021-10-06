@@ -62,7 +62,7 @@ class Jdt:
         if not flush and self.UPP_count > 0:
             self.UPP_count -= 1
             return
-        self.UPP_count = self.UPP
+        self.UPP_count = self.UPP - 1
         if self.goal == 0:
             progress = 1
         else:
