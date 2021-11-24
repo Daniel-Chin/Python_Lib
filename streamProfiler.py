@@ -3,7 +3,7 @@ Profiles the computation time of a series of actions in a real-time stream-base 
 Run the script to see a demo.  
 '''
 
-from time import time
+from time import perf_counter
 from terminalsize import get_terminal_size
 
 class StreamProfiler:
@@ -43,13 +43,13 @@ class StreamProfiler:
             return
         self.done()
         self.now_task = task_name
-        self.last_gonna = time()
+        self.last_gonna = perf_counter()
     
     def done(self):
         if not self.DO_PROFILE:
             return
         if self.now_task is not None:
-            self.tasks[self.now_task] = time() - self.last_gonna
+            self.tasks[self.now_task] = perf_counter() - self.last_gonna
             self.now_task = None
 
 if __name__ == '__main__':
