@@ -407,7 +407,9 @@ with Jdt(500, 'loading...') as j:
         doJob(i)  
 ```  
   
-Run this file to see demo.  
+Run this file to see demo.    
+  
+Set `override_terminal_width` when using Jupyter Notebook with jdt. 
 
 [source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/jdt.py)
 
@@ -451,6 +453,19 @@ AFK tool for Minecraft.
 Punch the air every 5 seconds so you don't get kicked for inactivity.  
 
 [source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/minecraft_afk.py)
+
+## mobileArrowKeys/
+Simulate arrow keys with mobile web app.
+
+[source code folder](https://github.com/Daniel-Chin/Python_Lib/blob/master/mobileArrowKeys/)
+
+## mobileArrowKeys/__main__.py
+WARNING: Running this may open vulnerabilities for your computer.   
+Don't run this if you don't know what you are doing.   
+Only run this if you are in a safe network, or inside a firewall.   
+I am not responsible if someone attacks your computer through this server. 
+
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/mobileArrowKeys/__main__.py)
 
 ## mobileNumpad/
 Your laptop has no numpad? Can't play Cataclysm:DDA? No worries. Use your phone as a numpad!  
@@ -538,6 +553,12 @@ XML parser
 For an NYU person, convert their netID to profile.  
 
 [source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/netid2profile.py)
+
+## newIgnore.py
+Creates an empty `.gitignore` file.    
+This is useful because Windows File Explorer forbids you from naming a file without base name, and `>` now creates files in UTF-16 with BOM encoding.  
+
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/newIgnore.py)
 
 ## Notes.txt
 My personal notebook for learning Python. 
