@@ -78,7 +78,7 @@ class MyOneServer(OneServer):
         else:
             num = request.target.lstrip('/')
             if num in [*'1234567890']:
-                keyboard.press(num)
+                keyboard.send(num)
                 respond(self.socket, b'Yup')
             else:
                 respond(self.socket, b'Dirty Hacker')
