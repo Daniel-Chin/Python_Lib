@@ -10,11 +10,18 @@ with Jdt(500, 'loading...') as j:
 ```
 
 Run this file to see demo.  
+
+Set `override_terminal_width` when using Jupyter Notebook with jdt. 
 '''
 from time import time
 from math import log
 from terminalsize import get_terminal_size
 from graphic_terminal import clearLine
+
+override_terminal_width = None
+
+def effectiveTermWidth():
+    return override_terminal_width or get_terminal_size()[0]
 
 class JdtAlreadyClosedError(BaseException):
     '''Cannot update Jdt after complete. '''
@@ -67,7 +74,7 @@ class Jdt:
             progress = 1
         else:
             progress = new_done / self.goal
-        terminal_width = get_terminal_size()[0] - 4
+        terminal_width = effectiveTermWidth() - 4
         if getSuffix is None:
             getSuffix = self.getSuffix
         suffix = getSuffix(new_done, progress)
