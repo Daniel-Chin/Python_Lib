@@ -11,8 +11,6 @@ __all__ = ['clearLine', 'eastAsianStrToWidths',
     'eastAsianStrPad']
 from terminalsize import get_terminal_size
 from unicodedata import east_asian_width
-from colorama import init, Back, Fore, Style
-init()
 
 def clearLine():
     '''
@@ -70,6 +68,8 @@ def eastAsianStrPad(s, padding, pad_char = ' '):
     return s + pad_char * (padding - eastAsianStrLen(s))
 
 def displayAllColors():
+    from colorama import init, Back, Fore, Style
+    init()
     all_colors = [x for x in dir(Back) if x[0] != '_']
     for color in all_colors:
         print(Fore.RESET, ' ', Back.__getattribute__(color), color, end = '', flush = True, sep = '')
