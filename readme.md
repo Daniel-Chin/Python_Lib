@@ -126,6 +126,11 @@ A beautiful script to print the ascii table.
 
 [source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/ascii_table.py)
 
+## audioCues.py
+Play audio cues. 
+
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/audioCues.py)
+
 ## babble.py
 Repeatedly prints 'wobo wabble' indefinitely. 
 
@@ -312,6 +317,13 @@ if harmonic list input is stable in sequence.
 
 [source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/harmonicSynth.py)
 
+## holdKeyContext.py
+Uses the `keyboard` package to hold down a key.    
+1. `with ...` clause avoids forgetting to release a key.    
+2. Blocks the held key, and redirect it to your hook.  
+
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/holdKeyContext.py)
+
 ## httpmim.py
 HTTP man in middle. Prints all traffic. Useful for investigating how http works. Although Chrome Dev Tools prolly have something like this already.  
 
@@ -328,6 +340,12 @@ Uses HarmonicSynth (precise) for the lower register
 and IfftSynth (fast) for the higher register.  
 
 [source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/hybridSynth.py)
+
+## icarusTools.py
+1. automaitcally press FFFFFFFF    
+2. Auto running with stamina management.  
+
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/icarusTools.py)
 
 ## ifftSynth.py
 Synthesizes an audio page from a spectrum.  
