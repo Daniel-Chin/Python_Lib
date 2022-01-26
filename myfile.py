@@ -4,6 +4,7 @@ Unreliable file utils
 import os
 from os import path, listdir, rmdir, chdir, getcwd
 from os.path import isfile, isdir
+import argparse
 from interactive import listen
 import sys
 from io import BytesIO
@@ -86,10 +87,28 @@ def openAsciize(filename, verbose = False):
     return outIO
 
 def sysArgvOrInput(prompt = '(Drag file here)\npath/file.ext='):
+    # deprecated! 
     if len(sys.argv) >= 2:
         return sys.argv[1]
     else:
         return input(prompt).strip('"')
+del sysArgvOrInput
+
+def parseArgsOrInput(
+    prompt = '(Drag file here)\npath/file.ext=', 
+    parser_description = '', 
+):
+    parser = argparse.ArgumentParser(description=parser_description)
+    parser.add_argument(
+        'filename', type=str, 
+        nargs='?', default=None, 
+    )
+    args = parser.parse_args()
+    if args.filename is None:
+        return input(prompt).strip('"')
+    else:
+        return args.filename
+sysArgvOrInput = parseArgsOrInput
 
 def hashFile(filename, chunk = 65536):
     '''
