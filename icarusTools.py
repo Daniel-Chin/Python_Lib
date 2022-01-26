@@ -3,8 +3,6 @@
 2. Auto running with stamina management.  
 '''
 
-F_INTERVAL = .1
-
 # No flatbread
 RUN_TIME = 13
 REST_TIME = 7
@@ -25,9 +23,9 @@ auto_run = False
 runLock = Lock()
 
 def rapidF():
-    while rapid_f:
-        kb.send('f')
-        sleep(F_INTERVAL)
+    with hr.holdKeyContext('f'):
+        while rapid_f:
+            sleep(.5)
     print('rapid f: stop')
 
 def autoRun():
