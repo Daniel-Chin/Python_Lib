@@ -466,6 +466,11 @@ A lot of markdown features are not implemented!
 
 [source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/md2html/__main__.py)
 
+## md_headings.py
+Print the headings of a markdown file.  
+
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/md_headings.py)
+
 ## minecraft_afk.py
 AFK tool for Minecraft.    
 Punch the air every 5 seconds so you don't get kicked for inactivity.  
