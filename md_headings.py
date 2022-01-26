@@ -12,7 +12,11 @@ def main():
             if line.startswith('#'):
                 line = line.lstrip(' \t')
                 line = line.rstrip('\r\n')
-                print(line)
+                i = 0
+                while line[1] == '#':
+                    line = line[1:]
+                    i += 1
+                print(' ' * i, line, sep='')
                 # line = line.lstrip('#')
     print()
 
