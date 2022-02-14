@@ -78,10 +78,14 @@ class MyOneServer(OneServer):
         else:
             num = request.target.lstrip('/')
             if num in [*'1234567890']:
-                if num in '147':
-                    keyboard.send('right')
-                elif num in '369':
+                if num in '123':
+                    keyboard.send('up')
+                elif num in '4':
                     keyboard.send('left')
+                elif num in '6':
+                    keyboard.send('right')
+                elif num in '789':
+                    keyboard.send('down')
                 respond(self.socket, b'Yup')
             else:
                 respond(self.socket, b'Dirty Hacker')
