@@ -37,6 +37,7 @@ SUPPRESS = [
     'interactive/key_codes.py', 
     'tkinter_async/__main__.py',
     'tkinter_async/__init__.py',
+    'dchin_log/demo.py', 
 ]
 
 import sys

@@ -238,6 +238,12 @@ Although my thing is still more console friendly.
 
 [source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/count.py)
 
+## dchin_log/__init__.py
+Log script parameters as well as terminal output to files.    
+Useful for simulation runs / deep learning experiments.  
+
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/dchin_log/__init__.py)
+
 ## dependencies.txt
 Dependencies of this repo.  
 
