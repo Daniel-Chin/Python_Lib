@@ -437,6 +437,11 @@ Set `override_terminal_width` when using Jupyter Notebook with jdt.
 
 [source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/jdt.py)
 
+## joystick_cursor.py
+Move cursor with Pro Controller.  
+
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/joystick_cursor.py)
+
 ## lab.py
 This is for me only.   
 You won't get why this code is here.   
