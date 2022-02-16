@@ -36,20 +36,23 @@ class Param:
         return '\n'.join(s)
 
 class DChinLog:
-    def __init__(self, __file__) -> None:
+    def __init__(self, filename) -> None:
         self.param = Param()
-        dir_name = path.join(
-            path.dirname(__file__), 
-            'dchin_log', 
-        )
-        try:
-            mkdir(dir_name)
-        except FileExistsError:
-            pass
-        self.filename = path.join(
-            dir_name, 
-            datetime.now().strftime('%Y-%m-%d_%H.%M.%S.log'), 
-        )
+        if filename.lower().endswith('.py'):
+            dir_name = path.join(
+                path.dirname(__file__), 
+                'dchin_log', 
+            )
+            try:
+                mkdir(dir_name)
+            except FileExistsError:
+                pass
+            self.filename = path.join(
+                dir_name, 
+                datetime.now().strftime('%Y-%m-%d_%H.%M.%S.log'), 
+            )
+        else:
+            self.filename = filename
 
     def __print(self, *args, **kw):
         print(*args, **kw)
