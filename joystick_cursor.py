@@ -1,13 +1,34 @@
 '''
 Move cursor with Pro Controller.  
 '''
-# Borrowed code from https://stackoverflow.com/questions/66049843/i-am-trying-to-control-mouse-movement-with-an-xbox-controller-using-pygame
+
+VELOCITY = .3
+SPF = .016
+DEADZONE = .25
+
+SCALE = VELOCITY / SPF
+
+from threading import Thread
+from time import sleep
 import pygame
 import mouse
+import keyboard
+
+class Worker(Thread):
+    def __init__(self) -> None:
+        super().__init__()
+        self.dx = 0
+        self.dy = 0
+        self.go_on = True
+    
+    def run(self):
+        while self.go_on:
+            move(self.dx, self.dy)
+            sleep(SPF)
 
 def main():
     pygame.init()
-    x = 0; y = 0
+    worker = Worker()
 
     print('Controllers:')
     joysticks = []
@@ -17,23 +38,53 @@ def main():
         j.init()
         joysticks.append(j)
 
-    while True:
-        for event in pygame.event.get():
-            if event.type is pygame.JOYBUTTONDOWN:
-                if event.button == 0:
-                    mouse.click()
-            elif event.type == pygame.JOYAXISMOTION:
-                print(event.axis, event.value)
-                if event.axis == 4 or event.axis == 0:
-                    if event.value > 0.25:
-                        x += 25
-                    elif event.value < - 0.25:
-                        x -= 25
-                if event.axis == 3 or event.axis == 1:
-                    if event.value > 0.25:
-                        y += 25
-                    elif event.value < -0.25:
-                        y -= 25
-        mouse.move(x, y)
+    print('main loop...')
+    try:
+        worker.start()
+        while True:
+            for event in pygame.event.get():
+                if event.type == pygame.JOYBUTTONDOWN:
+                    print(event.button)
+                    if event.button in (0, 7, 8, 9, 10):
+                        print('press')
+                        mouse.press()
+                    elif event.button == 11:
+                        keyboard.press_and_release('up')
+                    elif event.button == 12:
+                        keyboard.press_and_release('down')
+                    elif event.button == 13:
+                        keyboard.press_and_release('left')
+                    elif event.button == 14:
+                        keyboard.press_and_release('right')
+                elif event.type == pygame.JOYBUTTONUP:
+                    if event.button in (0, 7, 8, 9, 10):
+                        print('release')
+                        mouse.release()
+                elif event.type == pygame.JOYAXISMOTION:
+                    axis, value = event.axis, event.value
+                    # print('    ' * (axis + 1), value)
+                    value = value ** 3 * abs(value) ** 1
+                    value *= SCALE
+                    if axis in (0, 2):
+                        if abs(value) < DEADZONE:
+                            worker.dx = 0
+                        else:
+                            worker.dx = value
+                    if axis in (1, 3):
+                        if abs(value) < DEADZONE:
+                            worker.dy = 0
+                        else:
+                            worker.dy = value
+                print(worker.dx, '\t', worker.dy)
+    finally:
+        worker.go_on = False
+        worker.join()
+        print('bye')
+
+def move(dx, dy):
+    x, y = mouse.get_position()
+    x += dx
+    y += dy
+    mouse.move(x, y)
 
 main()
