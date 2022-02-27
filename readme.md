@@ -775,6 +775,11 @@ and does nothing.
 
 [source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/serve_now.py)
 
+## softmax.py
+Softmax with temperature and probability weighting.  
+
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/softmax.py)
+
 ## stats.py
 What I learned from Statistics for Business and Finance. 
 
