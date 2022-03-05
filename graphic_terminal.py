@@ -76,19 +76,35 @@ def displayAllColors():
         print(Back.RESET, ' ', Fore.__getattribute__(color), color, end = '', flush = True, sep = '')
     print(Style.RESET_ALL)
 
-def printTable(table):
+def printTable(
+    table, header = None, formatter = None, 
+    delimiter = '|', padding = 1, 
+):
     col_width = [0 for _ in table[0]]
     my_table = []
-    for line in table:
+    def addLine(line, do_format):
         my_line = []
         for i, x in enumerate(line):
-            my_line.append(str(x))
+            if (
+                do_format and 
+                formatter is not None and 
+                formatter[i] is not None
+            ):
+                x = str(formatter[i](x))
+            else:
+                x = str(x)
+            my_line.append(x)
             col_width[i] = max(col_width[i], eastAsianStrLen(my_line[-1]))
         my_table.append(my_line)
+    if header is not None:
+        addLine(header, do_format = False)
+    for line in table:
+        addLine(line, do_format = True)
+    deli = ' ' * padding + delimiter + ' ' * padding
     for line in my_table:
-        print(' | ', end = '')
+        print(deli, end = '')
         for i, text in enumerate(line):
-            print(eastAsianStrPad(text, col_width[i]), end=' | ')
+            print(eastAsianStrPad(text, col_width[i]), end=deli)
         print()
 
 if __name__ == '__main__':
