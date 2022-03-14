@@ -470,6 +470,11 @@ PROTECTION: global hooked button to stop macro = Windows Key
 
 [source code folder](https://github.com/Daniel-Chin/Python_Lib/blob/master/macro/)
 
+## manhattan/
+Manhattan geometry, where Manhattan distance is the distance metric.
+
+[source code folder](https://github.com/Daniel-Chin/Python_Lib/blob/master/manhattan/)
+
 ## md2html/__main__.py
 Translate markdown .md file to html file.    
 Note: to work on WordPress, avoid level one header (# Title).    
