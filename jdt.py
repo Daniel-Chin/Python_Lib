@@ -145,11 +145,12 @@ class CommJdt(Jdt):
         kw['getSuffix'] = getSuffix
         super(__class__, self).update(new_done, *argv, **kw)
 
-def jdtIter(iterable, *args, **kw):
+def jdtIter(iterable, msg='', width = None, UPP = 1, goal = None):
     '''
     `iterable` must provide `__len__()`. 
     '''
-    with Jdt(len(iterable), *args, **kw) as j:
+    goal = goal or len(iterable)
+    with Jdt(goal, msg, width, UPP) as j:
         for x in iterable:
             yield x
             j.acc()
