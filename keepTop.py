@@ -7,7 +7,7 @@ import numpy as np
 class KeepTop:
     def __init__(self, size, evaluate = None) -> None:
         self.size = size
-        self.scoreboard = []
+        self.scoreboard = [(None, - np.inf)]
         if evaluate is None:
             self.evaluate = lambda x : x
         else:
@@ -27,12 +27,23 @@ class KeepTop:
         if score is None:
             score = self.evaluate(x)
         for i, (_, item_score) in enumerate(self.scoreboard):
-            if score > item_score:
+            if score < item_score:
                 break
+        else:
+            i = len(self.scoreboard)
         self.scoreboard = (
-            self.scoreboard[:i] + ( x, score ) + self.scoreboard[i:-1]
+            self.scoreboard[:i] + [( x, score )] + self.scoreboard[i:]
         )
-        self.low = self.scoreboard[-1][1]
+        if len(self.scoreboard) > self.size:
+            self.scoreboard.pop(0)
+        self.low = self.scoreboard[0][1]
     
     def getList(self):
         return [item for (item, _) in self.scoreboard]
+
+if __name__ == '__main__':
+    kt = KeepTop(5)
+    from random import randint
+    for _ in range(50):
+        kt.eat(randint(0, 69))
+    print(kt.getList())
