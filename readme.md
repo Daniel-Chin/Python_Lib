@@ -442,6 +442,11 @@ Move cursor with Pro Controller.
 
 [source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/joystick_cursor.py)
 
+## keepTop.py
+Maintain a list of high scores.  
+
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/keepTop.py)
+
 ## lab.py
 This is for me only.   
 You won't get why this code is here.   
