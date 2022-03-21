@@ -27,13 +27,14 @@ class KeepTop:
         if score is None:
             score = self.evaluate(x)
         for i, (_, item_score) in enumerate(self.scoreboard):
+            # imagine binary search
             if score < item_score:
                 break
         else:
             i = len(self.scoreboard)
         self.scoreboard = (
             self.scoreboard[:i] + [( x, score )] + self.scoreboard[i:]
-        )
+        )   # imagine linked list
         if len(self.scoreboard) > self.size:
             self.scoreboard.pop(0)
         self.low = self.scoreboard[0][1]
