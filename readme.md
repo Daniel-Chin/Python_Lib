@@ -60,6 +60,13 @@ Both F and S refers to per period return.
 
 [source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/Archive/bianQue.py)
 
+## Archive/fileComplexity/
+Tests the time complexity of small binary updates to large files.  
+
+Conclusion: On my Windows, it's O(1).
+
+[source code folder](https://github.com/Daniel-Chin/Python_Lib/blob/master/Archive/fileComplexity/)
+
 ## Archive/LAN_scan/
 Scans LAN
 
