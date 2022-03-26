@@ -60,6 +60,11 @@ Both F and S refers to per period return.
 
 [source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/Archive/bianQue.py)
 
+## Archive/databass/
+Oh damn! I read about `dbm` and will now dump this project.
+
+[source code folder](https://github.com/Daniel-Chin/Python_Lib/blob/master/Archive/databass/)
+
 ## Archive/fileComplexity/
 Tests the time complexity of small binary updates to large files.  
 
@@ -245,11 +250,6 @@ Although my thing is still more console friendly.
 
 [source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/count.py)
 
-## databass/
-Oh damn! I read about `dbm` and will now dump this project.
-
-[source code folder](https://github.com/Daniel-Chin/Python_Lib/blob/master/databass/)
-
 ## dchin_log/__init__.py
 Log script parameters as well as terminal output to files.    
 Useful for simulation runs / deep learning experiments.  
@@ -276,6 +276,11 @@ print(sys.argv)
 Uses dynamic programming (DP) to calculate the minimum editing distance.  
 
 [source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/editDistance.py)
+
+## exclusive.py
+Use a file to denote whether a program is running.  
+
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/exclusive.py)
 
 ## Find Vera/Find_Vera V2.py
 A game by Daniel
