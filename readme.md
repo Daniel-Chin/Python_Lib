@@ -246,8 +246,7 @@ Although my thing is still more console friendly.
 [source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/count.py)
 
 ## databass/
-A database of key-value pairs with O(1) for everything.  
-The key needs to be hashable and picklable.
+Oh damn! I read about `dbm` and will now dump this project.
 
 [source code folder](https://github.com/Daniel-Chin/Python_Lib/blob/master/databass/)
 

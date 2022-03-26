@@ -152,8 +152,37 @@ class DataBass:
                 key_cell = self.__locate(key)
             except DbKeyError as e:
                 ...
+            self.__delValueChain(key_cell.paired_value_addr)
+            value_addr = self.__dumpValue(value)
+            key_cell.paired_value_addr = value_addr
+            self.__writeCell(key_cell)
     
-    def __delCell(self, addr):
+    def __delCell(self, addr, last_known_hole = 0):
+        hole_addr = last_known_hole
+        while hole_addr < addr:
+            hole = self.__lookupCells(hole_addr)
+            hole_addr = hole.nextHole()
+        prev_hole = hole
+        next_hole = self.__lookupCells(hole_addr)
+        prev_hole.next = addr
+        self.__writeCell(prev_hole)
+        next_hole.prev = addr
+        self.__writeCell(next_hole)
+        hole = Cell(self, addr)
+        hole.type = HOLE
+        hole.next = next_hole.addr
+        self.__writeCell(hole)
+    
+    def __delValueChain(self, addr):
+        last_known_hole = 0
+        while addr != 0:
+            cell = self.__lookupCells(addr)
+            self.__delCell(cell.addr, last_known_hole)
+            addr = cell.next
+            # last_known_hole = cell.addr
+            # In fact, addr may not be monotonous for a list. 
+    
+    def __dumpValue(self, value):
         ...
     
     def __newCell(self):
@@ -163,9 +192,6 @@ class DataBass:
         next_hole_addr = hole.nextHole()
         root.next = next_hole_addr
         self.__writeCell(root)
-        next_hole = self.__lookupCells(next_hole_addr)
-        next_hole.prev = 0
-        self.__writeCell(next_hole)
         return hole_addr
     
     def __writeCell(self, cell : Cell):
@@ -174,7 +200,7 @@ class DataBass:
 
 class Cell:
     __slot__ = [
-        'type', 'next', 'prev', 'paired_value_addr', 'key', 
+        'type', 'next', 'paired_value_addr', 'key', 
         'long_key_addr', 'bytes_value', 
     ]
     def __init__(self, db : DataBass, addr = None) -> None:
@@ -196,9 +222,7 @@ class Cell:
         )
         self.next = int.from_bytes(bytes_next, ENDIAN)
         if self.type == HOLE:
-            self.prev = int.from_bytes(
-                data[:cell_addr_len], ENDIAN, 
-            )
+            pass
         elif self.type in (KEY, LONG_KEY):
             bytes_val_addr, data = (
                 data[:cell_addr_len ], 
@@ -222,9 +246,7 @@ class Cell:
         f.write(bytes([self.type]))
         f.write(self.next.to_bytes(self.cell_addr_len, ENDIAN))
         if self.type == HOLE:
-            f.write(self.prev.to_bytes(
-                cell_addr_len, ENDIAN, 
-            ))
+            pass
         elif self.type in (KEY, LONG_KEY):
             f.write(self.paired_value_addr.to_bytes(
                 cell_addr_len, ENDIAN, 
@@ -244,6 +266,7 @@ class Cell:
             return self.addr + 1
         else:
             return self.next
+
 
 class Occupied(Exception):
     '''
