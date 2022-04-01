@@ -18,8 +18,10 @@ x.  dest_addr[i + 1] = 9
 ## Meta-programming
 The easiest way to meta-program is to treat code segments as repeating chunks. 
 
+### Example 1
 Write single-element tuple as `(1, )`. This way, it generalizes to two-element tuple: `(1, 2, )`. 
 
+### Example 2
 Leave a trailing whitespace after trailing comma:
 ````python
 for a, b, c in zip(
@@ -27,3 +29,7 @@ for a, b, c in zip(
 ):
 ````
 This way, adding an element is simply appending a code segment. 
+
+### Example 3
+Trailing whitespace in string literals.  
+`'I have a dream. '`
