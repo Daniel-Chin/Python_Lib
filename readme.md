@@ -169,6 +169,17 @@ Encrypts the file system with Fernet.
 
 [source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/book.py)
 
+## cacheWithFile.py
+````python  
+@cacheWithFile('expanded_matrix')  
+def expandMatrix(m):  
+    # some heavy computation  
+    result = ...  
+    return result  
+````
+
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/cacheWithFile.py)
+
 ## cache_no_hash.py
 Inefficiently cache and lookup function returns. 
 
