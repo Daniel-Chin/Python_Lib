@@ -696,6 +696,13 @@ pip install, and imports
 
 [source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/pimport.py)
 
+## playback.py
+Playback audio in real-time.    
+Useful if you want to hear your doorbell while watching videos   
+with headphones.  
+
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/playback.py)
+
 ## playMidi.py
 Uses mido to play a midi file.  
 
