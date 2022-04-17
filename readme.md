@@ -98,6 +98,11 @@ Too bad. It does not work. Mindustry 6.0 is anti-python?
 
 [source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/Archive/mindustryKeyRemap.py)
 
+## Archive/octave_up.py
+Transpose an audio up one octave, by removing odd partials.  
+
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/Archive/octave_up.py)
+
 ## Archive/OneFileFly/
 Transmit one file.  
 Deprecated. Replaced by ../oneship
