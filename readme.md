@@ -621,6 +621,11 @@ My threading utils
 
 [source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/mythread.py)
 
+## myTorch.py
+pyTorch utils.  
+
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/myTorch.py)
+
 ## myxml.py
 XML parser
 
