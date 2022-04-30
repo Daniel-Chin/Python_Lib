@@ -2,13 +2,14 @@
 pyTorch utils.  
 '''
 
+import os
 import sys
 
 class LossLogger:
     def __init__(
         self, filename=None, print_every: int = 1, 
     ) -> None:
-        self.filename = filename
+        self.filename = os.path.abspath(filename)
         self.print_every = print_every
 
     def __write(self, file, epoch_i, **kw):
