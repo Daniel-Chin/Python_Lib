@@ -21,11 +21,11 @@ class LossLogger:
                 pass
             print(' ', k, '=', v, file=file)
     
-    def eat(self, epoch_i, **kw):
+    def eat(self, epoch_i, verbose=True, **kw):
         if self.filename is not None:
             with open(self.filename, 'a') as f:
                 self.__write(f, epoch_i, **kw)
-        if epoch_i % self.print_every == 0:
+        if verbose and epoch_i % self.print_every == 0:
             self.__write(sys.stdout, epoch_i, **kw)
     
     def clearFile(self):
