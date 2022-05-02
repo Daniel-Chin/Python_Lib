@@ -773,6 +773,12 @@ Questions I have about Python.
 
 [source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/questions.txt)
 
+## rand.py
+I just wanna generate a random number very conveniently,    
+e.g. Win+R py -m rand
+
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/rand.py)
+
 ## reactNew.py
 Creates a react component file containing boilerplate code.  
 
