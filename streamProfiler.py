@@ -3,19 +3,29 @@ Profiles the computation time of a series of actions in a real-time stream-base 
 Run the script to see a demo.  
 '''
 
+import sys
+import os
 from time import perf_counter
 from terminalsize import get_terminal_size
 
 class StreamProfiler:
-    def __init__(self, as_percentage_of = None, DO_PROFILE = True):
+    def __init__(
+        self, as_percentage_of=None, DO_PROFILE=True, 
+        filename=None, 
+    ):
         self.as_percentage_of = as_percentage_of
         self.DO_PROFILE = DO_PROFILE
 
         self.tasks = {}
         self.now_task = None
         self.last_gonna = None
+
+        if filename is None:
+            self.filename = None
+        else:
+            self.filename = os.path.abspath(filename)
     
-    def display(self, same_line = False):
+    def display(self, same_line=False):
         if not self.DO_PROFILE:
             return
         self.gonna('display')
@@ -29,14 +39,21 @@ class StreamProfiler:
         space = get_terminal_size()[0] - sum([len(x) for x in buffer]) - 3
         margin = space // (len(buffer) - 1)
         line = (' ' * margin).join(buffer) + ' ' * 2
-        if same_line:
-            print('', line, end = '\r', flush = True)
+        if self.filename is None:
+            self.__write(line, same_line, sys.stdout)
         else:
-            print('', line)
+            with open(self.filename, 'a') as f:
+                self.__write(line, same_line, f)
         self.done()
         for i in self.tasks:
             if i != 'display':
                 self.tasks[i] = 0
+    
+    def __write(self, line, same_line, file):
+        if same_line:
+            print('', line, end='\r', flush=True, file=file)
+        else:
+            print('', line, file=file)
     
     def gonna(self, task_name):
         if not self.DO_PROFILE:
