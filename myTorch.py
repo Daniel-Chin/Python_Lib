@@ -9,7 +9,10 @@ class LossLogger:
     def __init__(
         self, filename=None, print_every: int = 1, 
     ) -> None:
-        self.filename = os.path.abspath(filename)
+        if filename is None:
+            self.filename = None
+        else:
+            self.filename = os.path.abspath(filename)
         self.print_every = print_every
 
     def __write(self, file, epoch_i, **kw):
