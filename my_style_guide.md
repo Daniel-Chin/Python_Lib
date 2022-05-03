@@ -33,3 +33,6 @@ This way, adding an element is simply appending a code segment.
 ### Example 3
 Trailing whitespace in string literals.  
 `'I have a dream. '`
+
+## Unknown
+Should I use `file=f` or `file = f` for optional arguments? 
