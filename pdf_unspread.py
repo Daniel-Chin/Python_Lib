@@ -7,7 +7,7 @@ with minor modification by Daniel Chin for friendlier command-line calling
 
 usage: py -m pdf_unspread my.pdf
 
-Creates unspread.my.pdf
+Creates my.unspread.pdf
 
 Chops each page in half, e.g. if a source were
 created in booklet form, you could extract individual
@@ -34,7 +34,11 @@ if __name__ == '__main__':
         inpfn = input('path/file.ext = ').strip('"')
     else:
         inpfn, = inp
-    outfn = os.path.join(os.path.dirname(inpfn), 'unspread.' + os.path.basename(inpfn))
+    basename, ext = os.path.splitext(os.path.basename(inpfn))
+    outfn = os.path.join(
+        os.path.dirname(inpfn), 
+        basename + '.unspread' + ext, 
+    )
     writer = PdfWriter(outfn)
     pages = PdfReader(inpfn).pages
     ratio = input('Ratio (default 0.5) = ')
