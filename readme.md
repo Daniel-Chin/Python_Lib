@@ -683,7 +683,7 @@ with minor modification by Daniel Chin for friendlier command-line calling
   
 usage: py -m pdf_unspread my.pdf  
   
-Creates unspread.my.pdf  
+Creates my.unspread.pdf  
   
 Chops each page in half, e.g. if a source were  
 created in booklet form, you could extract individual  
@@ -783,6 +783,11 @@ e.g. Win+R py -m rand
 Creates a react component file containing boilerplate code.  
 
 [source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/reactNew.py)
+
+## roundRobinSched.py
+Time-based round robin scheduling.  
+
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/roundRobinSched.py)
 
 ## runamod.py
 Run a python module but it waits at the end as if you called it in command line.  
