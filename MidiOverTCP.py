@@ -1,7 +1,7 @@
 '''
  -> LAN -> `Midi from TCP` as midi device ->  
 '''
-IP = '10'
+IP = '192.168.'
 PORT = 2350
 VIRTUAL_DEVICE_NAME = 'Midi from TCP'
 PAGE_SIZE = 4096
@@ -59,8 +59,9 @@ def receive():
                 message.append(page[cursor])
                 cursor += 1
                 if len(message) == 3:
-                    receiver.midiOut.send_message(message)
                     print([hex(x) for x in message])
+                    receiver.midiOut.send_message(message)
+                    message.clear()
     except KeyboardInterrupt:
         print('Bye.')
 
@@ -78,7 +79,7 @@ def send():
     midiIn.open_port(PORT_I)
     print('Success.')
     s = socket.socket()
-    s.bind(('lcoalhost', PORT))
+    s.bind(('', PORT))
     s.listen(1)
     print('Server listening...')
     c, addr = s.accept()
@@ -97,6 +98,9 @@ def send():
 def onMidiIn(msg_dt, c):
     msg, _ = msg_dt
     assert len(msg) == 3
+    if msg[0] in [0xb0, 0xe0]:
+        return
+    print(msg)
     c.send(bytes(msg))
 
 def main():
