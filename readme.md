@@ -525,6 +525,11 @@ Print the headings of a markdown file.
 
 [source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/md_headings.py)
 
+## MidiOverTCP.py
+ -> LAN -> `Midi from TCP` as midi device ->  
+
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/MidiOverTCP.py)
+
 ## minecraft_afk.py
 AFK tool for Minecraft.    
 Punch the air every 5 seconds so you don't get kicked for inactivity.  

@@ -16,3 +16,4 @@ Port specification for my applications.
 2347 TCP    Mobile Numpad
 2348 TCP    Nozomi.la AI
 2349 TCP    better instrument
+2350 TCP    MIDI over TCP
