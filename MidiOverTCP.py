@@ -64,9 +64,6 @@ def receive():
     except KeyboardInterrupt:
         print('Bye.')
 
-def main():
-    receive()
-
 PORT_I = 0
 def send():
     midiIn = rtmidi.MidiIn()
@@ -101,5 +98,9 @@ def onMidiIn(msg_dt, c):
     msg, _ = msg_dt
     assert len(msg) == 3
     c.send(bytes(msg))
+
+def main():
+    receive()
+    # send()
 
 main()
