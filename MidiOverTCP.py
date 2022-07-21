@@ -2,9 +2,12 @@
  -> LAN -> `Midi from TCP` as midi device ->  
 '''
 IP = '192.168.'
+# IP = 'localhost'
 PORT = 2350
 VIRTUAL_DEVICE_NAME = 'Midi from TCP'
 PAGE_SIZE = 4096
+
+DEBUG = False
 
 from time import sleep
 import socket
@@ -34,38 +37,50 @@ class Receiver:
         ])
 
 def receive():
-    receiver = Receiver()
-    print(f'''Opened virtual MIDI device "{
-        VIRTUAL_DEVICE_NAME
-    }".''')
+    if not DEBUG:
+        receiver = Receiver()
+        print(f'''Opened virtual MIDI device "{
+            VIRTUAL_DEVICE_NAME
+        }".''')
     try:
         while True:
             s = socket.socket()
-            print(f'Connecting to {(IP, PORT)}...')
-            s.connect((IP, PORT))
+            while True:
+                try:
+                    print(f'Connecting to {(IP, PORT)}...')
+                    s.connect((IP, PORT))
+                except ConnectionRefusedError:
+                    print('Refused.')
+                else:
+                    break
             s.settimeout(1)
             print('Established.')
             page = None
             cursor = 0
             message = []
             while True:
+                if page == b'':
+                    print('TCP shutdown. I will retry.')
+                    s.close()
+                    break
                 if page is None or cursor == len(page):
                     try:
                         page = s.recv(PAGE_SIZE)
                     except socket.timeout:
                         continue
+                    except ConnectionResetError: 
+                        print('TCP reset. I will retry.')
+                        s.close()
+                        break
                     else:
                         cursor = 0
                 else:
-                    if page == b'':
-                        print('TCP disconnected. I will retry.')
-                        s.close()
-                        break
                     message.append(page[cursor])
                     cursor += 1
                     if len(message) == 3:
                         print([hex(x) for x in message])
-                        receiver.midiOut.send_message(message)
+                        if not DEBUG:
+                            receiver.midiOut.send_message(message)
                         message.clear()
     except KeyboardInterrupt:
         print('Bye.')
