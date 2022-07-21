@@ -38,30 +38,35 @@ def receive():
     print(f'''Opened virtual MIDI device "{
         VIRTUAL_DEVICE_NAME
     }".''')
-    s = socket.socket()
-    print(f'Connecting to {(IP, PORT)}...')
-    s.connect((IP, PORT))
-    s.settimeout(1)
-    print('Established.')
-    page = ''
-    cursor = 0
-    message = []
     try:
         while True:
-            if cursor == len(page):
-                try:
-                    page = s.recv(PAGE_SIZE)
-                except socket.timeout:
-                    continue
+            s = socket.socket()
+            print(f'Connecting to {(IP, PORT)}...')
+            s.connect((IP, PORT))
+            s.settimeout(1)
+            print('Established.')
+            page = None
+            cursor = 0
+            message = []
+            while True:
+                if page is None or cursor == len(page):
+                    try:
+                        page = s.recv(PAGE_SIZE)
+                    except socket.timeout:
+                        continue
+                    else:
+                        cursor = 0
                 else:
-                    cursor = 0
-            else:
-                message.append(page[cursor])
-                cursor += 1
-                if len(message) == 3:
-                    print([hex(x) for x in message])
-                    receiver.midiOut.send_message(message)
-                    message.clear()
+                    if page == b'':
+                        print('TCP disconnected. I will retry.')
+                        s.close()
+                        break
+                    message.append(page[cursor])
+                    cursor += 1
+                    if len(message) == 3:
+                        print([hex(x) for x in message])
+                        receiver.midiOut.send_message(message)
+                        message.clear()
     except KeyboardInterrupt:
         print('Bye.')
 
