@@ -1,10 +1,13 @@
-def a():
+def a(i):
+    def b():
+        print(i)
+    return b
+
+def c():
     l = []
     for i in range(4):
-        l.append(lambda :i)
+        l.append(a(i))
     return l
 
-print([x() for x in a()])
+print([x() for x in c()])
 input('enter...')
-
-# ??? THAT IS NOT CLOSURE OKAY
