@@ -8,6 +8,7 @@ Later bullet points take precedence:
 - Function names are mixedCase. 
 - Comments don't have to be complete sentences. Shorter comments improve readability. 
 - Comments can be in Chinese if they correspond to another document in Chinese, e.g. a paper. 
+- Avoid abbreviations in names, unless they are well established. Long variable names usually don't affect readability, or even typability. 
 
 ## Vertical alignment
 ````python
