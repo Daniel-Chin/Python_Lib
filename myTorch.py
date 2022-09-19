@@ -30,6 +30,7 @@ class LossLogger:
                 self.__write(f, epoch_i, **kw)
         if verbose and epoch_i % self.print_every == 0:
             self.__write(sys.stdout, epoch_i, **kw)
+            sys.stdout.flush()
     
     def clearFile(self):
         with open(self.filename, 'w'):
