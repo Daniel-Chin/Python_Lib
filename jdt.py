@@ -1,5 +1,6 @@
 '''
 Progress bar.  
+Did you know about `tqdm`?  
 
 Usage:  
 ```python
