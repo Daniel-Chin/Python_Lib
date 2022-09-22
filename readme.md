@@ -455,6 +455,7 @@ Works even when Jupyter is not installed.
 
 ## jdt.py
 Progress bar.    
+Did you know about `tqdm`?    
   
 Usage:    
 ```python  
