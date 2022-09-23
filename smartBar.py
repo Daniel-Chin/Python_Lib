@@ -51,7 +51,9 @@ class SmartBar:
                 x + x_offset, Y, cell_width, label=label, 
                 align='edge', 
             )
-        ax.set_xticks(x, self.x_ticks)
+        if self.x_ticks is not None:
+            ax.set_xticks(x)
+            ax.set_xticklabels(self.x_ticks)
     
     def rollX(self):
         width = 1 - self.padding
@@ -67,6 +69,7 @@ def demo():
     sBar.addGroup([1, 3, 3, 3, 7], 'hacker')
     sBar.addGroup([1, 2, 3, 4, 5], 'linear')
     sBar.addGroup([3, 1, 4, 1, 5], 'pi')
+    sBar.setXTicks('abcde')
     sBar.draw()
     plt.legend()
     plt.show()
