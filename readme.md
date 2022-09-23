@@ -847,6 +847,12 @@ and does nothing.
 
 [source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/serve_now.py)
 
+## smartBar.py
+The bar chart provided by matplotlib is surprisingly manual.    
+Let's fix that.  
+
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/smartBar.py)
+
 ## softmax.py
 Softmax with temperature and probability weighting.  
 
