@@ -15,15 +15,17 @@ class SmartBar:
         '''
         self.padding = padding
         self.groups = []
+        self.group_kw = []
         self.labels = []
         self.x_ticks = None
     
     def setXTicks(self, ticks):
         self.x_ticks = ticks
 
-    def addGroup(self, Y, label='default'):
+    def addGroup(self, Y, label='default', **kw):
         self.groups.append(Y)
         self.labels.append(label)
+        self.group_kw.append(kw)
     
     def validate(self):
         assert len(self.groups)
@@ -44,12 +46,12 @@ class SmartBar:
         x_len = self.validate()
         cell_width, roll = self.rollX()
         x = np.arange(x_len)
-        for Y, x_offset, label in zip(
-            self.groups, roll, self.labels, 
+        for Y, x_offset, label, kw in zip(
+            self.groups, roll, self.labels, self.group_kw,
         ):
             ax.bar(
                 x + x_offset, Y, cell_width, label=label, 
-                align='edge', 
+                align='edge', **kw, 
             )
         if self.x_ticks is not None:
             ax.set_xticks(x)
