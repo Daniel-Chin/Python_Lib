@@ -8,7 +8,7 @@ from matplotlib import pyplot as plt
 
 class SmartBar:
     def __init__(
-        self, padding: float =.5, 
+        self, padding: float =None, 
     ) -> None:
         '''
         0 <= `padding` < 1 is the whitespace between bars.  
@@ -56,12 +56,16 @@ class SmartBar:
             ax.set_xticklabels(self.x_ticks)
     
     def rollX(self):
-        width = 1 - self.padding
-        cell_width = width / len(self.groups)
+        n_groups = len(self.groups)
+        if self.padding is None:
+            width = (n_groups) / (n_groups + 1.5)
+        else:
+            width = 1 - self.padding
+        cell_width = width / n_groups
         x_start = - width * .5
         x_stop  = + width * .5
         return cell_width, np.linspace(
-            x_start, x_stop, len(self.groups), False, 
+            x_start, x_stop, n_groups, False, 
         )
 
 def demo():
