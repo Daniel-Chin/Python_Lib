@@ -1,6 +1,6 @@
 '''
-Modified from librosa.  
-YIN pitch detection.  
+YIN pitch detection for a single page of audio.  
+Modified from librosa's implementation of YIN.  
 '''
 import numpy as np
 from librosa import util

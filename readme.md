@@ -964,8 +964,8 @@ This loads the entire file content into RAM. Be careful with big files.
 [source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/xls2csv.py)
 
 ## yin.py
-Modified from librosa.    
-YIN pitch detection.  
+YIN pitch detection for a single page of audio.    
+Modified from librosa's implementation of YIN.  
 
 [source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/yin.py)
 
