@@ -31,6 +31,13 @@ def writeCode(file, root: AbstractLossNode):
 
 def dfs(p, node: AbstractLossNode):
     p(f'class {node.class_name}(Loss):')
+    p('__slots__ = [', indent=1, end='')
+    for child in node.children:
+        if isinstance(child, AbstractLossNode):
+            p(f"'{child.name}', ", end='')
+        else:
+            p(f"'{child}', ", end='')
+    p(']')
     p('def __init__(self):', indent=1)
     for child in node.children:
         if isinstance(child, AbstractLossNode):
