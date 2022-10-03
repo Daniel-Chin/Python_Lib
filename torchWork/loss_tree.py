@@ -3,6 +3,8 @@ from __future__ import annotations
 
 from typing import List, Union
 
+from indentprinter import IndentPrinter
+
 __all__ = ['Loss', 'AbstractLossNode', 'writeCode']
 
 class AbstractLossNode:
@@ -18,8 +20,7 @@ class Loss:
     ...
 
 def writeCode(file, root: AbstractLossNode):
-    def p(*a, indent=0, **kw):
-        print(' ' * (indent * 4), end='', file=file)
+    def p(*a, **kw):
         print(*a, file=file, **kw)
     p('from __future__ import annotations')
     module_name = 'loss_tree' if __name__ == '__main__' else __name__
@@ -31,25 +32,29 @@ def writeCode(file, root: AbstractLossNode):
 
 def dfs(p, node: AbstractLossNode):
     p(f'class {node.class_name}(Loss):')
-    p('__slots__ = [', indent=1, end='')
-    for child in node.children:
-        if isinstance(child, AbstractLossNode):
-            p(f"'{child.name}', ", end='')
-        else:
-            p(f"'{child}', ", end='')
-    p(']')
-    p('def __init__(self):', indent=1)
-    for child in node.children:
-        if isinstance(child, AbstractLossNode):
-            p('self.%s: %s = %s()' % (
-                child.name, child.class_name, child.class_name, 
-            ), indent=2)
-        else:
-            p('self.%s: float = None' % child, indent=2)
+    with IndentPrinter(p) as p:
+        p('__slots__ = [', end='')
+        for child in node.children:
+            if isinstance(child, AbstractLossNode):
+                p(f"'{child.name}', ", end='')
+            else:
+                p(f"'{child}', ", end='')
+        p(']')
+
+        for child in node.children:
+            if isinstance(child, AbstractLossNode):
+                dfs(p, child)
+        
+        p('def __init__(self):')
+        with IndentPrinter(p) as p:
+            for child in node.children:
+                if isinstance(child, AbstractLossNode):
+                    p('self.%s: self.%s = self.%s()' % (
+                        child.name, child.class_name, child.class_name, 
+                    ))
+                else:
+                    p('self.%s: float = None' % child)
     p()
-    for child in node.children:
-        if isinstance(child, AbstractLossNode):
-            dfs(p, child)
 
 def demo():
     with open('losses.py', 'w') as f:
