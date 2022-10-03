@@ -29,7 +29,6 @@ class IndentPrinter:
         if self.new_line:
             self.saved_print(self.indent_str * self.depth, end = '')
         self.saved_print(*args, **kw)
-        if {'end': '\n', **kw}['end'].endswith('\n'):
-            self.new_line = True
+        self.new_line = {'end': '\n', **kw}['end'].endswith('\n')
 
 indentPrinter = IndentPrinter(print)
