@@ -14,10 +14,19 @@ class AbstractLossNode:
         self.name = name
         self.children = children
 
-        self.class_name = 'Loss_' + name
+        self.class_name = name[0].upper() + name[1:]
 
 class Loss:
-    ...
+    def sum(self, loss_weights: List):
+        acc = 0
+        for name, weight, sub_weights in loss_weights:
+            child = self.__getattribute__(name)
+            if sub_weights is None:
+                acc += weight * child
+            else:
+                assert len(sub_weights)
+                acc += weight * child.sum(sub_weights)
+        return acc
 
 def writeCode(file, root: AbstractLossNode):
     def p(*a, **kw):
@@ -49,7 +58,7 @@ def dfs(p, node: AbstractLossNode):
         with IndentPrinter(p) as p:
             for child in node.children:
                 if isinstance(child, AbstractLossNode):
-                    p('self.%s: self.%s = self.%s()' % (
+                    p('self.%s: __class__.%s = __class__.%s()' % (
                         child.name, child.class_name, child.class_name, 
                     ))
                 else:
@@ -58,7 +67,7 @@ def dfs(p, node: AbstractLossNode):
 
 def demo():
     with open('losses.py', 'w') as f:
-        writeCode(f, AbstractLossNode('total', [
+        writeCode(f, AbstractLossNode('total_loss', [
             AbstractLossNode('vae', ['reconstruct', 'kld']), 
             AbstractLossNode('vrnn', [
                 AbstractLossNode('predict', ['z', 'image']), 
