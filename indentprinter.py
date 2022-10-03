@@ -12,7 +12,7 @@ with indentPrinter as print:
 __all__ = ['indentPrinter', 'IndentPrinter']
 
 class IndentPrinter:
-    def __init__(self, saved_print, indent_str = '  '):
+    def __init__(self, saved_print, indent_str = '    '):
         self.depth = 0
         self.saved_print = saved_print
         self.new_line = True
