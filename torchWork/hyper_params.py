@@ -1,5 +1,5 @@
-from typing import List
+from torchWork.loss_weight_tree import LossWeightTree
 
 class BaseHyperParams:
     def __init__(self) -> None:
-        self.loss_weights_tree: List = None
+        self.loss_weight_tree: LossWeightTree = None

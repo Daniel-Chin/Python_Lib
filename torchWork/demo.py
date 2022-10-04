@@ -41,20 +41,20 @@ def main():
         return
 
     hyperParams = HyperParams()
-    hyperParams.loss_weights_tree=[
-        ('vae', .5, [
-            ('reconstruct', .9, None), 
-            ('kld', .1, None), 
+    hyperParams.loss_weight_tree = LossWeightTree('total', 1, [
+        LossWeightTree('vae', .5, [
+            LossWeightTree('reconstruct', .9, None), 
+            LossWeightTree('kld', .1, None), 
         ]), 
-        ('vrnn', .4, [
-            ('predict', .9, [
-                ('z', .5, None),
-                ('image', .5, None),
+        LossWeightTree('vrnn', .4, [
+            LossWeightTree('predict', .9, [
+                LossWeightTree('z', .5, None),
+                LossWeightTree('image', .5, None),
             ]), 
-            ('kld', .1, None), 
+            LossWeightTree('kld', .1, None), 
         ]), 
-        ('weight_decay', .1, None), 
-    ]
+        LossWeightTree('weight_decay', .1, None), 
+    ])
     hyperParams.rnn_width = 8
     hyperParams.do_grad_clip = True
     hyperParams.grad_clip_ceil = 1
@@ -69,10 +69,10 @@ def main():
     total_loss.vrnn.predict.image = 4
     total_loss.vrnn.kld = 5
     total_loss.weight_decay = 6
-    print('loss sum:', total_loss.sum(hyperParams.loss_weights_tree))
+    print('loss sum:', total_loss.sum(hyperParams.loss_weight_tree))
 
     lossLogger = LossLogger('losses.log')
-    lossLogger.eat(0, total_loss, hyperParams.loss_weights_tree)
+    lossLogger.eat(0, total_loss, hyperParams.loss_weight_tree)
 
     profiler = Profiler()
     for i in range(4):
