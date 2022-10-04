@@ -16,22 +16,35 @@ class LossLogger:
             self.filename = os.path.abspath(filename)
         self.print_every = print_every
 
-    def __write(self, file, epoch_i, lossRoot: Loss, lossWeightTree):
+    def __write(
+        self, file, epoch_i, lossRoot: Loss, 
+        lossWeightTree, grad_norm, 
+    ):
         def p(*a, **kw):
             print(*a, file=file, **kw)
         p('Finished epoch', epoch_i, ':',)
         with IndentPrinter(p, 2 * ' ') as p:
             self.dfs(p, lossRoot, lossWeightTree)
+            if grad_norm is not None:
+                p('grad_norm', '=', grad_norm)
     
     def eat(
         self, epoch_i: int, lossRoot: Loss, 
-        lossWeightTree: LossWeightTree, verbose=True, 
+        lossWeightTree: LossWeightTree, 
+        grad_norm=None,
+        verbose=True, 
     ):
         if self.filename is not None:
             with open(self.filename, 'a') as f:
-                self.__write(f, epoch_i, lossRoot, lossWeightTree)
+                self.__write(
+                    f, epoch_i, lossRoot, 
+                    lossWeightTree, grad_norm, 
+                )
         if verbose and epoch_i % self.print_every == 0:
-            self.__write(sys.stdout, epoch_i, lossRoot, lossWeightTree)
+            self.__write(
+                sys.stdout, epoch_i, lossRoot, 
+                lossWeightTree, grad_norm, 
+            )
             sys.stdout.flush()
 
     def dfs(self, p, loss: Loss, lossWeightTree: LossWeightTree):
