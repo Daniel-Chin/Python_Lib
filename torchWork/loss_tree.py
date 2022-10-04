@@ -69,17 +69,3 @@ def dfs(p, node: AbstractLossNode):
             #     p(f"'{name}', ", end='')
             # p(']')
     p()
-
-def demo():
-    with open('losses.py', 'w') as f:
-        writeCode(f, AbstractLossNode('total_loss', [
-            AbstractLossNode('vae', ['reconstruct', 'kld']), 
-            AbstractLossNode('vrnn', [
-                AbstractLossNode('predict', ['z', 'image']), 
-                'kld', 
-            ]), 
-            'weight_decay',
-        ]))
-
-if __name__ == '__main__':
-    demo()
