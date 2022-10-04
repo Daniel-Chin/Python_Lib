@@ -1,3 +1,5 @@
+from time import sleep
+
 import torch
 import torch.nn.functional as F
 
@@ -71,6 +73,15 @@ def main():
 
     lossLogger = LossLogger('losses.log')
     lossLogger.eat(0, total_loss, hyperParams.loss_weights_tree)
+
+    profiler = Profiler()
+    for i in range(4):
+        # dumb slow code
+        sleep(.1)
+        with profiler.goodTime():
+            # backwards
+            sleep(.3)
+        profiler.report()
 
 def writeLosses():
     absLossRoot = AbstractLossNode('total_loss', [

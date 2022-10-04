@@ -2,7 +2,7 @@
 # HyperParams
 Save experiment with repo commit hash and config file
 exp group management
-Profiling
+# Profiling
     with goodTime:
         ... # e.g. backward()
 slurm

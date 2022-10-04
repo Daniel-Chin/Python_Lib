@@ -1,4 +1,5 @@
-import loss_tree
+import torchWork.loss_tree as loss_tree
 Loss = loss_tree.Loss
-from loss_logger import LossLogger
-from hyper_params import BaseHyperParams
+from torchWork.loss_logger import LossLogger
+from torchWork.hyper_params import BaseHyperParams
+from torchWork.profiler import Profiler
