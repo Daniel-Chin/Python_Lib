@@ -10,3 +10,9 @@ class LossWeightTree:
         self.name = name
         self.weight = weight
         self.children = children
+    
+    def __getitem__(self, key):
+        for child in self.children:
+            if child.name == key:
+                return child
+        raise KeyError(f'{key} not found.')
