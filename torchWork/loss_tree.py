@@ -17,6 +17,10 @@ class AbstractLossNode:
         self.class_name = name[0].upper() + name[1:]
 
 class Loss:
+    def __init__(self):
+        self.name: str = None
+        # self.children: List[str] = None
+    
     def sum(self, loss_weights: List):
         acc = 0
         for name, weight, sub_weights in loss_weights:
@@ -42,27 +46,28 @@ def writeCode(file, root: AbstractLossNode):
 def dfs(p, node: AbstractLossNode):
     p(f'class {node.class_name}(Loss):')
     with IndentPrinter(p) as p:
-        p('__slots__ = [', end='')
-        for child in node.children:
-            if isinstance(child, AbstractLossNode):
-                p(f"'{child.name}', ", end='')
-            else:
-                p(f"'{child}', ", end='')
-        p(']')
-
         for child in node.children:
             if isinstance(child, AbstractLossNode):
                 dfs(p, child)
         
         p('def __init__(self):')
         with IndentPrinter(p) as p:
+            p('super().__init__()')
+            p(f"self.name = '{node.name}'")
+            # names = []
             for child in node.children:
                 if isinstance(child, AbstractLossNode):
+                    # names.append(child.name)
                     p('self.%s: __class__.%s = __class__.%s()' % (
                         child.name, child.class_name, child.class_name, 
                     ))
                 else:
+                    # names.append(child)
                     p('self.%s: float = None' % child)
+            # p('self.children = [', end='')
+            # for name in names:
+            #     p(f"'{name}', ", end='')
+            # p(']')
     p()
 
 def demo():
