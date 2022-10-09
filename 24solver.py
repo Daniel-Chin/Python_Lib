@@ -20,8 +20,10 @@ def solve(numbers):
                 try:
                     new_number = eval(expression)
                     new_number = tryRounding(new_number)
-                except (ZeroDivisionError, ValueError):
+                except ZeroDivisionError:
                     continue
+                except ValueError:
+                    pass
                 if new_number >= 0:
                     can_do, solution = solve(numbers_copy + [new_number])
                     did_it = False
