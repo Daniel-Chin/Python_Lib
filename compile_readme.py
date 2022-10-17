@@ -80,7 +80,7 @@ def documentate(cd, out, depth, folder_documented = False):
                         if line == "'''":
                             documented = True
                             break
-                        if line == '' or line[0] == '#':
+                        if line == '' or line[0] == '#' or line.startswith('from __future__ import'):
                             continue
                         break
                     if documented:
