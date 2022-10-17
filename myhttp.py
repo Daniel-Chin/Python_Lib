@@ -25,6 +25,9 @@ class BadRequest(BaseException):
 class ClientShutdown(BaseException):
     pass
 
+class HandlerCloseConnection(BaseException):
+    pass
+
 logging.basicConfig(format='%(asctime)s %(message)s', 
                     filename = 'log.log')
 logging.root.setLevel(logging.NOTSET)
@@ -126,8 +129,9 @@ class OneServer(Thread, ABC):
                 log(self, data.decode())
     
     @abstractmethod
-    def handle(self, request):
+    def handle(self, request) -> bool:
         # Override this
+        # return True to allow re-using keep-alive connection
         respond(self.socket, b'''<html>What a shame. 
 The programmer didn't override the request handler. </html>''')
         raise NotImplemented
@@ -165,12 +169,15 @@ The programmer didn't override the request handler. </html>''')
                                 break
                         if do_log:
                             log(self, 'Request', request)
-                        self.handle(request)
+                        if not self.handle(request):
+                            raise HandlerCloseConnection
                 except timeout:
                     pass
             # self.close() called
         except (ClientShutdown, ConnectionAbortedError, ConnectionResetError):
             log(self, 'client shutdown')
+        except HandlerCloseConnection:
+            log(self, 'handler closes connection')
         finally:
             self.parentQueue.put(DeregisterOneServer(self))
             self.socket.close()
@@ -186,7 +193,7 @@ class Server(Thread, ABC):
     '''
     def __init__(
         self, my_OneServer=OneServer, name='', port=80, 
-        listen=1, accept_timeout=.5, 
+        listen=1, accept_timeout=.5, max_connections=4*32, 
     ):
         # Pass in your subclassed OneServer
         Thread.__init__(self)
@@ -198,7 +205,7 @@ class Server(Thread, ABC):
         self.socket.settimeout(accept_timeout)
         self._go_on = Safe(True)
         self.oneServers: List[OneServer] = []
-        self.max_connection = Safe(4 * 32)
+        self.max_connection = Safe(max_connections)
         self.showing_max_waring = False
     
     def setMaxConnection(self, number):
@@ -253,7 +260,7 @@ class Server(Thread, ABC):
                     socket, addr = self.socket.accept()
                     log(addr, 'Accepted. ')
                     self.onConnect(addr)
-                    oneServer = self.OneServer(addr, socket, self.queue)
+                    oneServer = self.OneServer(addr, socket, self)
                     self.oneServers.append(oneServer)
                     oneServer.start()
                 except timeout:
