@@ -143,6 +143,14 @@ A beautiful script to print the ascii table.
 
 [source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/ascii_table.py)
 
+## asyncException.py
+Send exceptions to other threads.    
+Based on Philippe F's https://stackoverflow.com/a/325528/8622053    
+If the thread is busy in a system call (socket.accept(), ...),   
+the exception is simply ignored.  
+
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/asyncException.py)
+
 ## audioCues.py
 Play audio cues. 
 
