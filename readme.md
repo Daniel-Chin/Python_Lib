@@ -156,6 +156,11 @@ Play audio cues.
 
 [source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/audioCues.py)
 
+## auto_bin.py
+Auto bin number.  
+
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/auto_bin.py)
+
 ## babble.py
 Repeatedly prints 'wobo wabble' indefinitely. 
 
