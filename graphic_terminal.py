@@ -107,6 +107,26 @@ def printTable(
             print(eastAsianStrPad(text, col_width[i]), end=deli)
         print()
 
+def rollText(text: str, box_width: int, only_space_break=True):
+    lines = []
+    line = []
+    lines.append(line)
+    acc = 0
+    if only_space_break:
+        words = text.split(' ')
+        for word in words:
+            word_len = eastAsianStrLen(word) + 1
+            acc += word_len
+            if acc > box_width:
+                line = []
+                lines.append(line)
+                acc = word_len
+            line.append(word)
+    else:
+        raise NotImplemented
+    lines = [' '.join(line) for line in lines]
+    return lines
+
 if __name__ == '__main__':
     from console import console
     displayAllColors()
@@ -115,4 +135,8 @@ if __name__ == '__main__':
         ['32678941829045312', 'Daniel', 'This is a demo'], 
         ['340286501983078', 'Person B', 'Thing 2'], 
     ])
+    print(*rollText(
+        'A long text that clearly cannot be displayed in one line, so what do we do?', 
+        20, 
+    ), sep='\n')
     console(globals())
