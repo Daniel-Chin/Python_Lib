@@ -5,10 +5,12 @@ Tools to do graphics in the terminal.
 `displayAllColors`: display all colors that your terminal supports.  
 `printTable`: print a table in the terminal.  
 '''
-__all__ = ['clearLine', 'eastAsianStrToWidths', 
+__all__ = [
+    'clearLine', 'eastAsianStrToWidths', 
     'eastAsianStrLen', 'eastAsianStrLeft', 'eastAsianStrRight', 
     'displayAllColors', 'eastAsianStrSparse', 'printTable', 
-    'eastAsianStrPad']
+    'eastAsianStrPad', 'rollText', 
+]
 from terminalsize import get_terminal_size
 from unicodedata import east_asian_width
 
