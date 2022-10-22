@@ -6,7 +6,6 @@ See https://stackoverflow.com/questions/375427/a-non-blocking-read-on-a-subproce
 import subprocess as sp
 from threading import Thread
 from io import BytesIO
-from time import sleep
 
 class Reader(Thread):
     def __init__(self, pipe: BytesIO) -> None:
@@ -40,9 +39,9 @@ class PopenAsyncStd(sp.Popen):
     
     def reportCollectedOutErr(self):
         print(self, 'out:')
-        print(self.outReader.get().read())
+        print(self.outReader.get().read().decode())
         print(self, 'err:')
-        print(self.errReader.get().read())
+        print(self.errReader.get().read().decode())
 
 def test():
     with PopenAsyncStd(['python']) as p:
