@@ -151,6 +151,12 @@ the exception is simply ignored.
 
 [source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/asyncException.py)
 
+## async_std.py
+Read from a PIPE async.    
+See https://stackoverflow.com/questions/375427/a-non-blocking-read-on-a-subprocess-pipe-in-python  
+
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/async_std.py)
+
 ## audioCues.py
 Play audio cues. 
 
