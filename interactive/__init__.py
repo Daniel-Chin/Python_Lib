@@ -116,7 +116,7 @@ class Universe:
     def __contains__(self, x):
         return True
 
-def listen(choice = {}, timeout = None, priorize_esc_or_arrow = False):
+def listen(choice = set(), timeout = None, priorize_esc_or_arrow = False):
     '''
     `choice`:  
         can be an iterable of choices or a single choice.   
