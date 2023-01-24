@@ -12,8 +12,8 @@ from console import console
 
 PING_NOT_PORT = False
 PORT = 22
-TIMEOUT = 1
-THREADS = 32
+TIMEOUT = .5
+THREADS = 128
 
 def main():
     ss = PickleSocket()
