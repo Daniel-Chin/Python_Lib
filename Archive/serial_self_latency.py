@@ -10,7 +10,7 @@ import serial
 PORT = 'COM9'
 
 def main():
-    with serial.Serial(PORT, 9600, timeout=1) as s:
+    with serial.Serial(PORT, 9600 * 4, timeout=1) as s:
         print('\n\nSerial opened:', s.name)
         while True:
             r = os.urandom(1)
