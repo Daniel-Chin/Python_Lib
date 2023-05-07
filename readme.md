@@ -126,6 +126,11 @@ I don't know what this strategy is called. If you know what it's called, please 
 
 [source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/Archive/robust_persistent_data_solution.py)
 
+## Archive/serial_self_latency.py
+Measures the serial self-playback round trip time.  
+
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/Archive/serial_self_latency.py)
+
 ## Archive/SleepProber/
 Keeps beeping, until the computer sleeps.  
 Purpose: so you can tell if your computer is asleep.  
@@ -186,6 +191,11 @@ Implementation:
 * Cacheing with input as Fractions  
 
 [source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/blindDescend.py)
+
+## bloonTools.py
+automaitcally press 222222
+
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/bloonTools.py)
 
 ## book.py
 A file system.    
@@ -854,6 +864,14 @@ A terminal interface that lets the user select
 the audio input/output device.  
 
 [source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/selectAudioDevice.py)
+
+## serial_monitor_colored.py
+PySerial already has a CLI monitor, but when it receives   
+color formatting codes, it tries to print unprintable   
+characters. Let's fix that.    
+Also, we attach a time stamp to each line.  
+
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/serial_monitor_colored.py)
 
 ## serve_now.py
 Immediately open a port, accept connection  
