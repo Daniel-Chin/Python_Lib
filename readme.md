@@ -869,7 +869,10 @@ the audio input/output device.
 PySerial already has a CLI monitor, but when it receives   
 color formatting codes, it tries to print unprintable   
 characters. Let's fix that.    
-Also, we attach a time stamp to each line.  
+Features:   
+- Color formatting.    
+- Attach a time stamp to each line.    
+- Merge multiple ports into one terminal.  
 
 [source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/serial_monitor_colored.py)
 
