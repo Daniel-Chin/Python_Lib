@@ -24,7 +24,7 @@ PORT = 2338
 trusted_ip = None
 
 def main():
-    server = MyServer(MyOneServer, PORT)
+    server = MyServer(MyOneServer, port=PORT)
     server.start()
     abspath = os.path.abspath(__file__)
     dname = os.path.dirname(abspath)
@@ -90,6 +90,12 @@ class MyServer(Server):
         elif addr[0] != trusted_ip:
             print('SOMEONE IS ATTACKING!', addr)
             self.close()
+    
+    def handleQueue(self, intent):
+        assert False
+    
+    def interval(self):
+        pass
 
 if __name__ == '__main__':
     main()
