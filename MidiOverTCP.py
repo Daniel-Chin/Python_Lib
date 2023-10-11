@@ -7,7 +7,7 @@ PORT = 2350
 VIRTUAL_DEVICE_NAME = 'Midi from TCP'
 PAGE_SIZE = 4096
 
-DEBUG = False
+DEBUG = False   # set this to True on Windows to test
 
 from time import sleep
 import socket
