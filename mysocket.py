@@ -1,6 +1,9 @@
 '''
 My socket utils. Provides `recvall`, `recvFile`, `sendFileJdt`, and `findAPort`.  
 '''
+from __future__ import annotations
+
+from typing import *
 import os
 from os.path import getsize
 from time import time
@@ -35,36 +38,65 @@ def recvFile(s, file_len, to_filename, accept_double_dot = False):
                 j.update(file_len - left)
         j.complete()
 
-def recvall(s: socket, size: int, timeout=10, dt=1):
+def recvall(s: socket, size: int, *args, **kw):
     """
     Receive `size` bytes from socket `s`.  
-    `timeout` is in seconds. If `None`, blocks until gets all. 
-    Somehow doesn't handle socket closing. 
-    I will fix that when I have time. 
+    Fully blocking. Does not support timeout.  
     """
-    left = size
-    buffer = []
-    if timeout is None:
-        s.settimeout(None)
-    else:
-        deadline = time() + timeout
-        s.settimeout(dt)
-    while left > 0:
-        try:
-            recved = s.recv(left)
-        except SocketTimeout:
-            pass
-        if recved == b'':
+    # def warnLegacy():
+    #     print('Warning: You are using the legacy signature of recvall.')
+    # try:
+    #     kw['timeout'] = args[0]
+    # except IndexError:
+    #     pass
+    # try:
+    #     kw['dt'] = args[1]
+    # except IndexError:
+    #     pass
+    # try:
+    #     timeout = kw['timeout']
+    # except KeyError:
+    #     pass
+    # else:
+    #     warnLegacy()
+    #     if timeout is None:
+    #         return recvall(s, size)
+    #     else:
+    #         raise NotImplementedError('Exact timeout behavior of legacy not well-defined.')
+    # if 'dt' in kw:
+    #     warnLegacy()
+
+    assert s.timeout is None
+    buffer = memoryview(bytearray(size))
+    cursor = 0
+    while cursor != size:
+        n_bytes_recved = s.recv_into(buffer[cursor:], size - cursor)
+        if n_bytes_recved == 0:
             raise EOFError(f'Socket {s} remote closed. ')
-        buffer.append(recved)
-        left -= len(recved)
-        if (
-            timeout is not None 
-            and time() > deadline 
-            and left > 0
-        ):
-            raise TimeoutError
-    return b''.join(buffer)
+        cursor += n_bytes_recved
+    return buffer.tobytes()
+
+def recvallintoWithTimeout(
+    s: socket, size: int, buffer: memoryview, cursor: List[int], 
+):
+    """
+    Receive `size` bytes from socket `s` into `buffer`.  
+    `s.timeout` is used as the overall timeout.  
+    Note that if timeout occurs, some bytes may have been consumed and not available in the socket. You can recover the state by examining `cursor[0]` and the partially-filled `buffer`.  
+    """
+    cursor[0] = 0
+    timeout = s.timeout
+    assert timeout is not None
+    deadline = time() + timeout
+    try:
+        while cursor[0] != size:
+            s.settimeout(deadline - time())
+            n_bytes_recved = s.recv_into(buffer[cursor[0]:], size - cursor[0])
+            if n_bytes_recved == 0:
+                raise EOFError(f'Socket {s} remote closed. ')
+            cursor[0] += n_bytes_recved
+    finally:
+        s.settimeout(timeout)
 
 def sendFileJdt(s, file, msg = 'send'):
     assert type(s) is socket
