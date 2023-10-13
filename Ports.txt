@@ -20,3 +20,4 @@ Port specification for my applications.
 2351 None   shared_root.py
 2352 UDP    Music X Flute
 2353 TCP    Music X Flute
+2354 TCP    MIDI Player
