@@ -57,3 +57,11 @@ def guess(devices, targets):
             if t in name:
                 return i
     return ''
+
+if __name__ == '__main__':
+    import pyaudio
+    pa = pyaudio.PyAudio()
+    try:
+        print(selectAudioDevice(pa))
+    finally:
+        pa.terminate()
