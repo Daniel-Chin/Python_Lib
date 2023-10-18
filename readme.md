@@ -60,6 +60,11 @@ Both F and S refers to per period return.
 
 [source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/Archive/bianQue.py)
 
+## Archive/chineseGamble.py
+Liwei's gamble with ???????????????  
+
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/Archive/chineseGamble.py)
+
 ## Archive/databass/
 Oh damn! I read about `dbm` and will now dump this project.
 
@@ -108,6 +113,12 @@ Transmit one file.
 Deprecated. Replaced by ../oneship
 
 [source code folder](https://github.com/Daniel-Chin/Python_Lib/blob/master/Archive/OneFileFly/)
+
+## Archive/requests_futures_graceful.py
+Does requests_futures interrupt the sockets on exit?    
+Conclusion: even socket is graceful!
+
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/Archive/requests_futures_graceful.py)
 
 ## Archive/robust_persistent_data_solution.py
 There are two copies of the database.    
@@ -915,6 +926,12 @@ Run the script to see a demo.
 Examines a directory of .py files and find all imports.  
 
 [source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/summarize_dependencies.py)
+
+## sys_path_context.py
+A context to temporarily add paths to sys.path    
+Useful for importing modules from a different directory. 
+
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/sys_path_context.py)
 
 ## terminalsize.py
 Contributors of this code: Alexander Belchenko, Harco Kuppens, Justin Riley.   
