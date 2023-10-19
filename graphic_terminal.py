@@ -117,7 +117,18 @@ def printTable(
             print(eastAsianStrPad(text, col_width[i]), end=deli)
         print()
 
-def rollText(text: str, box_width: int, may_have_wide: bool = True):
+def rollText(
+    text: str, box_width: int, may_have_wide: bool = True, 
+    may_have_linebreak: bool = True,
+):
+    if may_have_linebreak:
+        result = []
+        for part in text.split('\n'):
+            result.extend(rollText(
+                part, box_width, may_have_wide, False, 
+            ))
+        return result
+    
     if may_have_wide:
         lenFunc = eastAsianStrLen
         strLeft = eastAsianStrLeft
