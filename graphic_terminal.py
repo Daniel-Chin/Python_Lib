@@ -5,6 +5,9 @@ Tools to do graphics in the terminal.
 `displayAllColors`: display all colors that your terminal supports.  
 `printTable`: print a table in the terminal.  
 '''
+
+from __future__ import annotations
+
 __all__ = [
     'clearLine', 'eastAsianStrToWidths', 
     'eastAsianStrLen', 'eastAsianStrLeft', 'eastAsianStrRight', 
@@ -12,6 +15,7 @@ __all__ = [
     'eastAsianStrPad', 'rollText', 
 ]
 
+from typing import *
 from io import StringIO
 from functools import lru_cache
 
@@ -113,25 +117,53 @@ def printTable(
             print(eastAsianStrPad(text, col_width[i]), end=deli)
         print()
 
-def rollText(text: str, box_width: int, only_space_break=True):
-    lines = []
-    line = []
-    lines.append(line)
-    acc = 0
-    if only_space_break:
-        words = text.split(' ')
-        for word in words:
-            word_len = eastAsianStrLen(word) + 1
-            acc += word_len
-            if acc > box_width:
-                line = []
-                lines.append(line)
-                acc = word_len
-            line.append(word)
+def rollText(text: str, box_width: int, may_have_wide: bool = True):
+    if may_have_wide:
+        lenFunc = eastAsianStrLen
+        strLeft = eastAsianStrLeft
     else:
-        raise NotImplemented
-    lines = [' '.join(line) for line in lines]
-    return lines
+        lenFunc = len
+        strLeft = lambda s, n: s[:n]
+
+    words = iter(text.split(' '))
+    line_bufs: List[List[str]] = []
+    line_buf: List[str] = None
+    just_line_break: bool = None
+    def lineAppend(word: str):
+        nonlocal line_buf, just_line_break
+        line_buf.append(word)
+        just_line_break = False
+    def lineBreak():
+        nonlocal line_bufs, line_buf, just_line_break
+        just_line_break = True
+        line_buf = []
+        line_bufs.append(line_buf)
+    lineBreak()
+    col = 0
+    word = next(words)
+
+    try:
+        while True:
+            word_len = lenFunc(word) + 1
+            col += word_len
+            if col <= box_width:
+                lineAppend(word)
+                word = next(words)
+            else:
+                if just_line_break:
+                    # word longer than box_width
+                    left = strLeft(word, box_width - 1)
+                    right = word[len(left):]
+                    lineAppend(left + '-')
+                    lineBreak()
+                    col = 0
+                    word = right
+                else:
+                    lineBreak()
+                    col = 0
+    except StopIteration:
+        lines = [' '.join(line_buf) for line_buf in line_bufs]
+        return lines
 
 class AsciiGraphic:
     MAX_INSTANCES = 16
@@ -178,8 +210,8 @@ if __name__ == '__main__':
         ['340286501983078', 'Person B', 'Thing 2'], 
     ])
     print(*rollText(
-        'A long text that clearly cannot be displayed in one line, so what do we do?', 
-        20, 
+        'A long text that clearly cannot be displayed in one line, so what do we do? 如果有宽的中文字符，可以处理吗？长单词呢，比如 hippopotomonstrousesquippedaliophobia?', 
+        18, 
     ), sep='\n')
     input('Enter to demo ascii graphic...')
     from time import sleep
