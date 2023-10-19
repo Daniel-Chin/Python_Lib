@@ -33,8 +33,7 @@ def get_terminal_size():
         print("default")
         tuple_xy = (80, 25)      # default value
     return tuple_xy
- 
- 
+
 def _get_terminal_size_windows():
     try:
         from ctypes import windll, create_string_buffer
@@ -48,12 +47,11 @@ def _get_terminal_size_windows():
             (bufx, bufy, curx, cury, wattr,
              left, top, right, bottom,
              maxx, maxy) = struct.unpack("hhhhHhhhhhh", csbi.raw)
-            sizex = right - left + 1
-            sizey = bottom - top + 1
+            sizex: int = right - left + 1
+            sizey: int = bottom - top + 1
             return sizex, sizey
     except:
         pass
- 
 
 def _get_terminal_size_tput():
     # get terminal width
@@ -64,7 +62,6 @@ def _get_terminal_size_tput():
         return (cols, rows)
     except:
         pass
- 
  
 def _get_terminal_size_linux():
     def ioctl_GWINSZ(fd):
@@ -90,7 +87,7 @@ def _get_terminal_size_linux():
         except:
             return None
     return int(cr[1]), int(cr[0])
- 
+
 if __name__ == "__main__":
     sizex, sizey = get_terminal_size()
     print('width =', sizex, 'height =', sizey)
