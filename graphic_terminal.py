@@ -11,6 +11,10 @@ __all__ = [
     'displayAllColors', 'eastAsianStrSparse', 'printTable', 
     'eastAsianStrPad', 'rollText', 
 ]
+
+from io import StringIO
+from functools import lru_cache
+
 from terminalsize import get_terminal_size
 from unicodedata import east_asian_width
 
@@ -129,8 +133,44 @@ def rollText(text: str, box_width: int, only_space_break=True):
     lines = [' '.join(line) for line in lines]
     return lines
 
+class AsciiGraphic:
+    MAX_INSTANCES = 16
+
+    def __init__(self) -> None:
+        print('Wheel warning: Why not use asciimatics?')
+        w, h = get_terminal_size()
+        w -= 1
+        self.w, self.h = w, h
+        self.io = StringIO()
+        for _ in range(h):
+            self.io.write('\n')
+            self.io.write(' ' * w)
+    
+    @lru_cache(maxsize=MAX_INSTANCES)
+    def ioLen(self):
+        return (self.w + 1) * self.h
+    
+    def print(self):
+        self.io.seek(0)
+        print(self.io.read(self.ioLen()), end = '', flush=True)
+    
+    def ioIndexAt(self, x: int, y: int):
+        return y * (self.w + 1) + x + 1
+    
+    def lineHorizontal(
+        self, y: int, x_from: int, x_to: int, symbol: str = '-', 
+    ):
+        self.io.seek(self.ioIndexAt(x_from, y))
+        self.io.write(symbol * (x_to - x_from))
+    
+    def lineVertical(
+        self, x: int, y_from: int, y_to: int, symbol: str = '|', 
+    ):
+        for y in range(y_from, y_to):
+            self.io.seek(self.ioIndexAt(x, y))
+            self.io.write(symbol)
+
 if __name__ == '__main__':
-    from console import console
     displayAllColors()
     printTable([
         ['ID', 'Name', 'Thing'], 
@@ -141,4 +181,15 @@ if __name__ == '__main__':
         'A long text that clearly cannot be displayed in one line, so what do we do?', 
         20, 
     ), sep='\n')
+    input('Enter to demo ascii graphic...')
+    from time import sleep
+    aG = AsciiGraphic()
+    aG.lineHorizontal(0, 0, aG.w)
+    aG.lineHorizontal(aG.h - 1, 0, aG.w)
+    aG.lineVertical(0, 0, aG.h)
+    aG.lineVertical(aG.w - 1, 0, aG.h)
+    for _ in range(10):
+        aG.print()
+        sleep(0.1)
+    from console import console
     console(globals())
