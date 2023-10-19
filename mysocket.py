@@ -132,6 +132,7 @@ def findAPort(hostname = 'localhost', search_range = range(3000, 4000)):
             return (serverSock, port)
         except OSError:
             serverSock.close()
+    raise RuntimeError('No port available in range.')
 
 def pair(port, host_ip = 'localhost', handshake_msg = 'mysocket.pair'):
     '''
