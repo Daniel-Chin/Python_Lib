@@ -2,10 +2,14 @@
 Uses mido to play a midi file.  
 '''
 
-import sys
+from __future__ import annotations
+
 import mido
 from myfile import sysArgvOrInput
 from interactive import inputChin
+
+VELOCITY_SCALE = .5
+FORCE_CHANNEL: int | None = 0
 
 def main():
     filename = sysArgvOrInput()
@@ -19,6 +23,14 @@ def main():
             try:
                 for msg in mid.play():
                     print(msg)
+                    if isinstance(msg, mido.MetaMessage):
+                        continue
+                    try:
+                        msg.velocity = round(msg.velocity * VELOCITY_SCALE)
+                        if FORCE_CHANNEL is not None:
+                            msg.channel = FORCE_CHANNEL
+                    except AttributeError:
+                        continue
                     port.send(msg)
             except KeyboardInterrupt:
                 print('Stop. ')
