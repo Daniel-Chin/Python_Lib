@@ -178,6 +178,11 @@ Play audio cues.
 
 [source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/audioCues.py)
 
+## audio_loopback.py
+Can be used as a loudspeaker.  
+
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/audio_loopback.py)
+
 ## auto_bin.py
 Auto bin number.  
 
