@@ -179,7 +179,8 @@ Play audio cues.
 [source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/audioCues.py)
 
 ## audio_loopback.py
-Can be used as a loudspeaker.  
+Can be used as a loudspeaker.    
+Wait, doesn't VoiceMeeter already do this?  
 
 [source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/audio_loopback.py)
 

@@ -18,6 +18,7 @@ Port specification for my applications.
 2349 TCP    better instrument
 2350 TCP    MIDI over TCP
 2351 None   shared_root.py
-2352 UDP    Music X Flute
-2353 TCP    Music X Flute
+2352 UDP    Music X Flute hardware-host
+2353 TCP    Music X Flute hardware-host
 2354 TCP    MIDI Player
+2355 TCP    Music X Flute API

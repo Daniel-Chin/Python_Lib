@@ -1,5 +1,6 @@
 '''
 Can be used as a loudspeaker.  
+Wait, doesn't VoiceMeeter already do this?  
 '''
 
 import pyaudio
