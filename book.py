@@ -3,6 +3,7 @@ A file system.
 Encrypts the file system with Fernet.  
 '''
 print('Importing...')
+import os
 from base64 import urlsafe_b64encode
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 from cryptography.hazmat.primitives import hashes
@@ -76,17 +77,30 @@ def loadFilename():
     if len(sys.argv) >= 2:
         return PATH + sys.argv[1]
     else:
-        print()
+        while True:
+            print()
+            print('o: open an existing book.')
+            print('n: create a new book.')
+            print('o/n >')
+            op = input().lower().strip()
+            if op in [*'on']:
+                break
         if platform.system() == 'Linux':
-            list_dir = [x.lower() for x in listdir(PATH)]
-            [print(name) for name in list_dir]
+            if op == 'o':
+                list_dir = [x.lower() for x in listdir(PATH)]
+                [print(name) for name in list_dir]
             filename = input('filename=').lower()
-            if filename not in list_dir:
+            _, ext = os.path.splitext(filename)
+            if ext.lower() != 'book':
                 filename += '.book'
+            if op == 'o':
                 assert filename in list_dir, 'No such file. '
-            return PATH + filename
+            filename = os.path.join(PATH, filename)
         else:
-            return input('path\\filename.beeph: ')
+            filename = input('path\\filename.beeph: ')
+        if op == 'n':
+            filename = newBook()
+        return filename
 
 class Entry:
     def __init__(self):
@@ -564,6 +578,7 @@ def newBook():
             continue
     print('Saving the new book... ')
     book.save()
+    return book.filename
 
 class WrongPassword(Exception):
     pass
