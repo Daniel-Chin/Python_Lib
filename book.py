@@ -81,26 +81,23 @@ def loadFilename():
             print()
             print('o: open an existing book.')
             print('n: create a new book.')
-            print('o/n >')
+            print('o/n >', end='', flush=True)
             op = input().lower().strip()
             if op in [*'on']:
                 break
+        if op == 'n':
+            return newBook()
         if platform.system() == 'Linux':
-            if op == 'o':
-                list_dir = [x.lower() for x in listdir(PATH)]
-                [print(name) for name in list_dir]
+            list_dir = [x.lower() for x in listdir(PATH)]
+            [print(name) for name in list_dir]
             filename = input('filename=').lower()
             _, ext = os.path.splitext(filename)
             if ext.lower() != 'book':
                 filename += '.book'
-            if op == 'o':
-                assert filename in list_dir, 'No such file. '
-            filename = os.path.join(PATH, filename)
+            assert filename in list_dir, 'No such file. '
+            return os.path.join(PATH, filename)
         else:
-            filename = input('path\\filename.beeph: ')
-        if op == 'n':
-            filename = newBook()
-        return filename
+            return input('path\\filename.beeph: ')
 
 class Entry:
     def __init__(self):
