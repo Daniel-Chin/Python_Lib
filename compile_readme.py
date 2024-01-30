@@ -3,6 +3,7 @@ Iterate through all files in this repo
 build a readme.md for Github. 
 '''
 SUPPRESS = [
+    'reqirements.txt',
     'Archive/catch_eof/1.py',
     'Archive/hash_math/1.py', 
     'Archive/Magic.py', 
