@@ -14,7 +14,7 @@ from threading import Thread
 PORT = 2339
 
 def main():
-    server = Server(MyOneServer, PORT)
+    server = MyServer(MyOneServer, port=PORT)
     server.start()
     abspath = os.path.abspath(__file__)
     dname = os.path.dirname(abspath)
@@ -59,6 +59,16 @@ class MyOneServer(OneServer):
             pass
         else:
             print('Unknown request:', request.target)
+
+class MyServer(Server):
+    def handleQueue(self, intent):
+        pass
+    
+    def interval(self):
+        pass
+
+    def onConnect(self, addr):
+        pass
 
 if __name__ == '__main__':
     main()
