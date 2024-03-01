@@ -345,6 +345,11 @@ Use a file to denote whether a program is running.
 
 [source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/exclusive.py)
 
+## external_import_template.py
+Your code requires Daniel's PythonLib? Use this template to import the required modules.  
+
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/external_import_template.py)
+
 ## Find Vera/Find_Vera V2.py
 A game by Daniel
 
@@ -383,6 +388,11 @@ Given a fraction, find the resistor connection to achieve it.
 Formatting time data in a friendly manner. 
 
 [source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/friendly_time.py)
+
+## gpt_auto_retry.py
+Automatic retry of OpenAI GPT calls.  
+
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/gpt_auto_retry.py)
 
 ## graphic_terminal.py
 Tools to do graphics in the terminal.    
