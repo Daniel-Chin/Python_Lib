@@ -588,6 +588,11 @@ Print the headings of a markdown file.
 
 [source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/MidiOverTCP.py)
 
+## midi_multiplex.py
+Add overlaping notes to a midi file, automatically creating new tracks when necessary.  
+
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/midi_multiplex.py)
+
 ## minecraft_afk.py
 AFK tool for Minecraft.    
 Punch the air every 5 seconds so you don't get kicked for inactivity.  
