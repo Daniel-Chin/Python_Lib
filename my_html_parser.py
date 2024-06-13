@@ -20,6 +20,26 @@ class Event:
     text: str
     attrs: tp.Optional[Attrs]
 
+    def __repr__(self):
+        buf = ['event: ']
+        if self.type == EventType.StartTag:
+            buf.append('<')
+            buf.append(self.text)
+            assert self.attrs is not None
+            for k, v in self.attrs:
+                buf.append(f' {k}={v}')
+            buf.append('>')
+        elif self.type == EventType.EndTag:
+            buf.append('</')
+            buf.append(self.text)
+            buf.append('>')
+        elif self.type == EventType.Data:
+            buf.append('data ')
+            buf.append(repr(self.text))
+        else:
+            assert False, self.type
+        return ''.join(buf)
+
 class ParseToList(HTMLParser):
     # RAM-heavy
     def __init__(self, **kw):
@@ -83,6 +103,8 @@ class ParseContext:
         self.sentinels: tp.List[int] = [-1]
     
     def seekTag(self, eventType: EventType, tag: str, debug: bool = False, **attrs: str):
+        if debug:
+            print('  seeking', eventType, tag, attrs)
         attrs = {k.strip('_'): v for k, v in attrs.items()}
         assert tag in self.subscribe_tags
         for k, v in attrs.items():
@@ -159,5 +181,5 @@ class ParseContext:
             sentinel = self.sentinels.pop()
             raise UnexpectedEndTag(event.text, sentinel)
         if debug:
-            print('next', len(stack), event)
+            print('   ', len(stack), event)
         return stack, event
