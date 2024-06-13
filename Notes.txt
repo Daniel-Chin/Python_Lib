@@ -45,8 +45,6 @@ To: resize CMD
 To: compile exe or Mac exe
     PyInstaller
 
-f'1+1={1+1}'
-
 while else?
     while next(iter(range(3))):
         pass
