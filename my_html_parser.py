@@ -82,13 +82,13 @@ class ParseContext:
         self.iterEvents = IterEvents(webpage, subscribe_tags, subscribe_attrs)
         self.sentinels: tp.List[int] = [-1]
     
-    def seekTag(self, eventType: EventType, tag: str, **attrs: str):
+    def seekTag(self, eventType: EventType, tag: str, debug: bool = False, **attrs: str):
         attrs = {k.strip('_'): v for k, v in attrs.items()}
         assert tag in self.subscribe_tags
         for k, v in attrs.items():
             assert k in self.subscribe_attrs
         while True:
-            stack, nowEvent = self.next()
+            stack, nowEvent = self.next(debug)
             if nowEvent.type != eventType:
                 continue
             if nowEvent.text != tag:
@@ -115,8 +115,8 @@ class ParseContext:
                 return stack, nowEvent
     
     @contextmanager
-    def seekAndEnterTag(self, tag: str, **attrs: str):
-        startStack, startEvent = self.seekTag(EventType.StartTag, tag, **attrs)
+    def seekAndEnterTag(self, tag: str, debug: bool = False, **attrs: str):
+        startStack, startEvent = self.seekTag(EventType.StartTag, tag, debug=debug, **attrs)
         sentinel = len(startStack) - 1
         def f():    # to allow the above to raise StopIteration
             self.sentinels.append(sentinel)
@@ -139,15 +139,25 @@ class ParseContext:
             if nowEvent.type == EventType.Data:
                 return nowEvent.text
     
-    def seekTagAndConsumeForData(self, tag: str, **attrs: str):
-        with self.seekAndEnterTag(tag, **attrs):
-            return self.seekData()
+    def seekTagAndConsumeForData(self, tag: str, debug: bool = False, **attrs: str):
+        buf: tp.List[str] = []
+        with self.seekAndEnterTag(tag, debug, **attrs) as sentinel:
+            while True:
+                try:
+                    data = self.seekData().strip()
+                except UnexpectedEndTag as e:
+                    assert e.sentinel == sentinel, (e, sentinel)
+                    break
+                if data:
+                    buf.append(data)
+        return buf
     
-    def next(self):
+    def next(self, debug: bool = False):
         stack, event = next(self.iterEvents)
         if len(stack) <= self.sentinels[-1]:
             assert event.type == EventType.EndTag, event
             sentinel = self.sentinels.pop()
             raise UnexpectedEndTag(event.text, sentinel)
-        # print('next', len(stack), event)
+        if debug:
+            print('next', len(stack), event)
         return stack, event
