@@ -694,6 +694,11 @@ XML parser
 
 [source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/myxml.py)
 
+## my_html_parser.py
+e.g. Context managers to enter tags.  
+
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/my_html_parser.py)
+
 ## netid2profile.py
 For an NYU person, convert their netID to profile.  
 
@@ -954,6 +959,11 @@ A context to temporarily add paths to sys.path
 Useful for importing modules from a different directory. 
 
 [source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/sys_path_context.py)
+
+## template_for_external_import.txt
+When importing something from python_lib in an external project.  
+
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/template_for_external_import.txt)
 
 ## terminalsize.py
 Contributors of this code: Alexander Belchenko, Harco Kuppens, Justin Riley.   
