@@ -1,0 +1,14 @@
+channels:
+  - defaults
+dependencies:
+  - python=3.12
+  - numpy
+  - openssl
+  - pip
+  - colorama
+  - qrcode
+  - pyperclip
+  - matplotlib
+  - scipy
+  - pip:
+    - pyperclip
