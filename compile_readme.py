@@ -70,7 +70,7 @@ def documentate(cd, out, depth, folder_documented = False):
             folder_documented = True
         except:
             pass
-    for node in os.listdir():
+    for node in sorted(os.listdir()):
         if path.isfile(node):
             ext = path.splitext(node)[-1]
             if ext in ('.py', '.txt', 'pyw'):
