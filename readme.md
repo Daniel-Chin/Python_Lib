@@ -21,11 +21,6 @@ Do you know the 24 card game?
 
 [source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/24solver.py)
 
-## alarm.py
-An alarm clock because the Win10 Alarm App HCI is trash.  
-
-[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/alarm.py)
-
 ## Archive/
 Meaningless Archive of random Python Scripts I wrote.
 
@@ -38,6 +33,34 @@ I made this for Zane.
 Try figuring out what it does.
 
 [source code folder](https://github.com/Daniel-Chin/Python_Lib/blob/master/Archive/%27Response%20Generator%27/)
+
+## Archive/LAN_scan/
+Scans LAN
+
+[source code folder](https://github.com/Daniel-Chin/Python_Lib/blob/master/Archive/LAN_scan/)
+
+## Archive/LenovoShipping/
+Tried to implement SSH when I was young.
+
+[source code folder](https://github.com/Daniel-Chin/Python_Lib/blob/master/Archive/LenovoShipping/)
+
+## Archive/OneFileFly/
+Transmit one file.  
+Deprecated. Replaced by ../oneship
+
+[source code folder](https://github.com/Daniel-Chin/Python_Lib/blob/master/Archive/OneFileFly/)
+
+## Archive/SleepProber/
+Keeps beeping, until the computer sleeps.  
+Purpose: so you can tell if your computer is asleep.  
+Useful in rare occasions.
+
+[source code folder](https://github.com/Daniel-Chin/Python_Lib/blob/master/Archive/SleepProber/)
+
+## Archive/WireVoice/
+Simple experiment of dealing with sound data in real time.
+
+[source code folder](https://github.com/Daniel-Chin/Python_Lib/blob/master/Archive/WireVoice/)
 
 ## Archive/archive_rrrr.py
 To archive http://rrrrthats5rs.com
@@ -77,21 +100,11 @@ Conclusion: On my Windows, it's O(1).
 
 [source code folder](https://github.com/Daniel-Chin/Python_Lib/blob/master/Archive/fileComplexity/)
 
-## Archive/LAN_scan/
-Scans LAN
-
-[source code folder](https://github.com/Daniel-Chin/Python_Lib/blob/master/Archive/LAN_scan/)
-
 ## Archive/legacy_archive/
 This was before I started to use Github, and I didn't do documentation.  
 Consider this the pre-historical era.
 
 [source code folder](https://github.com/Daniel-Chin/Python_Lib/blob/master/Archive/legacy_archive/)
-
-## Archive/LenovoShipping/
-Tried to implement SSH when I was young.
-
-[source code folder](https://github.com/Daniel-Chin/Python_Lib/blob/master/Archive/LenovoShipping/)
 
 ## Archive/mim/mim.py
 To test the security of getpass.  
@@ -107,12 +120,6 @@ Too bad. It does not work. Mindustry 6.0 is anti-python?
 Transpose an audio up one octave, by removing odd partials.  
 
 [source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/Archive/octave_up.py)
-
-## Archive/OneFileFly/
-Transmit one file.  
-Deprecated. Replaced by ../oneship
-
-[source code folder](https://github.com/Daniel-Chin/Python_Lib/blob/master/Archive/OneFileFly/)
 
 ## Archive/requests_futures_graceful.py
 Does requests_futures interrupt the sockets on exit?    
@@ -142,17 +149,80 @@ Measures the serial self-playback round trip time.
 
 [source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/Archive/serial_self_latency.py)
 
-## Archive/SleepProber/
-Keeps beeping, until the computer sleeps.  
-Purpose: so you can tell if your computer is asleep.  
-Useful in rare occasions.
+## Beer on the Wall/
+Bamboozling lyric-rolling music-playing windows-only python script
 
-[source code folder](https://github.com/Daniel-Chin/Python_Lib/blob/master/Archive/SleepProber/)
+[source code folder](https://github.com/Daniel-Chin/Python_Lib/blob/master/Beer%20on%20the%20Wall/)
 
-## Archive/WireVoice/
-Simple experiment of dealing with sound data in real time.
+## Color_Tiles/
+A game
 
-[source code folder](https://github.com/Daniel-Chin/Python_Lib/blob/master/Archive/WireVoice/)
+[source code folder](https://github.com/Daniel-Chin/Python_Lib/blob/master/Color_Tiles/)
+
+## Find Vera/Find_Vera V2.py
+A game by Daniel
+
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/Find%20Vera/Find_Vera%20V2.py)
+
+## MidiOverTCP.py
+ -> LAN -> `Midi from TCP` as midi device ->  
+
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/MidiOverTCP.py)
+
+## Notes.txt
+My personal notebook for learning Python. 
+
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/Notes.txt)
+
+## Ports.txt
+Port specification for my applications.  
+
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/Ports.txt)
+
+## Push_Git.py
+Interactive git commit and push.  
+
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/Push_Git.py)
+
+## To the Earth/To the Earth V8.py
+A game by Daniel.   
+  
+My personal second / third python project. You can see a lot of bad coding styles.   
+  
+Updates description:  
+    V3:  
+        + Added: new weapon = Holy Sickle  
+            Acquired through Annoying Cat  
+            Ulti: ATK+1  
+            20% Vamparic.  
+        + Added: Personal high score.  
+        + Improved: Game over prompt.  
+    V4:  
+        Fixed: Holy Sickle works properly now.  
+    V5:  
+        Fixed: Now the game actually restarts when you die.  
+        + Added: Next Daily Hint  
+        Edit: Intro screen now uses black background  
+        Fixed: Daily Hint regarding the behavior of Annoying cat.  
+        + Added: drop weapon msg  
+        Fixed: DeltaHP now reflects the aggregate effect of healing and dmg  
+        Fixed: Easter item drop rate was higher than normal weapons'...  
+        Fixed: Critical Hit chance > 100%  
+        + Added: Holy Sickle now increase GamePace.   
+        + Added: When Holy Sickle ATK=100, Ulti becomes IronMan  
+    V6:  
+        very hihg speed -> incredible hihg speed  
+    V7:  
+        First play will show kidding death msg  
+    V8:  
+        Changed the abbr of Space Corgi to " Corgi"
+
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/To%20the%20Earth/To%20the%20Earth%20V8.py)
+
+## alarm.py
+An alarm clock because the Win10 Alarm App HCI is trash.  
+
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/alarm.py)
 
 ## ascii_table.py
 A beautiful script to print the ascii table. 
@@ -194,11 +264,6 @@ Auto bin number.
 Repeatedly prints 'wobo wabble' indefinitely. 
 
 [source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/babble.py)
-
-## Beer on the Wall/
-Bamboozling lyric-rolling music-playing windows-only python script
-
-[source code folder](https://github.com/Daniel-Chin/Python_Lib/blob/master/Beer%20on%20the%20Wall/)
 
 ## blindDescend.py
 Find local minima of a 1D function without gradient.    
@@ -260,11 +325,6 @@ Only run this if you are in a safe network, or inside a firewall.
 I am not responsible if someone attacks your computer through this server. 
 
 [source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/clicker/__main__.py)
-
-## Color_Tiles/
-A game
-
-[source code folder](https://github.com/Daniel-Chin/Python_Lib/blob/master/Color_Tiles/)
 
 ## compile_readme.py
 Iterate through all files in this repo  
@@ -349,11 +409,6 @@ Use a file to denote whether a program is running.
 Your code requires Daniel's PythonLib? Use this template to import the required modules.  
 
 [source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/external_import_template.py)
-
-## Find Vera/Find_Vera V2.py
-A game by Daniel
-
-[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/Find%20Vera/Find_Vera%20V2.py)
 
 ## flashplayer/
 Play swf files.
@@ -461,6 +516,27 @@ with indentPrinter as print:
 
 [source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/indentprinter.py)
 
+## interactive/__init__.py
+Terminal interactivity utils.    
+  
+`listen`: waits for key press.    
+`inputChin`: It does everything. There are too many features to describe. Reading the source code is the only way.    
+`Universe`: `x in Universe()` always returns `True` no matter what `x` is.    
+`inputUntilValid`: re-asks if not valid.    
+`multiLineInput`: user may input multi lines. Terminate with ^Z.    
+  
+Demo:    
+Define in `__main__.py`. Run it, or run the module.    
+  
+Issues:    
+* On Linux, Stopping the job and bringing it back to foreground messes up the terminal setting up (?)    
+  
+Future work:    
+    Stop telling lies in `help(getFullCh)` on Linux.    
+    https://stackoverflow.com/questions/48039759/how-to-distinguish-between-escape-and-escape-sequence  
+
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/interactive/__init__.py)
+
 ## interactive/console_explorer.py
 An android-friendly console file explorer. 
 
@@ -482,27 +558,6 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 [source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/interactive/kbhit.py)
-
-## interactive/__init__.py
-Terminal interactivity utils.    
-  
-`listen`: waits for key press.    
-`inputChin`: It does everything. There are too many features to describe. Reading the source code is the only way.    
-`Universe`: `x in Universe()` always returns `True` no matter what `x` is.    
-`inputUntilValid`: re-asks if not valid.    
-`multiLineInput`: user may input multi lines. Terminate with ^Z.    
-  
-Demo:    
-Define in `__main__.py`. Run it, or run the module.    
-  
-Issues:    
-* On Linux, Stopping the job and bringing it back to foreground messes up the terminal setting up (?)    
-  
-Future work:    
-    Stop telling lies in `help(getFullCh)` on Linux.    
-    https://stackoverflow.com/questions/48039759/how-to-distinguish-between-escape-and-escape-sequence  
-
-[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/interactive/__init__.py)
 
 ## ipynb_to_py.py
 Converts ipynb to py.   
@@ -583,11 +638,6 @@ Print the headings of a markdown file.
 
 [source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/md_headings.py)
 
-## MidiOverTCP.py
- -> LAN -> `Midi from TCP` as midi device ->  
-
-[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/MidiOverTCP.py)
-
 ## midi_multiplex.py
 Add overlaping notes to a midi file, automatically creating new tracks when necessary.  
 
@@ -657,6 +707,11 @@ My misc little tools.
 
 [source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/my.py)
 
+## my_html_parser.py
+e.g. Context managers to enter tags.  
+
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/my_html_parser.py)
+
 ## myfile.py
 Unreliable file utils
 
@@ -694,11 +749,6 @@ XML parser
 
 [source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/myxml.py)
 
-## my_html_parser.py
-e.g. Context managers to enter tags.  
-
-[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/my_html_parser.py)
-
 ## netid2profile.py
 For an NYU person, convert their netID to profile.  
 
@@ -709,11 +759,6 @@ Creates an empty `.gitignore` file.
 This is useful because Windows File Explorer forbids you from naming a file without base name, and `>` now creates files in UTF-16 with BOM encoding.  
 
 [source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/newIgnore.py)
-
-## Notes.txt
-My personal notebook for learning Python. 
-
-[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/Notes.txt)
 
 ## nothing.py
 
@@ -769,10 +814,21 @@ A socket that supports object transmission.
 
 [source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/pickle_socket.py)
 
+## piecewise_linear.py
+Input: datapoints that define a piecewise linear function.    
+Output: a rule-generated pytorch module implementing such a function.  
+
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/piecewise_linear.py)
+
 ## pimport.py
 pip install, and imports
 
 [source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/pimport.py)
+
+## playMidi.py
+Uses mido to play a midi file.  
+
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/playMidi.py)
 
 ## playback.py
 Playback audio in real-time.    
@@ -781,20 +837,10 @@ with headphones.
 
 [source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/playback.py)
 
-## playMidi.py
-Uses mido to play a midi file.  
-
-[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/playMidi.py)
-
 ## playwav.py
 Light-weight wav player. 
 
 [source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/playwav.py)
-
-## Ports.txt
-Port specification for my applications.  
-
-[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/Ports.txt)
 
 ## port_forward.py
 Provides fake p2p, port forwarding.   
@@ -814,10 +860,10 @@ Get prime numbers
 
 [source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/prime.py)
 
-## Push_Git.py
-Interactive git commit and push.  
+## qr_now.py
+Make a QR code instantly
 
-[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/Push_Git.py)
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/qr_now.py)
 
 ## qrchat/__main__.py
 Sets up a server, displays a QR code. Scan it to go to a web page. Exchange raw texts!    
@@ -825,11 +871,6 @@ Useful for sending a URL from the phone to the laptop.
 Warning: No authentication or encryption. Don't type in secrets. Don't assume who the remote is.  
 
 [source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/qrchat/__main__.py)
-
-## qr_now.py
-Make a QR code instantly
-
-[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/qr_now.py)
 
 ## quad2quad.py
 morph a quad into another quad. It's like 3D projection.  
@@ -862,16 +903,6 @@ Run a python module but it waits at the end as if you called it in command line.
 
 [source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/runamod.py)
 
-## safeserver/
-A simple file server.  
-Serves file in a folder.  
-Has a simple html page interface.  
-Built upon safe_http.py. Please see its documentation.  
-Problems:  
-* Does not sanitize html. But Don't panic! This is a file server and the threat only originates from local file names. Plus, "<>" is not allowed in filename.
-
-[source code folder](https://github.com/Daniel-Chin/Python_Lib/blob/master/safeserver/)
-
 ## safe_http.py
 An HTTP backend server.    
 Really tries to be safe against injection attacks.    
@@ -882,6 +913,16 @@ Problems:
 * socket.send without timeout. Could block the entire scheduling.  
 
 [source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/safe_http.py)
+
+## safeserver/
+A simple file server.  
+Serves file in a folder.  
+Has a simple html page interface.  
+Built upon safe_http.py. Please see its documentation.  
+Problems:  
+* Does not sanitize html. But Don't panic! This is a file server and the threat only originates from local file names. Plus, "<>" is not allowed in filename.
+
+[source code folder](https://github.com/Daniel-Chin/Python_Lib/blob/master/safeserver/)
 
 ## scpsl/
 Voice transformer for SCP:SL
@@ -980,41 +1021,6 @@ Vision: bait catching, and defending invasions.
 Result: Failed! This macro does not work on Terraria!  
 
 [source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/terraria.py)
-
-## To the Earth/To the Earth V8.py
-A game by Daniel.   
-  
-My personal second / third python project. You can see a lot of bad coding styles.   
-  
-Updates description:  
-    V3:  
-        + Added: new weapon = Holy Sickle  
-            Acquired through Annoying Cat  
-            Ulti: ATK+1  
-            20% Vamparic.  
-        + Added: Personal high score.  
-        + Improved: Game over prompt.  
-    V4:  
-        Fixed: Holy Sickle works properly now.  
-    V5:  
-        Fixed: Now the game actually restarts when you die.  
-        + Added: Next Daily Hint  
-        Edit: Intro screen now uses black background  
-        Fixed: Daily Hint regarding the behavior of Annoying cat.  
-        + Added: drop weapon msg  
-        Fixed: DeltaHP now reflects the aggregate effect of healing and dmg  
-        Fixed: Easter item drop rate was higher than normal weapons'...  
-        Fixed: Critical Hit chance > 100%  
-        + Added: Holy Sickle now increase GamePace.   
-        + Added: When Holy Sickle ATK=100, Ulti becomes IronMan  
-    V6:  
-        very hihg speed -> incredible hihg speed  
-    V7:  
-        First play will show kidding death msg  
-    V8:  
-        Changed the abbr of Space Corgi to " Corgi"
-
-[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/To%20the%20Earth/To%20the%20Earth%20V8.py)
 
 ## tree.py
 Data type that stores file directory structure. 
