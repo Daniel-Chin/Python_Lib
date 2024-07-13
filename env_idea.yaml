@@ -13,3 +13,6 @@ dependencies:
   - tqdm
   - pip:
     - pyperclip
+    - mido
+    - python-rtmidi
+    - pretty_midi

@@ -219,6 +219,11 @@ Updates description:
 
 [source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/To%20the%20Earth/To%20the%20Earth%20V8.py)
 
+## abs_sleep.py
+Sleep on an absolute schedule.  
+
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/abs_sleep.py)
+
 ## alarm.py
 An alarm clock because the Win10 Alarm App HCI is trash.  
 
