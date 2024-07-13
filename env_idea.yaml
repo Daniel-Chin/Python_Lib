@@ -10,5 +10,6 @@ dependencies:
   - pyperclip
   - matplotlib
   - scipy
+  - tqdm
   - pip:
     - pyperclip
