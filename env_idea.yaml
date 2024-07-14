@@ -18,3 +18,4 @@ dependencies:
     - pretty_midi
     - ipython
     - librosa
+    - ipykernel
