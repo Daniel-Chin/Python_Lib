@@ -16,3 +16,5 @@ dependencies:
     - mido
     - python-rtmidi
     - pretty_midi
+    - ipython
+    - librosa
