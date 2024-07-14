@@ -5,7 +5,7 @@ import numpy
 
 def getPrimesFrom3(up_bound):
     """ Return an array of primes, 3 <= p <= up_bound """
-    sieve = numpy.ones((up_bound-1)//2, dtype=numpy.bool)
+    sieve = numpy.ones((up_bound-1)//2, dtype=bool)
     '''
     sieve
     index      0 1 2 3...
