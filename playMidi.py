@@ -27,6 +27,7 @@ def main(
     midi_output_name: str | None = None,
     channel_remap: tp.Callable[[int], int | None] = identity,
     scale_velocity: float = 1.0, 
+    verbose: bool = True, 
 ):
     '''
     `channel_remap`: return None to discard message.  
@@ -36,12 +37,15 @@ def main(
     with mido.open_output(midi_output_name) as port:    # type: ignore
         down_keys = set()
         with mido.MidiFile(filename) as mid:
-            print('playing...')
+            if verbose:
+                print('playing...')
             try:
                 for msg in mid.play():
-                    print(msg)
+                    if verbose:
+                        print(msg)
                     if isinstance(msg, mido.MetaMessage):
-                        print('Skipping meta message:', msg)
+                        if verbose:
+                            print('Skipping meta message:', msg)
                         continue
                     try:
                         msg.velocity = round(msg.velocity * scale_velocity)
@@ -57,12 +61,14 @@ def main(
                     elif msg.type == 'note_off' or (msg.type == 'note_on' and msg.velocity == 0):
                         down_keys.discard(msg.note)
             except KeyboardInterrupt:
-                print('Stop. ')
+                if verbose:
+                    print('Stop. ')
             finally:
                 port.panic()
                 # in case the MIDI device did not implement panic
                 for note in down_keys:
                     port.send(mido.Message('note_off', note=note))
-    print('ok')
+    if verbose:
+        print('ok')
 
 main()
