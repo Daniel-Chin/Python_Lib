@@ -20,7 +20,9 @@ def askOutput():
     outputs = mido.get_output_names()   # type: ignore
     for i, name in enumerate(outputs):
         print(i, name, sep = '\t')
-    return outputs[int(inputChin('> ', '0'))]
+    selected = outputs[int(inputChin('> ', '0'))]
+    print(f'{selected = }')
+    return selected
 
 def main(
     filename: str | None = None, 
