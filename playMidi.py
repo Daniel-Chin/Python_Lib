@@ -71,4 +71,5 @@ def main(
     if verbose:
         print('ok')
 
-main()
+if __name__ == '__main__':
+    main()
