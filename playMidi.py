@@ -29,6 +29,7 @@ def main(
     midi_output_name: str | None = None,
     channel_remap: tp.Callable[[int], int | None] = identity,
     scale_velocity: float = 1.0, 
+    discard_meta: bool = True, 
     verbose: bool = True, 
 ):
     '''
@@ -42,13 +43,9 @@ def main(
             if verbose:
                 print('playing...')
             try:
-                for msg in mid.play():
+                for msg in mid.play(meta_messages = not discard_meta):
                     if verbose:
                         print(msg)
-                    if isinstance(msg, mido.MetaMessage):
-                        if verbose:
-                            print('Skipping meta message:', msg)
-                        continue
                     try:
                         msg.velocity = round(msg.velocity * scale_velocity)
                         new_channel = channel_remap(msg.channel)
@@ -56,7 +53,7 @@ def main(
                             continue
                         msg.channel = new_channel
                     except AttributeError:
-                        continue
+                        pass    # allow control_change
                     port.send(msg)
                     if msg.type == 'note_on' and msg.velocity != 0:
                         down_keys.add(msg.note)
