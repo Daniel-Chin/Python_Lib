@@ -708,7 +708,8 @@ Future work:
 [source code folder](https://github.com/Daniel-Chin/Python_Lib/blob/master/multi_term/)
 
 ## my.py
-My misc little tools.  
+My misc little tools.    
+- @profileFrequency() decorates a function to measure how often it's called.  
 
 [source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/my.py)
 
