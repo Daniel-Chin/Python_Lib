@@ -15,8 +15,12 @@ class PiecewiseLinear(torch.nn.Module):
         assert Y.shape == (n, )
         assert (X[1:] - X[:-1] > 0.0).all()
         self.y0 = Y[0]
-        self.offset = torch.zeros((1, n))
-        self.slope = torch.zeros((1, n))
+        self.offset = torch.nn.Parameter(torch.zeros((
+            1, n, 
+        )), requires_grad=False)
+        self.slope = torch.nn.Parameter(torch.zeros((
+            1, n, 
+        )), requires_grad=False)
         slope = 0.0
         for i in range(n):
             self.offset[0, i] = -X[i]
