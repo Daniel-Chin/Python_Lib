@@ -36,9 +36,9 @@ def profileFrequency(interval: float = 1.0, format_str: str = '.2e'):
             acc += 1
             now = time.time()
             if now - last_time > interval:
-                print(f'{func.__name__}: {format(
+                print(f'''{func.__name__}: {format(
                     acc / interval, format_str, 
-                )} Hz')
+                )} Hz''')
                 acc = 0
                 last_time = now
             return func(*args, **kw)
