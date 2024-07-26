@@ -1,6 +1,7 @@
 '''
 My misc little tools.  
 - @profileFrequency() decorates a function to measure how often it's called.  
+- @profileDuration() decorates a function to report how long it took to run.
 '''
 import os
 import time
@@ -41,5 +42,16 @@ def profileFrequency(interval: float = 1.0, format_str: str = '.2e'):
                 acc = 0
                 last_time = now
             return func(*args, **kw)
+        return decorated
+    return decorator
+
+def profileDuration(format_str: str = '.2e'):
+    def decorator(func):
+        def decorated(*args, **kw):
+            start = time.perf_counter()
+            ret = func(*args, **kw)
+            dt = time.perf_counter() - start
+            print(f'{func.__name__}: {format(dt, format_str)} sec')
+            return ret
         return decorated
     return decorator

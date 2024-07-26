@@ -709,7 +709,8 @@ Future work:
 
 ## my.py
 My misc little tools.    
-- @profileFrequency() decorates a function to measure how often it's called.  
+- @profileFrequency() decorates a function to measure how often it's called.    
+- @profileDuration() decorates a function to report how long it took to run.
 
 [source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/my.py)
 
