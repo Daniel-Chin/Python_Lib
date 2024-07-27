@@ -643,6 +643,11 @@ Print the headings of a markdown file.
 
 [source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/md_headings.py)
 
+## median_filter.py
+Stream-based median filter.  
+
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/median_filter.py)
+
 ## midi_multiplex.py
 Add overlaping notes to a midi file, automatically creating new tracks when necessary.  
 
