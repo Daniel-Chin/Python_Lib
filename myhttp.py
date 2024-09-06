@@ -235,7 +235,7 @@ class Server(Thread, ABC):
             self.handleQueue(intent)
     
     def close(self):
-        if self.isAlive():
+        if self.is_alive():
             with self._go_on:
                 self._go_on.value = False
             #self.join()    public method
