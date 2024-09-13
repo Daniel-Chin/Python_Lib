@@ -378,6 +378,11 @@ Although my thing is still more console friendly.
 
 [source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/count.py)
 
+## creality_cr6-se_gcode_postprocess.py
+creality_cr6-se_gcode_postprocess
+
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/creality_cr6-se_gcode_postprocess.py)
+
 ## dchin_log/__init__.py
 Log script parameters as well as terminal output to files.    
 Useful for simulation runs / deep learning experiments.  
