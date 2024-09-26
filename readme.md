@@ -485,6 +485,12 @@ Uses the `keyboard` package to hold down a key.
 
 [source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/holdKeyContext.py)
 
+## hotspot/__main__.py
+Opens a hotspot on linux.    
+Deprecated in favor of linux-wifi-hotspot.  
+
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/hotspot/__main__.py)
+
 ## httpmim.py
 HTTP man in middle. Prints all traffic. Useful for investigating how http works. Although Chrome Dev Tools prolly have something like this already.  
 
