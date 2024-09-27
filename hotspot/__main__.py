@@ -14,7 +14,7 @@ import argparse
 
 import psutil
 
-DEFAULT_GATEWAY_IP = '192.168.12.1'
+DEFAULT_GATEWAY_IP = '192.168.1.1'
 
 HOSTAPD = 'hostapd'
 DNSMASQ = 'dnsmasq'
