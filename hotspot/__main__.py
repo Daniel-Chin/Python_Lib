@@ -14,6 +14,8 @@ import argparse
 
 import psutil
 
+DEFAULT_GATEWAY_IP = '192.168.12.1'
+
 HOSTAPD = 'hostapd'
 DNSMASQ = 'dnsmasq'
 
@@ -130,6 +132,7 @@ def UnmanageNetwork():
 
 def main(
     ssid: str, wpa_passphrase: str, 
+    gateway_ip: str = DEFAULT_GATEWAY_IP, 
     hostapd_conf: dict = {},
     dnsmasq_conf: dict = {},
 ):
@@ -141,7 +144,7 @@ def main(
     writeDnsmasqConf(dnsmasq_conf)
     with UnmanageNetwork():
         with Popen(['hostapd', tempFileName(HOSTAPD)]) as hostapd:
-            os.system(f'sudo ip addr add 192.168.1.1/24 dev {interface()}')
+            os.system(f'sudo ip addr add {gateway_ip}/24 dev {interface()}')
             with Popen(['dnsmasq', '-C', tempFileName(DNSMASQ), '-d']) as dnsmasq:
                 print('Hotspot running. Press ctrl+C to stop.')
                 try:
@@ -159,8 +162,9 @@ def parseArgs():
     parser = argparse.ArgumentParser()
     parser.add_argument('ssid', type=str)
     parser.add_argument('wpa_passphrase', type=str)
+    parser.add_argument('gateway_ip', type=str, nargs='?', default=DEFAULT_GATEWAY_IP)
     args = parser.parse_args()
-    return args.ssid, args.wpa_passphrase
+    return args.ssid, args.wpa_passphrase, args.gateway_ip
 
 if __name__ == '__main__':
     main(*parseArgs())
