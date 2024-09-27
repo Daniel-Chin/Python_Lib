@@ -10,6 +10,7 @@ from functools import lru_cache
 import typing as tp
 import re
 import uuid
+import argparse
 
 import psutil
 
@@ -108,12 +109,12 @@ def UnmanageNetwork():
             content = content.replace(uuid_, block_content[to_new])
         else:
             assert not from_old
-            content = '\n'.join(
+            content = '\n'.join([
                 content.strip(),
                 '', 
                 block_content[to_new], 
                 '', 
-            )
+            ])
         with open(CONF_FILE, 'w') as f:
             f.write(content)
     
@@ -154,5 +155,12 @@ def main(
             hostapd.terminate()
             hostapd.wait()
 
+def parseArgs():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('ssid', type=str)
+    parser.add_argument('wpa_passphrase', type=str)
+    args = parser.parse_args()
+    return args.ssid, args.wpa_passphrase
+
 if __name__ == '__main__':
-    main()
+    main(*parseArgs())
