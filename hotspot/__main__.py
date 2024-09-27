@@ -93,7 +93,7 @@ def UnmanageNetwork():
         '# ', 
         tag_close, 
     ])
-    block_pattern = re.compile(rf"{tag_open}.*?{tag_close}", re.DOTALL)
+    block_pattern = re.compile(rf"{re.escape(tag_open)}.*?{re.escape(tag_close)}", re.DOTALL)
 
     def setConf(from_old: bool, to_new: bool):
         uuid_ = str(uuid.uuid4())
@@ -106,7 +106,7 @@ def UnmanageNetwork():
                 if not from_old:
                     print('Hint: maybe another hotspot instance is running?')
                 raise ValueError('Unexpected state of conf file.')
-            re.sub(block_pattern, uuid_, content)
+            content = re.sub(block_pattern, uuid_, content)
             assert not re.search(block_pattern, content), 'Multiple blocks found.'
             content = content.replace(uuid_, block_content[to_new])
         else:
