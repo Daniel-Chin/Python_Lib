@@ -21,7 +21,7 @@ DNSMASQ = 'dnsmasq'
 
 @lru_cache(1)
 def interface():
-    interfaces = psutil.net_if_addrs().keys()
+    interfaces = [*psutil.net_if_addrs().keys()]
     guesses = [x for x in interfaces if 'wlan' in x or 'wlp' in x]
     if not guesses:
         raise EnvironmentError('No wireless interface found.')
