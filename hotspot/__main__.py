@@ -22,18 +22,18 @@ DNSMASQ = 'dnsmasq'
 @lru_cache(1)
 def interface():
     interfaces = psutil.net_if_addrs().keys()
-    candidates = [x for x in interfaces if 'wlan' in x or 'wlp' in x]
-    if not candidates:
+    guesses = [x for x in interfaces if 'wlan' in x or 'wlp' in x]
+    if not guesses:
         raise EnvironmentError('No wireless interface found.')
-    if len(candidates) == 1:
-        return candidates[0]
+    if len(guesses) == 1:
+        return guesses[0]
     while True:
         print('Please select an interface > ')
-        for i, x in enumerate(candidates):
+        for i, x in enumerate(interfaces):
             print(f'{i}: {x}')
         try:
             i = int(input())
-            return candidates[i]
+            return interfaces[i]
         except (ValueError, IndexError):
             print('Invalid input. Try again.')
 
