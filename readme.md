@@ -225,7 +225,8 @@ Sleep on an absolute schedule.
 [source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/abs_sleep.py)
 
 ## alarm.py
-An alarm clock because the Win10 Alarm App HCI is trash.  
+An alarm clock because the Win10 Alarm App HCI is trash.    
+Added support for linux because aur/timer doesn't support repeating until dismissed.
 
 [source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/alarm.py)
 
@@ -388,11 +389,6 @@ Log script parameters as well as terminal output to files.
 Useful for simulation runs / deep learning experiments.  
 
 [source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/dchin_log/__init__.py)
-
-## dependencies.txt
-Dependencies of this repo.  
-
-[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/dependencies.txt)
 
 ## dict_shape.py
 Compare the shape of two dicts.   
