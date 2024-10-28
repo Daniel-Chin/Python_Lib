@@ -16,7 +16,7 @@ def main():
     print('[a]: alarm mode. Give the target time.')
     print('[t]: timer mode. Give the duration.')
     op = input('> ').lower()
-    if op in 'at':
+    if op in [*'at']:
       break
   
   now = dt.datetime.now
@@ -31,12 +31,17 @@ def main():
     dm = parseIntWithEmptyAsZero(input('# of minutes: '))
     delta = dt.timedelta(hours=dh, minutes=dm)
     target = now() + delta
-  print('target', target)
-  print('now', now())
-  print('delta', delta)
+  print('>' * 16)
+  pad = ' ' * len(str(delta))
+  print('target', target,          sep='  ')
+  print('      ', pad,        '▲', sep='  ')
+  print('delta ', str(delta), '|', sep='  ')
+  print('      ', pad,        '|', sep='  ')
+  print('now   ', now(),           sep='  ')
+  print('<' * 16)
 
   chime.info()
-  while input('Can you hear the sound now? y/n >').lower() != 'y':
+  while input('Can you hear the sound now? y/n > ').lower() != 'y':
     chime.info()
 
   print('Alarm is ticking...')
