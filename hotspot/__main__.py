@@ -28,11 +28,11 @@ def interface():
     if len(guesses) == 1:
         return guesses[0]
     while True:
-        print('Please select an interface > ')
+        print('Please select an interface:')
         for i, x in enumerate(interfaces):
             print(f'{i}: {x}')
         try:
-            i = int(input())
+            i = int(input('> '))
             return interfaces[i]
         except (ValueError, IndexError):
             print('Invalid input. Try again.')
