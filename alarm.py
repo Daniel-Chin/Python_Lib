@@ -6,6 +6,9 @@ import datetime as dt
 from time import sleep
 import chime
 
+def parseIntWithEmptyAsZero(x: str, /):
+  return int(x) if x.strip() else 0
+
 def main():
   chime.theme('zelda')
 
@@ -19,13 +22,13 @@ def main():
   now = dt.datetime.now
 
   if op == 'a':
-    h = int(input('Hour (24h): '))
-    m = int(input('Minute: '))
+    h = parseIntWithEmptyAsZero(input('Hour (24h): '))
+    m = parseIntWithEmptyAsZero(input('Minute: '))
     target = dt.datetime.combine(dt.date.today(), dt.time(h, m, 0))
     delta = target - now()
   elif op == 't':
-    dh = int(input('# of hours: '))
-    dm = int(input('# of minutes: '))
+    dh = parseIntWithEmptyAsZero(input('# of hours: '))
+    dm = parseIntWithEmptyAsZero(input('# of minutes: '))
     delta = dt.timedelta(hours=dh, minutes=dm)
     target = now() + delta
   print('target', target)
