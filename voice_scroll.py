@@ -9,8 +9,8 @@ from time import sleep
 import keyboard
 from yin import yin
 
-FRAME_LEN = 2048
-SR = 22050
+FRAME_LEN = 4096
+SR = 44100
 
 DECAY = 10
 CAP = 2.3
