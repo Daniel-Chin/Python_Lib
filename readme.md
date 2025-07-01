@@ -884,6 +884,11 @@ Get prime numbers
 
 [source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/prime.py)
 
+## pulse_audio_temp_default.py
+A context for temporary PulseAudio configuration.
+
+[source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/pulse_audio_temp_default.py)
+
 ## qr_now.py
 Make a QR code instantly
 
