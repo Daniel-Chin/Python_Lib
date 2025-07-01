@@ -5,6 +5,7 @@ Uses mido to play a midi file.
 from __future__ import annotations
 
 import typing as tp
+import time
 
 import mido
 from myfile import sysArgvOrInput
@@ -28,16 +29,18 @@ def main(
     filename: str | None = None, 
     midi_output_name: str | None = None,
     channel_remap: tp.Callable[[int], int | None] = identity,
-    scale_velocity: float = 1.0, 
+    velocity_remap: tp.Callable[[int], int] = identity, 
     discard_meta: bool = True, 
     verbose: bool = True, 
 ):
     '''
     `channel_remap`: return None to discard message.  
+    `velocity_remap`: must return 0 if input is 0.  
     '''
     filename = filename or sysArgvOrInput()
     midi_output_name = midi_output_name or askOutput()
     with mido.open_output(midi_output_name) as port:    # type: ignore
+        manualPanic(port)
         down_keys = set()
         with mido.MidiFile(filename) as mid:
             if verbose:
@@ -47,7 +50,7 @@ def main(
                     if verbose:
                         print(msg)
                     try:
-                        msg.velocity = round(msg.velocity * scale_velocity)
+                        msg.velocity = round(velocity_remap(msg.velocity))
                         new_channel = channel_remap(msg.channel)
                         if new_channel is None:
                             continue
@@ -64,11 +67,15 @@ def main(
                     print('Stop. ')
             finally:
                 port.panic()
-                # in case the MIDI device did not implement panic
-                for note in down_keys:
-                    port.send(mido.Message('note_off', note=note))
+                manualPanic(port)
     if verbose:
         print('ok')
+
+def manualPanic(outPort: mido.ports.BaseOutput):
+    # in case the MIDI device did not implement panic
+    for note in range(128):
+        outPort.send(mido.Message('note_off', note=note))
+        time.sleep(0.01)
 
 if __name__ == '__main__':
     main()
