@@ -246,7 +246,7 @@ class Server(Thread, ABC):
     
     def run(self):
         self.socket.listen(self.listen)
-        log('listening at', gethostbyname(gethostname()), '...')
+        log('listening...')
         while self._go_on.get():
             if len(self.oneServers) >= self.getMaxConnection():
                 if not self.showing_max_waring:
