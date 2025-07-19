@@ -10,3 +10,4 @@ Dependencies of this repo.
 - pip install rsa
 - pip install simpleaudio
 - pip install chime
+- pip install psutil
