@@ -3,6 +3,7 @@ This is how I write Python code.
 
 Later bullet points take precedence:  
 - [PEP 8](https://peps.python.org/pep-0008/). 
+  - Notably, use the trailing commas in multi-line entries including function args (both def and call).  
 - Write what meta-programming would have produced. 
 - Vertical alignment is desirable. 
 - Function names are mixedCase. 
@@ -35,5 +36,5 @@ This way, adding an element is simply appending a code segment.
 Trailing whitespace in string literals.  
 `'I have a dream. '`
 
-## Unknown
+## Undecided
 Should I use `file=f` or `file = f` for optional arguments? 
