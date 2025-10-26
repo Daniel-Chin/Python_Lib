@@ -1,5 +1,6 @@
 '''
 Automatic retry of OpenAI GPT calls.  
+Deprecated in favor of https://github.com/Daniel-Chin/GPT-Arbiter-Human-in-Loop/blob/main/src/gpt-arbiter-human-in-loop/gpt_auto_retry.py
 '''
 
 from typing import Callable

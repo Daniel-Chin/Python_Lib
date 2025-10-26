@@ -451,7 +451,8 @@ Formatting time data in a friendly manner.
 [source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/friendly_time.py)
 
 ## gpt_auto_retry.py
-Automatic retry of OpenAI GPT calls.  
+Automatic retry of OpenAI GPT calls.    
+Deprecated in favor of https://github.com/Daniel-Chin/GPT-Arbiter-Human-in-Loop/blob/main/src/gpt-arbiter-human-in-loop/gpt_auto_retry.py
 
 [source code](https://github.com/Daniel-Chin/Python_Lib/blob/master/gpt_auto_retry.py)
 
